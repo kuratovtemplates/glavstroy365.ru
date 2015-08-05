@@ -1,4 +1,7 @@
 {exp:super_search:results channel="projects" limit="999" sort="asc" orderby="date"}
+{if no_results}
+По данным критериям не найдено проектов
+{/if}
             {if count== "1"}
             <div class="row">
               <ul id="projects-main-gallery" class="clr text-center">
@@ -12,7 +15,7 @@
                   </a>
                   {/projects_photos}
                   <div class="desc">
-                  <button href="/embed/popup_project/{url_title}" rel="nofollow" data-toggle="modal" data-target="#projectPopup" class="btn btn-danger">Быстрый просмотр</button>
+                  <button href="/embed/popup_project/{url_title}"  rel="nofollow" data-toggle="modal" data-target="#projectPopup" class="btn btn-danger">Быстрый просмотр</button>
                     {!--exp:low_replace find="Дома|Бани|Коттеджи|Дачные|Одноэтажные|Дом-баня|Одноэтажные|Перевозные" replace="||Коттедж|Дачный дом|Одноэтажный дом|Дом-баня|Одноэтажная баня|Перевозная баня" multiple="yes"}{categories}{category_name}{/categories}{/exp:low_replace--} {title} ({projects_size} м., {projects_area} м<sup>2</sup>)
                     <br>
                     <span class="project-catalog-price">от {projects_minprice} руб.</span> {edit_link}  
@@ -35,6 +38,8 @@
                     <a href="{title_permalink='projects'}" class="more">Подробно</a>
                   </div>
                 </li>
+
+
             {if count== total_results}
               </ul>
             </div>
@@ -69,3 +74,15 @@
               </div>
               {/paginate}
            {/exp:super_search:results}
+           <script>
+           $("#projects-main-gallery button[data-target='#projectPopup']").each(function(){
+            
+            var prev = $(this).parents().eq(1).prev().find("button[data-target='#projectPopup']").attr("href");
+            var prevUrlTitle = (typeof prev !="undefined") ?  prev.substr(prev.lastIndexOf('/') + 1) : "none" ;
+            var next = $(this).parents().eq(1).next().find("button[data-target='#projectPopup']").attr("href");
+            var nextUrlTitle = (typeof next!="undefined") ? next.substr(next.lastIndexOf('/') + 1):"none";
+            $(this).attr("href",  $(this).attr("href")+"/"+prevUrlTitle+"/"+nextUrlTitle);
+            
+           });
+
+           </script>

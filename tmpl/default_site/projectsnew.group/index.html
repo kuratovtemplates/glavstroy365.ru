@@ -237,7 +237,7 @@
               <div class="dop">
                 <a href="#" id="resetdop"><span>сбросить</span></a>
                   <h3>дополнительно</h3>
-                  <ul>       
+                  <ul id="ulExtra">       
                   <?
                           $arrExtra = array(
                             'projects_extra_balkon' => array(97, 'Балкон'),
@@ -279,11 +279,19 @@
               $("#resetvid,#resetraz,#resetet,#resetdop").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#search-form').submit();
+                $('html, body').animate({
+                    scrollTop: $("#results").offset().top - 200
+                }, 1000); 
               });
 
               $("#resetst").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#search-form').submit();
+                $('html, body').animate({
+                    scrollTop: $("#results").offset().top - 200
+                }, 1000); 
               });
 
               $('#nav_categories > li > label').click(function() {   
@@ -365,6 +373,10 @@
                 $("#resetst").click(function(event) {
                   event.preventDefault();
                   slider1.val([price_from - price_from % 10000,price_to]);
+                  $('#search-form').submit();
+                  $('html, body').animate({
+                    scrollTop: $("#results").offset().top - 200
+                  }, 1000); 
                 });
 
                 var slider2 = $('#pl3'),
@@ -394,9 +406,29 @@
                   density: 30,
                 });
 
+                slider1.on('change', function(){
+                    $('#search-form').submit();
+                    $('html, body').animate({
+                      scrollTop: $("#results").offset().top - 200
+                    }, 1000); 
+                });
+
+                slider2.on('change', function(){
+                    $('#search-form').submit();
+                    $('html, body').animate({
+                      scrollTop: $("#results").offset().top - 200
+                    }, 1000); 
+                });
+                
+              
+
                 $("#resetpl").click(function(event) {
                   event.preventDefault();
                   slider2.val([area_from,area_to]);
+                  $('#search-form').submit();
+                  $('html, body').animate({
+                    scrollTop: $("#results").offset().top - 200
+                  }, 1000);    
                 });
 
                       
@@ -459,23 +491,20 @@
                       sortOder = (sortProp[1] == "asc") ? "s-up" : "s-down";
                       $("#sortPanel").find('#'+sortProp[0]+'Id').addClass('sort-active '+sortOder);
                     });
-                </script>
 
-                <script>
+                  /*AJAX SEARCH*/
                   $(document).ready(function() {
-                    /*AJAX SEARCH*/
                     var options = {
                       target: '#results',
                       beforeSubmit:  showRequest
                     };
                     $('#search-form').ajaxForm(options);
                     
-                    $("input[name^='category'], input[name^='projects_size']").click(function() {
+                    $("input[name^='category'], input[name^='projects_size'], input[name^='projects_floors'], #ulExtra input").click(function() {
                       $('#search-form').submit();   
                       $('html, body').animate({
                         scrollTop: $("#results").offset().top - 200
-                      }, 1000);                   
-                      
+                      }, 1000);                      
                     });
                   }); 
                   // Show loading message and submit form
@@ -597,5 +626,18 @@
         </div>
       </div>
     </div>
+    <script>
+      $('body').on('click', '.modal-content button', function(evt){
+        //prevent the browser from navigating to the url for the 'a'
+        evt.preventDefault();
+        var href = $(this).attr("href");
+        var loadUrlTitle = (typeof href !="undefined") ?  href.substr(href.lastIndexOf('/') + 1) : "none" ;
+        var loadButton = $("#projects-main-gallery button[href*='"+loadUrlTitle+"']");
+        console.log(loadButton.attr("href"));
+        //find the parent that is the "modal-body" of this link
+        //load the href html into that parent.
+        $(this).parent('.modal-content').load($(this).attr('href'));
+      });
+    </script>
   </body>
 </html>

@@ -2,6 +2,8 @@
     <div class="popup">
 		<div id="pop-close" data-dismiss="modal" aria-label="Close"></div>
 		<h1 class="text-center">Проект {title}</h1>
+		
+		
 		<div class="pop-img">
 			{projects_photos limit="1"}
       {exp:ce_img:pair src='{url}' {wm_pic} height='407' width='407' allow_scale_larger="yes" crop='yes'}
@@ -104,4 +106,13 @@
 		<a href="#" class="pop-izbr pop-ves">Добавить в избранное</a>
 		--}
 	</div>
+
+		{if segment_4 !="none"}
+		<button href="/embed/popup_project/{segment_4}" rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-left"></i></button>
+		{/if}
+		{if segment_5 !="none"}
+		<button href="/embed/popup_project/{segment_5}" rel="nofollow" class="btn btn-danger"><i class="fa fa-angle-right"></i></button>
+		{/if}
+
+		
 	{/exp:channel:entries}
