@@ -1,0 +1,106 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                  
+    {embed="embed/.meta" title="Мои цены"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Мои цены</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Мои цены</h1>
+          <br>
+         
+          {exp:channel:entries channel="request" author_id="CURRENT_USER" status="open|closed" limit="10"}
+          {if no_results}
+              <div class="alert alert-warning">У вас пока нет предложений. 
+              {if {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"} == "0"}
+                <br> Для того чтобы добавлять предложения, надо  <a href="/users/add_company/">добавить компанию</a>
+              {/if}
+              {if {exp:number_member_entries:count status="open" member_id={member_id} channels="grade"} == "0" AND {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"} == "1"}
+                <br>  Для того чтобы добавлять предложения, надо  <a href="/users/add_grade/">добавить комплектацию</a>
+              {/if}
+              </div>
+          {/if}
+            <div class="row firm-row">
+                {embed="embed/.project_photo" projectid="{request_project}"}
+              <div class="col-xs-4">
+                <span class="titlefirm">{exp:query sql="SELECT `title` as project_title, `url_title` as project_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_project}' "}
+                <a href="{path='projects/'}/{project_url_title}">{project_title}</a>
+                {/exp:query}</span>
+               <h4>{request_price} руб.</h4>
+                
+                комплектация: <a data-toggle="modal" href="{path='projects/grademodal'}/{request_grade}" data-target="#modal">
+                {exp:query sql="SELECT `title` as grade_title, `url_title` as project_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_grade}' "}{grade_title}{/exp:query}</a>
+                <br>
+                <p class="text-muted">{if status =='open'}<i class='fa fa-unlock'></i> открыто{if:else}<i class='fa fa-lock'></i>  закрыто{/if}</p>
+              </div>
+              <div class="col-xs-2">
+                <div class="btn-group btn-group-sm pull-right">
+                  <a type="button" href="/users/edit_request/{entry_id}/" class="btn btn-primary btn-default"><i class="fa fa-pencil"></i> редактировать</a>
+                </div>
+              </div>
+            </div> 
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+          {/exp:channel:entries}
+           <!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

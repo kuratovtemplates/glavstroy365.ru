@@ -1,0 +1,98 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Отзывы"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Редактировать отзыв</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Редактировать отзыв</h1> {segment_3}
+          <br>
+           {exp:channel:entries channel="companies" author_id="CURRENT_USER"  dynamic="no" limit=1}
+          
+         {exp:rating:form
+              form:action="http://glavstroy365.ru/users/edit_reviews/{segment_3}/"
+              entry_id="{entry_id}"
+              rating_id="{segment_3}"
+              form:id="idRatingForm"
+              form:class="form-registration"
+              allow_duplicates="yes"             
+          }
+
+           
+    <div class="row">
+        <div class="col-xs-6">
+            <label for="name">Ваше имя</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="name" id="name" value="{name}" rel="tooltip" data-title="Введите ваше имя">
+                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <label for="email">Ваш Email</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="email" id="email"  value="{email}" rel="tooltip" data-title="Введите Ваш Email" >
+                    <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                </div>
+          </div>
+        </div>
+    </div>
+  
+    <div class="row">
+        <div class="col-xs-12">
+          <label for="rating">Выставьте рейтинг</label>
+          <div class="form-group">
+            <div class="input-group" id="rating-stars">
+            </div>
+          </div>
+        </div>
+    </div>
+    <input type="hidden" name="rating" id="rating" value="">
+    <div class="row">
+        <div class="col-xs-12">
+          <label for="review">Ваш отзыв</label>
+          <div class="form-group">
+            <textarea class="form-control" name="review" id="review" rows="3">{review}</textarea>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="submit" type="submit"  class="btn btn-success pull-right" ><i class="fa fa-comments-o"></i> Оставить отзыв</button>
+      </div>
+    </div>
+
+          {/exp:rating:form}
+
+         {/exp:channel:entries}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

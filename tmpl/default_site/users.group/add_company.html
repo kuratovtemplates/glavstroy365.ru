@@ -1,0 +1,311 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title=" Добавить компанию" title_suffix="Строительные компании"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="{path='users'}">Личный кабинет</a></li>
+          <li class="active">Добавить компанию</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          {if segment_3=='first'}
+          <div class="alert alert-success alert-dismissible" role="alert">Спасибо, вы зарегистрированы. Теперь добавьте свою компанию.<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button></div>
+          {/if}
+            {embed="embed/.reg_steps" gray="step_2"}
+          <h1>Добавить компанию</h1>
+          {if {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"} < {limit_companies}}
+{!--            return="users/thanks/company"  --}
+          {exp:channel:form
+            channel="companies"
+            datepicker="no"
+            include_jquery="no"
+            return="/users/thanks/company"
+            class="form-registration"
+          }
+
+             <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Название компании:&nbsp;*</label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="Например, ДомСтройПлюс" onkeyup="liveUrlTitle();" >
+                  <input name="url_title" type="hidden" id="url_title"  >
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Email: *</label>
+                  (сюда будут проиходить заявки)
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="company_email" id="company_email" >
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Адрес сайта:</label>
+                  <p><small>без http://</small></p>
+                </div>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" name="company_site" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Адрес:</label>
+                </div>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" name="company_address" >
+                </div>
+              </div>
+              <div class="row phones">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Телефон:</label>
+                </div>
+                <div class="col-xs-7" id="InputsWrapper">
+                  <div><input id="company_phone1" type="text" name ="company_phone1" class="form-control" ></div>
+                  <div class="input-group" style="display: none;"><input id="company_phone2" class="form-control" type="text" name="company_phone2" value="{company_phone2}"><span class="input-group-btn removeclass"><button class="btn btn-default" type="button">×</button></span></div>
+                  <div class="input-group" style="display: none;"><input id="company_phone3" class="form-control" type="text" name="company_phone3" value="{company_phone3}"><span class="input-group-btn removeclass"><button class="btn btn-default" type="button">×</button></span></div>
+                  <div class="input-group" style="display: none;"><input id="company_phone4" class="form-control" type="text" name="company_phone4" value="{company_phone4}"><span class="input-group-btn removeclass"><button class="btn btn-default" type="button">×</button></span></div>
+                </div>
+                <div class="col-xs-1">
+                  <button type="button" class="btn btn-default" id="AddPhone">+</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Собственник/Форма:</label>
+                </div>
+                <div class="col-xs-4">
+                  <div class="btn-group btn-block selectlistgroup">
+                    <select id="Select-company_owner" name="company_owner" data-width="100%" class="selectpicker">
+                      <option value="">Юридическое лицо</option>
+                      <option value="">Физическое лицо</option>
+                    </select>
+                    {!--
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="OwnerSelect">Юридическое лицо</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="UlOwnerSelect" role="menu">
+                      <li><a href="#">Юридическое лицо</a></li>
+                      <li><a href="#">Физическое лицо</a></li>
+                    </ul>
+                  <input type="hidden" name="company_owner" id="company_owner" value="Юридическое лицо">
+                    --}
+                  </div>
+                </div>
+                <div class="col-xs-1 text-center">
+                  <h4>/</h4>
+                </div>
+                <div class="col-xs-3">
+                  <div class="btn-group btn-block selectlistgroup">
+                    <select id="Select-company_form" name="company_form" data-width="100%" class="selectpicker">
+                      <option value="ООО">ООО</option>
+                      <option value="ЗАО">ЗАО</option>
+                      <option value="ИП">ИП</option>
+                      <option value="ОАО">ОАО</option>
+                    </select>
+                    {!--
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="FormSelect"> ООО</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="UlFormSelect" role="menu">
+                      <li><a href="#">ООО</a></li>
+                      <li><a href="#">ЗАО</a></li>
+                      <li><a href="#">ИП</a></li>
+                      <li><a href="#">ОАО</a></li>
+                    </ul>
+                  <input type="hidden" name="company_form" value="ООО">
+                    --}
+                  </div>
+                </div>
+              </div>
+              <div class="row signature">
+                <div class="col-xs-8 col-xs-offset-4">
+                  Укажите вид собственника и форму организации юр. лица
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Логотип:</label>
+                </div>
+                <div class="col-xs-8">
+                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                  <span class="btn btn-success fileinput-button">
+                      <i class="glyphicon glyphicon-plus"></i>
+                      <span>Выберите логотип...</span>
+                      <!-- The file input field used as target for the file upload widget -->
+                       <input id="fileupload" type="file" name="files[]">
+                  </span>
+                  <br>
+                  <br>
+                  <!-- The global progress bar -->
+                  <div id="progress" class="progress progress-striped">
+                      <div class="progress-bar progress-bar-success"></div>
+                  </div>
+                  <!-- The container for the uploaded files -->
+                  <div id="files" class="files">
+
+                    <img src="/img2014/nologo.jpg" alt="">
+
+                  <input id="company_logo" type="hidden" value="{company_logo}" name="company_logo">
+                  </div>
+
+                </div>
+              </div>
+              <div class="row signature">
+                <div class="col-xs-8 col-xs-offset-4">
+                  Изображение в формате jpg; png; gif на белом или прозрачном фоне
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                   <label class="inputlabel">Работаете: </label>
+                </div>
+                <div class="col-xs-8">
+                  {!--
+                  <ul class="radiogroup region" id="regionradio">
+                    <li id="RegionsOff">В домашнем регионе</li>
+                    <li id="RegionsOn"  class="checked">Выбрать регионы</li>
+                  </ul>
+                  <input type="hidden" name="regions_company" value="Домашний регион">
+                  --}
+
+                  <input type="hidden" name="regions_company" value="">
+                </div>
+              </div>
+              <div class="row regions collapse in">
+                <div class="col-xs-4 selected-regions">
+                </div>
+                {list_regions}
+
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Дополнительно: </label>
+                </div>
+                <div class="col-xs-8">
+                    <textarea name="company_about" id="" cols="60" rows="6"></textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Добавить компанию</button>
+                </div>
+              </div>
+
+          {/exp:channel:form}
+           <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#publishForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Наименование компании обязательное поле'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Наименование компании должено содержать больше 5 символов'
+                            }
+                        }
+                    },
+                    company_email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email обязателен'
+                            },
+                            emailAddress: {
+                                message: 'Не верный формат Email'
+                            }
+                        }
+                    },
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+
+          {if:else}
+          <div class="alert alert-danger">Вы достигли лимита количества компаний</div>
+          {/if}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div>
+    </div>
+    {embed="embed/.footer"}
+
+    <!--JS For File Upload-->
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src='/jqfu/js/vendor/jquery.ui.widget.js'></script>
+    <script src="/jqfu/js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="/jqfu/js/jquery.fileupload.js"></script>
+
+   <script>
+    /*jslint unparam: true */
+    /*global window, $ */
+    $(function () {
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+        var url = '/jqfu/server/php/index.php';
+        $('#progress').hide();
+        $('#fileupload').fileupload({
+            url: url,
+            maxNumberOfFiles: 1,
+            formData: {
+              UserId: '{member_id}', 
+              Mode: 'company', 
+              EntryId: 'logos'
+            },
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('#files > img').attr("src", file.thumbnailUrl);
+                    $('#company_logo').val(file.url);
+                });
+                $('#progress').delay(1000).fadeOut();
+            },
+            progressall: function (e, data) {
+              $('#progress').show();
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+    </script>
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

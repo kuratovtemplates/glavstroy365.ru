@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                 
+    {embed="embed/.meta" title="Новости"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Новости</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Новости</h1>
+          {exp:channel:entries channel="news" limit="10"  disable="categories|category_fields|member_data"}
+          
+          {if super_search_no_results}
+          
+              <div class="alert alert-warning">Нет новостей, соответствующих Вашему запросу</div>
+          
+          {/if}
+          <div class="row articles-row">
+              {if static_mainimg !=""}
+            <div class="col-xs-5">
+              <a href="{title_permalink='news'}">
+              {static_mainimg}
+              {exp:ce_img:pair src="{url}" width="260" height="155" crop="yes"}
+                    <img src="{made}" alt="">
+                  {/exp:ce_img:pair}
+              {/static_mainimg}
+              </a>
+
+            </div>
+              {if:else}
+              {/if}
+            <div class="col-xs-12">
+              <h4><a href="{title_permalink='news'}">{title}</a></h4>
+              <small>{entry_date format="%d.%m.%Y"}</small>
+              <p>
+                {exp:eehive_hacksaw chars="250"}{static_text}{/exp:eehive_hacksaw}
+              </p>
+            </div>    
+          </div>
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+           {/exp:channel:entries}
+          
+          
+
+
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>

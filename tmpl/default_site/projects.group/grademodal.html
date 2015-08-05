@@ -1,0 +1,149 @@
+                    {exp:channel:entries channel="grade" entry_id="{segment_3}" limit="1" dynamic="no"}
+                    <div class="modal-header">
+      							  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      							  <h4 class="modal-title" id="myModalLabel">Комплектация: {title}</h4>
+      							</div>
+      							<div class="modal-body">
+                      <table>
+                        <colgroup>
+                           <col span="1" style="width: 30%;">
+                           <col span="1" style="width: 70%;">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>Параметр</th>
+                            <th>Значение</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+	                    {if grade_foundation !="Отсутствует"}<tr><td>Фундамент</td><td> {grade_foundation}</td></tr>{/if}
+                      
+                      {if grade_base_obviazka !="Отсутствует" 
+                      OR grade_base_balki !="Отсутствует" 
+                      OR grade_base_lagi !="Отсутствует"
+                      }
+                      <thead><tr><th colspan="2">Основание дома</th></tr></thead>
+                      {/if}
+                      {if grade_base_obviazka !="Отсутствует"}<tr><td>Обвязка</td><td>{grade_base_obviazka}</td></tr>{/if}
+                      {if grade_base_balki !="Отсутствует"}<tr><td>Несущие балки под лаги</td><td>{grade_base_balki}</td></tr>{/if}
+                      {if grade_base_lagi !="Отсутствует"}<tr><td>Лаги</td><td>{grade_base_lagi}</td></tr>{/if}
+                      
+                      {if grade_blockhouse_walls !="Отсутствует" 
+                      OR grade_blockhouse_peregorodki !="Отсутствует" 
+                      OR grade_blockhouse_prokladka !="Отсутствует"
+                      }
+                      <thead><tr><th colspan="2">Сруб дома и перегородки внутри</th></tr></thead>
+                      {/if}
+                      {if grade_blockhouse_walls !="Отсутствует"}<tr><td>Сруб дома (стены)</td><td>{grade_blockhouse_walls}</td></tr>{/if}
+                      {if grade_blockhouse_peregorodki !="Отсутствует"}<tr><td>Перегородки 1 этажа</td><td>{grade_blockhouse_peregorodki}</td></tr>{/if}
+                      {if grade_blockhouse_prokladka !="Отсутствует"}<tr><td>Прокладка джута между венцами в срубе</td><td>{grade_blockhouse_prokladka}</td></tr>{/if}
+                      
+                      
+                      {if grade_angle !="Отсутствует"}<tr><td>Угловые соединения бруса</td><td>{grade_angle}</td></tr>{/if}
+                      
+                      {if grade_floors_1floor_chernovoj !="Отсутствует" 
+                      OR grade_floors_1floor_uteplenie !="Отсутствует" 
+                      OR grade_floors_1floor_paroizoliaci !="Отсутствует" 
+                      OR grade_floors_1floor_chistovoj !="Отсутствует"
+                      }
+                      <thead><tr><th colspan="2">Полы</th></tr></thead>
+                      {/if}
+                      {if grade_floors_1floor_chernovoj !="Отсутствует"}<tr><td>Черновой пол 1-го этажа</td><td>{grade_floors_1floor_chernovoj}</td></tr>{/if}
+                      {if grade_floors_1floor_uteplenie !="Отсутствует"}<tr><td>Утепление пола 1-го этажа</td><td>{grade_floors_1floor_uteplenie}</td></tr>{/if}
+                      {if grade_floors_1floor_paroizoliaci !="Отсутствует"}<tr><td>Паро- гидроизоляция 1-го этажа</td><td>{grade_floors_1floor_paroizoliaci}</td></tr>{/if}
+                      {if grade_floors_1floor_chistovoj !="Отсутствует"}<tr><td>Чистовой пол 1-го этажа</td><td>{grade_floors_1floor_chistovoj}</td></tr>{/if}
+                      
+                      
+                      {if grade_potolok_2floor !="Отсутствует"}<tr><td>Потолок первого этажа</td><td>{grade_potolok_2floor}</td></tr>{/if}
+                      
+                      
+                      {if grade_floorslabs !="Отсутствует"}<tr><td>Межэтажные перекрытия</td><td>{grade_floorslabs}</td></tr>{/if}
+                      
+                      {if grade_mansard_walls !="Отсутствует" 
+                      OR grade_mansard_peregorodki !="Отсутствует" 
+                      OR grade_mansard_uteplenie !="Отсутствует"
+                      OR grade_mansard_otdelka !="Отсутствует"
+                      OR grade_floors_2floor !="Отсутствует"
+                      OR grade_floors_2floorutiplenie !="Отсутствует"
+                      OR grade_floors_paroizoliacija !="Отсутствует"
+                      OR grade_staircase !="Отсутствует"
+                      }
+                      <thead><tr><th colspan="2">Мансарда (2 этаж)</th></tr></thead>
+                      {/if}
+                      {if grade_mansard_walls !="Отсутствует"}<tr><td>Стены мансарды</td><td>{grade_mansard_walls}</td></tr>{/if}
+                      {if grade_mansard_peregorodki !="Отсутствует"}<tr><td>Перегородки мансарды</td><td>{grade_mansard_peregorodki}</td></tr>{/if}
+                      {if grade_mansard_uteplenie !="Отсутствует"}<tr><td>Утепление мансарды</td><td>{grade_mansard_uteplenie}</td></tr>{/if}
+                      {if grade_mansard_otdelka !="Отсутствует"}<tr><td>Отделка мансарды</td><td>{grade_mansard_otdelka}</td></tr>{/if}
+                      {if grade_floors_2floor !="Отсутствует"}<tr><td>Пол 2-го этажа (мансарды)</td><td>{grade_floors_2floor}</td></tr>{/if}
+                      {if grade_floors_2floorutiplenie !="Отсутствует"}<tr><td>Утепление пола 2-го этажа</td><td>{grade_floors_2floorutiplenie}</td></tr>{/if}
+                      {if grade_floors_paroizoliacija !="Отсутствует"}<tr><td>Паро- гидроизоляция 2-го этажа</td><td>{grade_floors_paroizoliacija}</td></tr>{/if}
+                      {if grade_staircase !="Отсутствует"}<tr><td>Лестница на второй этаж</td><td>{grade_staircase}</td></tr>{/if}
+
+                      {if grade_raftersystem_stropila !="Отсутствует" 
+                      OR grade_raftersystem_balka !="Отсутствует" 
+                      OR grade_raftersystem_obreshetka !="Отсутствует"
+                      }
+                      <thead><tr><th colspan="2">Стропильная система</th></tr></thead>
+                      {/if}
+                      {if grade_raftersystem_stropila !="Отсутствует"}<tr><td>Стропила</td><td>{grade_raftersystem_stropila}</td></tr>{/if}
+                      {if grade_raftersystem_balka !="Отсутствует"}<tr><td>Подстропильная балка</td><td>{grade_raftersystem_balka}</td></tr>{/if}
+                      {if grade_raftersystem_obreshetka !="Отсутствует"}<tr><td>Обрешетка</td><td>{grade_raftersystem_obreshetka}</td></tr>{/if}
+
+                      
+                      {if grade_roof !="Отсутствует"}<tr><td>Кровля</td><td>{grade_roof}</td></tr>{/if}
+
+
+                      {if grade_steam_otdelka !="Отсутствует" 
+                      OR grade_steam_falga !="Отсутствует" 
+                      OR grade_steam_polog !="Отсутствует"
+                      OR grade_steam_pech !="Отсутствует"
+                      }
+                      <thead><tr><th colspan="2">Парная</th></tr></thead>
+                      {/if}
+                      {if grade_steam_otdelka !="Отсутствует"}<tr><td>Отделка парной</td><td>{grade_steam_otdelka}</td></tr>{/if}
+                      {if grade_steam_falga !="Отсутствует"}<tr><td>Отделка теплоизоляционной фольгой</td><td>{grade_steam_falga}</td></tr>{/if}
+                      {if grade_steam_polog !="Отсутствует"}<tr><td>Полог из осины</td><td>{grade_steam_polog}</td></tr>{/if}
+                      {if grade_steam_pech !="Отсутствует"}<tr><td>Печь</td><td>{grade_steam_pech}</td></tr>{/if}
+
+                      {if grade_commonroom_stolik !="Отсутствует" 
+                      OR grade_washroot !="Отсутствует" 
+                      }
+                      <thead><tr><th colspan="2">Комната отдыха и помывочная</th></tr></thead>
+                      {/if}
+                      {if grade_commonroom_stolik !="Отсутствует"}<tr><td>Столик с лавками в ком. отдыха</td><td>{grade_commonroom_stolik}</td></tr>{/if}
+                      {if grade_washroot !="Отсутствует"}<tr><td>Помывочная</td><td>{grade_washroot}</td></tr>{/if}
+
+
+                      {if grade_doors_vhodnaja !="Отсутствует" 
+                      OR grade_doors_mezhkomnatnye !="Отсутствует" 
+                      }
+                      <thead><tr><th colspan="2">Двери</th></tr></thead>
+                      {/if}
+                      {if grade_doors_vhodnaja !="Отсутствует"}<tr><td>Входная дверь</td><td>{grade_doors_vhodnaja}</td></tr>{/if}
+                      {if grade_doors_mezhkomnatnye !="Отсутствует"}<tr><td>Межкомнатные двери</td><td>{grade_doors_mezhkomnatnye}</td></tr>{/if}
+
+                      
+                      {if grade_windows !="Отсутствует"}<tr><td>Окна</td><td>{grade_windows}</td></tr>{/if}
+
+                      
+											{if grade_note !=""}<tr><td>Примечание</td><td>{grade_note}</td></tr>{/if}
+                        </tbody>
+                      </table>
+      							</div>
+      							<div class="modal-footer">
+      							  <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      							</div>
+                    {if no_results}
+                    <div class="modal-header">
+      							  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      							  <h4 class="modal-title" id="myModalLabel">Комплектация</h4>
+      							</div>
+      							<div class="modal-body">
+                         <div class="alert alert-warning">Не найдена комплектация. </div><br>
+                    </div>
+      							<div class="modal-footer">
+      							  <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      							</div>
+                    {/if}
+                    {/exp:channel:entries}
+

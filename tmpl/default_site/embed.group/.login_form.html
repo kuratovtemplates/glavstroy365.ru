@@ -1,0 +1,32 @@
+                      {exp:member:login_form
+                        return="{embed:return}"
+                        form_class="form-registration"
+                        form_id="LoginFormModal"
+                      }
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <div class="form-group">
+                        <label class="sr-only" for="username">Логин</label>
+                        <input type="username" name="username"  class="form-control" id="username" placeholder="Введите логин" >
+                      </div>
+                    </div>
+                    <div class="col-xs-6">
+                      <div class="form-group">
+                        <label class="sr-only" for="password">Пароль</label>
+                        <input type="password" name="password"  class="form-control" id="password" placeholder="Введите пароль">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-8">
+                      {if auto_login}
+                      <div class="checkbox">
+                        <label><input type="checkbox" name="auto_login" value="1"> запомнить меня</label>
+                      </div>
+                      {/if}
+                    </div>
+                    <div class="col-xs-4">
+                      <button type="submit" class="btn btn-danger btn-block"><i class="fa fa-sign-in"></i> Вход</button>
+                    </div>
+                  </div>
+                      {/exp:member:login_form}

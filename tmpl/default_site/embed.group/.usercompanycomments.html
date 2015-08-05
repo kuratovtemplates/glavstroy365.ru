@@ -1,0 +1,44 @@
+ {exp:comment:entries entry_id="{embed:identry}" paginate_base="users/comments/" limit="200"  paginate="bottom"}
+          {if no_results}
+              <div class="alert alert-warning">Нет доступых отзывов. </div>
+          {/if}
+          <div id="comment_{comment_id}" class="comment row firm-row {if rating_status=='moderate'}bg-warning{/if}{if rating_status=='closed'}text-muted{/if} ">
+              <div class="col-xs-8">
+                <span class="titlefirm">
+                   {name}
+                </span>
+                <br>
+                <i class="fa fa-calendar"></i> {comment_date format="%j %F %Y"}
+                <br>
+                <br>
+                <div >
+                  <span class="comment_body">{comment}</span>
+                   {if editable}
+                        <div class="editCommentBox" style="display:none;">
+                                <textarea cols="70" rows="8">{comment_stripped}</textarea><br />
+                                <input type="submit" name="cancel" value="Отменить" class="btn btn-default cancel_edit">
+                                <input type="submit" name="save" value="Сохранить" class="btn btn-success submit_edit">
+                        </div>
+                {/if}
+
+                </div>
+                <p class="text-muted">{if rating_status =='moderate'} <span class="text-danger"><i class="fa fa-exclamation-triangle"></i> требует модерации</span>{/if}{if rating_status =='open'}<i class='fa fa-unlock'></i> открыто{/if}{if rating_status =='closed'}<i class='fa fa-lock'></i>  закрыто{/if}</p>
+              </div>
+              <div class="col-xs-4">
+                <div class="btn-group-vertical btn-group-sm pull-right">
+                  <a data-toggle="modal" href="/embed/complaint-form/{entry_id}/{comment_id}/" data-target="#modalComplaint" class="btn btn-primary"> <i class="fa fa-bullhorn"></i> Пожаловаться</a>
+                  {if editable}
+                  <a type="button" href="#" class="btn btn-primary btn-default edit_link"><i class="fa fa-pencil"></i> редактировать</a>
+                  {/if}
+                  {if can_moderate_comment}
+                  <a type="button" href="#" class="btn btn-danger btn-default mod_link"><i class="fa fa-lock"></i> закрыть</a>
+                  {/if}
+                </div>
+                
+              </div>
+            </div> 
+{paginate}
+  {pagination_links}
+{/paginate}
+
+          {/exp:comment:entries}

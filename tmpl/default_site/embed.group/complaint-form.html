@@ -1,0 +1,110 @@
+                    {exp:channel:entries channel="companies"  entry_id="{segment_3}" dynamic="no" limit="1"}
+                    <div class="modal-header">
+      							  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      							  <h4 class="modal-title" id="myModalLabel">Жалоба на комментарий</h4>
+      							</div>
+                    {exp:freeform:form
+                      admin_notification_template="order_user" 
+                      notify_admin="yes" 
+                      form_id="4" 
+                      form:class="form-registration" 
+                      form:id="idComplaintForm" 
+                      return="/companies/{url_title}"
+                    } 
+                    <div class="modal-body">
+                      
+                     
+                       {if logged_out}
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <label for="email">Ваш Email</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="email" id="email" rel="tooltip" data-title="Введите Ваш Email" >
+                              <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-6">
+                          <label for="fio">Фамилия Имя Отчество</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="user_fio" id="user_fio" rel="tooltip" data-title="Введите Ваше ФИО" >
+                              <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {if:else}
+                              <input type="hidden" class="form-control" name="user_fio" id="user_fio" value=""  >
+                              <input type="hidden" class="form-control" name="first_name" id="first_name" value="{username}"  >
+                              <input type="hidden" class="form-control" name="email" id="email" value="{email}"  >
+                              <input type="hidden" class="form-control" name="comment_url" id="comment_url" value="http://glavstroy365.ru/companies/{url_title}/#comment_{segment_4}"  >
+
+                      {/if}
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <label for="fio">Комментарии к жалобе</label>
+                          <div class="form-group">
+                            <textarea class="form-control" name="user_message" id="user_message" rows="3"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="user_region" id="user_region" value="{exp:ee_geo:city}{region_name}{/exp:ee_geo:city}">
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                      <button type="submit" class="btn btn-danger" >Пожаловаться</button>
+                    </div>
+                    {/exp:freeform:form} 
+
+                    {if no_results}
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Жлоба</h4>
+                    </div>
+                    <div class="modal-body">
+                         <div class="alert alert-warning">Не найдено преложение от компании</div><br>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      							</div>
+                    {/if}
+                    {/exp:channel:entries}
+                    <script type="text/javascript">
+                      $(document).ready(function() {
+                        $('input[rel="tooltip"]').tooltip({
+                          'trigger':'focus', 
+                          'title': $(this).data("title")
+                        });
+                        //Validation
+               $('#idComplaintForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                  fields: {
+                    user_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите телефон'
+                            },
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите email'
+                            },
+                            emailAddress:{
+                              message: 'Не верный формат Email'
+                            }
+                           
+                        }
+                    },
+                    
+                  }
+              });
+              //End Validation
+                        
+                      });
+                    </script>
+

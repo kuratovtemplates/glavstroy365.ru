@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Отправить заявку"}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+<script src="/js2014/googlemaps-api2.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      {!--
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Отправить заявку</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+      --}
+    </div>
+
+     <div class="container-fluid" id="indexForm">
+       <div class="container">
+        <div class="row">
+          <h1 class="ord">получи <span>сегодня</span> предложения от </br> 16 строителей <span>одним</span> запросом</h1>
+          <h4>Проверенные строительные компании с опытом работы от 3-х лет готовы выслать Вам предложение в течении 5 часов</h4>
+
+          <div class="col-xs-12 form-bg-wood">
+            {exp:channel:form 
+            channel="request_users"
+            return="thanks/"
+            datepicker="no" 
+            include_jquery="no"
+            use_live_url="yes"  
+            class="form order"
+            id="requestUserForm"
+            }
+             <input type="hidden" name="title" id="title" value="Request from user {current_time format='%Y-%m-%d-%H-%i-%s'}"  >
+             <input type="hidden" name="requset_users_typebuilding" id="requset_users_typebuilding" value="Дом" >
+             <input type="hidden" name="requset_users_price" id="requset_users_price" value="300000" >
+             <input type="hidden" name="requset_users_material" id="requset_users_material" value="Профилированный брус" >
+             <input type="hidden" name="requset_users_walls" id="requset_users_walls" value="100" >
+             <input type="hidden" name="requset_users_tolshuteplenija" id="requset_users_tolshuteplenija" value="" >
+             <input type="hidden" name="requset_users_floors" id="requset_users_floors" value="1 этаж" >
+
+              <div class="row">
+                <div class="col-xs-5">
+                  <h5><b>Тип строения</b> (Выберите нужное)</h5>
+                  <ul id="ulradioButton" class="ulradioButton">
+                    <li class="radiobutton radio-house activeradio" data-value="Дом"></li>
+                    <li class="radiobutton radio-bania" data-value="Баня"></li>
+                  </ul>
+                  
+                </div>
+                <div class="col-xs-5 col-xs-offset-1">
+                  <h5><b>Бюджет</b></h5>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="biudjhetselect"> до 300 000 рублей</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULbiudjhetselect" role="menu">
+                      <li><a href="#" data-value="300000">до 300 000 рублей</a></li>
+                      <li><a href="#" data-value="500000">до 500 000 рублей</a></li>
+                      <li><a href="#" data-value="700000">до 700 000 рублей</a></li>
+                      <li><a href="#" data-value="1000000">до 1 000 000 рублей</a></li>
+                      <li><a href="#" data-value="1500000">до 1 500 000 рублей</a></li>
+                      <li><a href="#" data-value="2500000">до 2 500 000 рублей</a></li>
+                      <li><a href="#" data-value="5000000">до 5 000 000 рублей</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-5 material-col">
+                  <h5><b>Материал исполнения</b></h5>
+                  <div class="btn-group btn-block selectlistgroup"  style="margin-top: 5px;">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="materialselect"><img src="/img2014/brus1.png" alt="">Профилированный брус</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULmaterialselect" role="menu">
+                      <li><a href="#" data-value="Профилированный брус"><img src="/img2014/brus1.png" alt="">Профилированный брус</a></li>
+                      <li><a href="#" data-value="Клееный брус"><img src="/img2014/brus1.png" alt="">Клееный брус</a></li>
+                      <li><a href="#" data-value="Каркасный вариант"><img src="/img2014/karkas1.png" alt="">Каркасный вариант</a></li>
+                      <li><a href="#" data-value="Бревно"><img src="/img2014/brus1.png" alt="">Бревно</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-xs-offset-1">
+                  <h5><label id="label-toggle-switch" class="label-toggle-switch label-dis">Габариты строения</label> <input type="checkbox" id="switch-change" name="my-checkbox"  data-on-color="default"  data-off-color="default" data-size="mini" checked> <label class="label-toggle-switch" id="label-toggle-switch">Площадь</label></h5>
+                  <div class="gabarity">
+                    <div class="col-xs-6">
+                      <input type="text" id="inputLength" name="requset_users_length" class="form-control smallinput" placeholder="Длина"><label> м</label>
+                    </div>
+                    <div class="col-xs-6">
+                      <input type="text" id="inputWidth" name="requset_users_width" class="form-control smallinput" placeholder="Ширина"><label> м</label>
+                    </div>
+                  </div>
+                  <div class="area disabled">
+                    <input type="text" id="inputSquare" name="requset_users_square" class="form-control smallinput" placeholder="Площадь" disabled><label> м</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-2 {!--coltolsh--}">
+                  <div id="tolshsten">
+                  <h5><b>Толщина стен</b></h5>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="tolshinaselect"><img src="/img2014/brus1.png" alt="">100 мм</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULtolshinaselect" role="menu">
+                      <li><a href="#" data-value="140"><img src="/img2014/brus1.png" alt="">100 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/brus1.png" alt="">150 мм</a></li>
+                      <li><a href="#" data-value="160"><img src="/img2014/brus1.png" alt="">200 мм</a></li>
+                      <li><a href="#" data-value="170"><img src="/img2014/brus1.png" alt="">250 мм</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="tolshuteplenija">
+                  <h5><b>Толщина утепл.</b></h5>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="tolshinaUtselect"><img src="/img2014/karkas1.png" alt="">50 мм</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULtolshinaUtselect" role="menu">
+                      <li><a href="#" data-value="140"><img src="/img2014/karkas1.png" alt="">50 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">100 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">150 мм</a></li>
+                      <li><a href="#" data-value="160"><img src="/img2014/karkas1.png" alt="">200 мм</a></li>
+                      <li><a href="#" data-value="170"><img src="/img2014/karkas1.png" alt="">250 мм</a></li>
+                    </ul>
+                  </div>
+                </div>
+<!--                <div id="diametr">
+                  <p><b>Диаметр бревна.</b></p>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="diametrselect"><img src="/img2014/karkas1.png" alt="">50 мм</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULdiametrselect" role="menu">
+                      <li><a href="#" data-value="140"><img src="/img2014/karkas1.png" alt="">50 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">100 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">150 мм</a></li>
+                      <li><a href="#" data-value="160"><img src="/img2014/karkas1.png" alt="">200 мм</a></li>
+                      <li><a href="#" data-value="170"><img src="/img2014/karkas1.png" alt="">250 мм</a></li>
+                    </ul>
+                  </div>
+                </div>-->
+                </div>
+                <div class="col-xs-3 {!--etazhn--}">
+                  <h5><b>Этажность</b></h5>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="etazhnostselect">1 этаж</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULetazhnostselect" role="menu">
+                      <li><a href="#" data-value="1 этаж">1 этаж</a></li>
+                      <li><a href="#" data-value="1 этаж + мансарда">1 этаж + мансарда</a></li>
+                      <li><a href="#" data-value="2 этажа">2 этажа</a></li>
+                      <li><a href="#" data-value="3 этажа">3 этажа</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-xs-offset-1">
+                  <h5><b>Дополнительные пожелания</b></h5>
+                    <ul class="checkboxgroup" id="predlozheniacheckbox">
+                      <li data-value="Терасса">
+                        Терраса
+                        <input type="hidden" name="requset_users_terrace" id="requset_users_terrace" value="" >
+                      </li>
+                      <li data-value="Гараж">
+                        Гараж
+                        <input type="hidden" name="requset_users_garage" id="requset_users_garage" value="" >
+                      </li>
+                      <li data-value="Второй свет">
+                        Второй свет
+                        <input type="hidden" name="requset_users_secondlight" id="requset_users_secondlight" value="" >
+                      </li>
+                      <li data-value="Санузел">
+                        Санузел
+                        <input type="hidden" name="requset_users_wc" id="requset_users_wc" value="" >
+                      </li>
+                      <li data-value="Навес">
+                        Навес
+                        <input type="hidden" name="requset_users_lean" id="requset_users_lean" value="" >
+                      </li>
+                      <li data-value="Балкон">
+                        Балкон
+                        <input type="hidden" name="requset_users_balcony" id="requset_users_balcony" value="" >
+                      </li>
+                    </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-7">
+                  <label><h5><b>Прикрепить эскиз\планировку проекта</b></h5></label>
+                  <div class="form-group">
+                  {!--
+                  {field:requset_users_file}
+                  --}
+                  <input type="file" class="form-control" name="requset_users_file" >
+                  
+                  <input type="hidden" name="requset_users_file_directory" value="8" />
+                  <input type="hidden" name="requset_users_file_hidden_file" value="{requset_users_file}{file_name}{/requset_users_file}" />
+                  </div>
+                </div>
+                <div class="col-xs-5">
+                  <small>* Эскиз будет выслан строителям, возможно они уже строили или могут построить ваш проект</small>
+                </div>
+              </div>
+              <div class="row text-center">
+                <h5><b>Контактные данные</b></h5>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label><h5><b>Ваше ФИО</b></h5></label>
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="requset_users_fio" placeholder="Введите ваши ФИО">
+                  </div>
+                </div>
+                <div class="col-xs-4">
+                  <label><h5><b>Телефон</b></h5></label>
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="requset_users_phone" placeholder="Ваш телефон">
+                </div>
+                </div>
+                <div class="col-xs-4">
+                  <label><h5><b>Email</b></h5></label>
+                  <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Ваш Email" name="requset_users_mail" >
+                  </div>
+                </div>
+              </div>
+              <div class="row submit-button">
+                <div class="col-xs-6 col-xs-offset-3 ">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Отправить заявку</button>
+                </div>
+              </div>
+              {exp:ee_geo:city}<input type="hidden" name="requset_users_region" id="requset_users_region" value="{if region_name!=''}{city}{/if}" >{/exp:ee_geo:city}
+
+           {/exp:channel:form}
+
+            <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#requestUserForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    requset_users_fio: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Обязательное поле'
+                            }
+                        }
+                    },
+                    requset_users_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Обязательное поле'
+                            }
+                        }
+                    },
+                    requset_users_mail: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email обязателен'
+                            },
+                            emailAddress: {
+                                message: 'Не верный формат Email'
+                            }
+                        }
+                    },                   
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+
+          </div>
+          {!--
+          <div class="col-xs-12 banners" style="margin-top: 15px;">
+            <p>{exp:low_variables:pair  var="banner_240_265" limit="4" multiple="yes"}
+              <a href="{cell_3}" target="_blank">
+              {exp:ce_img:pair src='{cell_2}'  width='240' height='265' allow_scale_larger="yes" crop='yes' }
+              <img src="{made}" alt="">
+              {/exp:ce_img:pair}
+              </a>
+            {/exp:low_variables:pair}</p>
+          </div>
+          --}
+        </div>
+       </div>
+    </div>
+    {embed="embed/.footer" show="no"}
+  </body>
+</html>

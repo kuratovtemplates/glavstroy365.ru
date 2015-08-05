@@ -1,0 +1,181 @@
+<div class="row">
+        <div class="col-xs-4 col-xs-offset-4"> 
+{exp:member:custom_profile_data} 
+{exp:query sql="SELECT COUNT(exp_channel_data.entry_id) AS countrequests, exp_members.group_id  AS idgroupmember FROM exp_channel_data INNER JOIN exp_channel_titles ON exp_channel_data.entry_id = exp_channel_titles.entry_id INNER JOIN exp_members ON exp_channel_titles.author_id = exp_members.member_id WHERE exp_channel_data.field_id_47 = {embed:idproject} AND exp_channel_titles.author_id = {member_id} AND exp_channel_titles.status = 'Open' LIMIT 1"}
+{if idgroupmember == "5"}
+<?
+  $count = 3-{countrequests};
+  if ({countrequests} < 3) {
+    echo "<a type='button' class='btn btn-block btn-success' data-toggle='modal' data-target='#myModal'><i class='fa fa-plus'></i> Добавить предложение (осталось ".$count.")</a>";
+  } else {
+   echo "<a type='button' class='btn btn-block btn-success' data-toggle='modal' data-target='#myModal' disabled='disabled'><i class='fa fa-plus'></i> Добавить предложение (осталось ".$count.")</a>"; 
+  }
+?>
+{/if}
+ {if idgroupmember == "6" OR idgroupmember == "1"}
+<?
+  $count = 3-{countrequests};
+  if ({countrequests} < 3) {
+    echo "<a type='button' class='btn btn-block btn-success' data-toggle='modal' data-target='#myModal'><i class='fa fa-plus'></i> Добавить предложение (осталось ".$count.")</a>";
+  } else {
+   echo "<a type='button' class='btn btn-block btn-success' data-toggle='modal' data-target='#myModal' disabled='disabled'><i class='fa fa-plus'></i> Добавить предложение (осталось ".$count.")</a>"; 
+  }
+?>
+ {/if}
+{/exp:query}
+{/exp:member:custom_profile_data}
+ </div> 
+      </div> 
+
+<?
+  if ($count > 0){
+
+
+?>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Предложение для проекта</h4>
+              <p><em>Обратите внимание, ваше предложение должно учитывать все перегородки, двери, окна и прочие элементы, отраженные на планировке данного проекта!</em></p>
+            </div>
+             {if {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"}<"1"}
+              <div class="modal-body">
+          <div class="alert alert-warning">У вас пока нет компании. Добавление комплектаций не возможно без создания компании. </div>
+              <a class="btn btn-danger btn-default" href="/users/add_company/"> <i class="fa fa-plus"></i> Добавить компанию</a>
+            </div>
+          {if:else}
+          {if {exp:number_member_entries:count status="open" member_id={member_id} channels="grade"}<"1"}
+          <div class="modal-body">
+           <div class="alert alert-warning">У вас пока нет комплектаций. </div>
+              <a class="btn btn-danger btn-default" href="/users/add_grade/"> <i class="fa fa-plus"></i> Добавить комплектацию</a>
+            </div>
+          {if:else}
+              {exp:channel:form 
+                channel="request" 
+                datepicker="no" 
+                return="projects/{segment_3}" 
+                include_jquery="no"  
+                class="form-registration"
+              }
+            <div class="modal-body">
+              <input name="request_project" type="hidden" id="request_project" value="{embed:idproject}" >
+              {embed="embed/.grade-select" selectedgrade=""}
+              <div class="row">
+                <div class="col-xs-6">
+                  <input type="hidden" class="form-control" name="title" id="title" value="Предложение для проекта {embed:nameproject}"  onload="liveUrlTitle();" >
+                  <input name="url_title" type="hidden" id="url_title" value="request_idproject_{embed:idproject}_user_{member_id}" >
+                  <label for="request_price">Цена</label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" class="form-control" name="request_price" id="request_price" value="{request_price}"  rel="tooltip" data-title="Введите цену за проект в руб." >
+                      <div class="input-group-addon">руб.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <label for="request_time">Время исполнения в днях</label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" class="form-control" name="request_time" id="request_time"  value="{request_time}"  rel="tooltip" data-title="Количество дней">
+                      <div class="input-group-addon">дней</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-xs-12">
+                  <label for="request_credit">
+                    <input type="checkbox"  name="credit" id="credit" {if request_credit =="y"}checked="checked"{/if}>
+                    <input type="hidden" value="{request_credit}"  name="request_credit" id="request_credit" >
+                     <i class='fa fa-pie-chart'></i> Возможно построить в кредит 
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <label for="request_insurance">
+                    <input type="checkbox"  name="insurance" {if request_insurance=="y"}checked="checked"{/if}>
+                    <input type="hidden" value="{request_insurance}" name="request_insurance" id="request_insurance">
+                    <i class="fa fa-shield"></i> Включить страховку от пожара
+                  </label>
+                </div>
+              </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-success">Добавить предложение</button>
+            </div>
+              {/exp:channel:form}
+
+              <script type="text/javascript">
+          $(document).ready(function() {
+
+              $("[name='credit']").bootstrapSwitch({
+                size: "small",
+                onText: "да",
+                offText: "нет",
+                state: true
+              });
+                
+
+              $("[name='insurance']").bootstrapSwitch({
+                size: "small",
+                onText: "да",
+                offText: "нет",
+                state: true       
+              });
+              
+
+              $("[name='credit']").on('switchChange.bootstrapSwitch', function (event, state) {
+                (state.value) ? $("[name='request_credit']").val("y") : $("[name='request_credit']").val("n");
+              });
+
+              $("[name='insurance']").on('switchChange.bootstrapSwitch', function (event, state) {
+                (state.value) ? $("[name='request_insurance']").val("y") : $("[name='request_insurance']").val("n");
+              });
+
+
+              //Validation
+               $('#publishForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                  fields: {
+                    request_price: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите цену'
+                            },
+                            digits:{
+                              message: 'Используйте только цирфы'
+                            }
+                           
+                        }
+                    },
+                    request_time: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите кол-во дней'
+                            },
+                            digits:{
+                              message: 'Используйте только цирфы'
+                            }
+                        }
+                    }
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+           {/if}
+          {/if}
+          </div>
+        </div>
+      </div>
+      <?
+    }
+      ?>

@@ -1,0 +1,15 @@
+{exp:query sql="SELECT
+  exp_channel_titles.entry_id as idprojectentries
+FROM exp_channel_data
+  INNER JOIN exp_channel_titles
+    ON exp_channel_data.entry_id = exp_channel_titles.entry_id
+WHERE exp_channel_titles.channel_id = 2
+AND exp_channel_titles.status = 'open'
+AND exp_channel_titles.entry_id NOT IN (SELECT
+    exp_channel_data.field_id_47
+  FROM exp_channel_titles
+    INNER JOIN exp_channel_data
+      ON exp_channel_titles.entry_id = exp_channel_data.entry_id
+  WHERE exp_channel_titles.author_id = '{embed:idmember}'
+  AND exp_channel_titles.channel_id = 4
+  AND exp_channel_titles.status = 'open')"}{idprojectentries}{/exp:query}

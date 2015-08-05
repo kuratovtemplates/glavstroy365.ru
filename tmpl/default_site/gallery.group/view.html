@@ -1,0 +1,330 @@
+{exp:channel:entries channel="gallery" require_entry="yes" limit="1" disable="member_data|trackbacks|pagination" track_views="one"}
+{if no_results}
+  {redirect="404"}
+{/if}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+  {embed="embed/.meta" title_suffix="Фотогалерея" entry_id="{entry_id}"}
+    
+    <script type="text/javascript" src="/js2014/request_user.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          {embed="embed/.breadcrumb_gall" idmember="{author_id}"}
+          <li class="active">{title}</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>{title}</h1>
+          {if gallery_project !=""}
+          {embed='embed/.parent-project' idproject="{gallery_project}" idgall="{entry_id}"}
+          {/if}
+          {edit_gallery}
+          <p>{gallery_about}</p>
+           <br>
+          {gallery_photos_grid}
+
+            {if gallery_photos_grid:field_row_count % 4 == 1}<div class="row gallery">{/if}
+
+              <div class="col-xs-3">
+                <a href="{gallery_photos_grid:gallery_photos_url}" class="thumbnail fancybox-thumb" rel="fancybox-thumb">
+                  {exp:ce_img:pair src='{gallery_photos_grid:gallery_photos_url}' width="170" height="170" allow_scale_larger="yes" crop='yes'}
+                  <img src="{made}" alt="{title}">
+                  {/exp:ce_img:pair}
+                </a>
+              </div>
+
+           {if gallery_photos_grid:field_row_count % 4 == 0 OR gallery_photos_grid:field_row_count == gallery_photos_grid:field_total_rows}</div>{/if}
+          {/gallery_photos_grid}
+            <script type="text/javascript">
+              $(document).ready(function() {
+                $(".fancybox-thumb").fancybox({
+                  prevEffect  : 'none',
+                  nextEffect  : 'none',
+                  helpers : {
+                    title : {
+                      type: 'outside'
+                    },
+                    thumbs  : {
+                      width : 50,
+                      height  : 50
+                    }
+                  }
+                });
+              });
+            </script>
+            <div class="row">
+              <div class="col-xs-12">
+                {if gallery_lat !=""}
+                <h3>Расположение</h3>
+                  <script type="text/javascript">
+                  
+                  function initialize() {
+                    var gal_lat = "{gallery_lat}";
+                    var gal_lng = "{gallery_lng}";
+
+                    gal_lat = (gal_lat == "") ? 58.528708 : gal_lat;
+                    gal_lng = (gal_lng == "") ? 31.272159 : gal_lng;
+                    
+                    var mapOptions = {
+                      center: new google.maps.LatLng(gal_lat,gal_lng),
+                      zoom: 8
+                    };
+                    var map = new google.maps.Map(document.getElementById('map-canvas'),
+                      mapOptions);
+               
+
+                  
+                    var myLatlng = new google.maps.LatLng(gal_lat,gal_lng);
+                    var infowindow = new google.maps.InfoWindow();
+                    var marker = new google.maps.Marker({
+                      map: map,
+                      draggable: false,
+                      anchorPoint: new google.maps.Point(0, -29),
+                      position: myLatlng,
+                    });
+
+                    marker.setVisible(true)
+                      if (gal_lat == 58.528708) marker.setVisible(false);
+
+                  }
+                  
+                
+                  google.maps.event.addDomListener(window, 'load', initialize);
+
+                  </script>
+                   
+                     
+                     
+                      <div id="map-canvas" class="googlemap_add"></div>
+                       <input  type="hidden" id="gallery_lat" name="gallery_lat" value="{gallery_lat}">
+                       <input  type="hidden" id="gallery_lng" name="gallery_lng" value="{gallery_lng}">
+                  {/if}
+                    
+                </div>
+            </div> 
+        </div> 
+        <div class="col-xs-3 left-col">
+          {embed="embed/.company-right" idmember="{author_id}"}
+          {!-- banners_row --}
+        </div>
+      </div>
+
+
+   
+    </div> 
+      <br>
+    <div class="container-fluid otzyvy-proj-container" id="IdOtzyvy">
+      <hr class="shadow">
+      <div class="container">
+        <h1>Комментарии</h1>
+
+{exp:threaded_comments:display  entry_id="{entry_id}" limit="10" orderby="date" sort="desc" paginate="bottom"}
+<ul class="panelul panel-default">
+{comments}
+
+<li id="comment_{comment_id}"> 
+  <div class="panel-heading"> 
+    <i class="fa fa-user"></i> {name} : {if comment_rating =="-"} <span class="label label-danger"><i class="fa fa-thumbs-o-down"></i> отрицательный отзыв</span>{/if}{if comment_rating =="0"} <span class="label label-info"><i class="fa fa-exchange"></i> нейтральный отзыв</span>{/if}{if comment_rating =="+"} <span class="label label-success"><i class="fa fa-thumbs-o-up"></i> положительный отзыв</span>{/if}
+    <span class="label label-default pull-right">
+      <i class="fa fa-calendar"></i> 
+      {comment_date format="%j %F %Y"}
+    </span>
+  </div>
+  <div class="panel-body">
+  <div class="comment-text comment_body">{comment}</div>
+  <p class="text-right">
+    {!--
+    <a data-toggle="modal" href="/embed/complaint-form/{entry_id}/{comment_id}/" data-target="#modalComplaint" class="btn btn-warning" rel="tooltip" title="Пожаловаться"> <i class="fa fa-bullhorn"></i></a>
+   <a href="javascript:void(0)" class="btn btn-success reply" rel="{comment_id}" ><i class="fa fa-comment-o"></i> Ответить</a> <a href="javascript:void(0)" class="btn btn-success quote reply" rel="{comment_id}"><i class="fa fa-quote-left"></i> Ответить с цитированием</a></p>
+   --}
+
+   <i class="fa fa-bullhorn"></i> <a data-toggle="modal" href="/embed/complaint-form/{entry_id}/{comment_id}/" data-target="#modalComplaint">Пожаловаться</a>
+   | <i class="fa fa-comment-o"></i> <a href="javascript:void(0)" class="reply" rel="{comment_id}" >Ответить</a> | <i class="fa fa-quote-left"></i> <a href="javascript:void(0)" class="quote reply" rel="{comment_id}"> Ответить с цитированием</a></p>
+
+  </div>
+{thread_open}<ul class="cmt_lvl_{level}">{/thread_open}
+{thread_close}</li></ul>{/thread_close}
+{thread_container_close}</li>{/thread_container_close}
+{/comments}
+</ul>
+<br>
+<div class="pagination-links">
+{pagination_links}
+</div>
+{/exp:threaded_comments:display}
+
+<p class="text-center"><a href="javascript:void(0)" class="btn btn-success reply" rel="0"><i class="fa fa-comment-o"></i> Оставить комментарий</a></p> 
+
+
+        <div class="panel panel-default hidden" id="formReviewholder">
+          <div class="panel-body">
+
+     
+
+
+   
+{exp:threaded_comments:form 
+  entry_id="{entry_id}" 
+  parent_id="{segment_3}"
+  form_class="form-registration"
+  form_id="form-comment"
+}
+{if error}
+<div class="alert alert-success" role="alert">{error_text}</div>
+{if:else}
+{if logged_out}
+        <div class="row">
+          <div class="col-xs-6">
+            <label for="comment-author">Ваше имя</label>
+            <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" name="name" id="comment-author" rel="tooltip" data-title="Введите ваше имя">
+                  <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                </div>
+            </div>
+          </div>
+            <div class="col-xs-6">
+              <label for="comment-email">Ваш Email</label>
+              <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="email" id="comment-email" rel="tooltip" data-title="Введите Ваш Email" >
+                    <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                </div>
+              </div>
+          </div>
+        </div>
+{/if}
+
+
+    <div class="row">
+        <div class="col-xs-12">
+          <label for="comment-comment">Ваш комментарий</label>
+          <div class="form-group">
+            <textarea class="form-control" name="comment" id="comment-comment" rows="3"></textarea>
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+      {if logged_out}
+      <div class="col-xs-3">
+        <label for="save_info"><input type="checkbox" id="save_info" name="save_info" value="yes" {save_info} /> Запомнить меня</label>
+      </div>
+      {/if}
+      <div class="col-xs-4">
+        <label for="notify_me"><input type="checkbox" id="notify_me" name="notify_me" value="yes" {notify_me} /> Сообщать мне об ответах</label>
+      </div>
+    </div>
+
+{if captcha}{captcha}{/if}
+
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="submit" type="submit"  class="btn btn-success pull-right" ><i class="fa fa-comments-o"></i> Оставить отзыв</button>
+      </div>
+    </div>
+
+{/if}
+{/exp:threaded_comments:form} 
+  </div>
+</div>
+{!-- this code will set proper parent_id and move the form --}
+<style type="text/css">
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.selectpicker').selectpicker('val', '0');
+  $('.reply').click(function() {
+    $('#form-comment textarea[name=comment]').val("");
+    $('#form-comment input[name=parent_id]').val($(this).attr('rel'));
+    $('#formReviewholder').insertAfter( // Insert the comment form after...
+    $(this)
+    .parent() // The containing p tag
+    );
+    $('#formReviewholder').removeClass('hidden');
+  });
+  $('.quote').click(function() {
+    console.log( $(this).parent().parent().find('.comment-text'));
+    $('#form-comment textarea[name=comment]').val('[quote]'+
+    $(this).parent().parent().find('.comment-text').text()+
+    '[/quote]\n'
+    );
+  });
+});
+</script> 
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    $('input[rel="tooltip"]').tooltip({
+        'trigger':'focus', 
+        'title': $(this).data("title")
+    });
+    
+   
+                //Validation
+               $('#form-comment').bootstrapValidator({
+                    message: 'Данные не верны',
+                    excluded: ':disabled',
+                  fields: {
+                    comment: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Введите Ваш отзыв'
+                            }                           
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите Ваше имя'
+                            }                           
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите email'
+                            },
+                            emailAddress:{
+                              message: 'Не верный формат Email'
+                            }
+                           
+                        }
+                    },
+                  }
+              });
+              //End Validation
+    
+});
+</script>
+      
+      </div>
+    </div> 
+    {embed="embed/.footer"}
+    <!-- Modal Order -->
+    <div class="modal fade" id="modalOrderCompany" tabindex="-1" role="dialog" aria-labelledby="modalOrderCompany" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{/exp:channel:entries}

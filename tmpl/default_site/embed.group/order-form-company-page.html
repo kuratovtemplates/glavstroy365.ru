@@ -1,0 +1,108 @@
+                    <div class="modal-header">
+                     {exp:query sql="SELECT `title` as company_title, `url_title` as company_url_title FROM `exp_channel_titles` WHERE author_id = '{segment_3}' AND channel_id = '1'"}
+      							  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      							  <h4 class="modal-title" id="myModalLabel">Связаться с компанией <a target="_blank" href="{path='companies/'}/{company_url_title}">{company_title}</a></h4>
+      							</div>
+                      
+                    {exp:freeform:form
+                      admin_notification_template="order_user" 
+                      notify_admin="yes" 
+                      form_id="3"
+                      form:class="form-registration" 
+                      form:id="idOrderForm" 
+                      required="email"
+                      return="companies/thanks/company/"
+                    }
+                    <div class="modal-body">
+
+                            <input type="hidden" name="name_company_order" id="name_company_order" value="{company_title}" >    
+                            <input type="hidden" name="url_company_order" id="url_company_order" value="{company_url_title}" >
+                            <input type="hidden" name="company_email" id="company_email" value="{embed='embed/.email_author/' authorid='{segment_3}'}" >
+                          
+                          {if no_results}Нет информации о строителе{/if}
+                    {/exp:query}
+
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <label for="fio">Фамилия Имя Отчество</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="user_fio" id="user_fio" rel="tooltip" data-title="Введите Ваше ФИО" >
+                              <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <label for="email">Ваш Email</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="email" id="email" rel="tooltip" data-title="Введите Ваш Email" >
+                              <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-6">
+                          <label for="user_phone">Ваш телефон</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="user_phone" id="user_phone" rel="tooltip" data-title="Введите ваш телефон">
+                              <div class="input-group-addon"><i class="fa fa-phone"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <label for="fio">Сообщение</label>
+                          <div class="form-group">
+                            <textarea class="form-control" name="user_message" id="user_message" rows="3"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="user_region" id="user_region" value="{exp:ee_geo:city}{region_name}{/exp:ee_geo:city}">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-danger" >Отправить сообщение</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    </div>
+                    {/exp:freeform:form} 
+
+
+                    <script type="text/javascript">
+                      $(document).ready(function() {
+                        $('input[rel="tooltip"]').tooltip({
+                          'trigger':'focus', 
+                          'title': $(this).data("title")
+                        });
+                        //Validation
+               $('#idOrderForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                  fields: {
+                    user_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите телефон'
+                            },
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите email'
+                            },
+                            emailAddress:{
+                              message: 'Не верный формат Email'
+                            }
+                           
+                        }
+                    },
+                    
+                  }
+              });
+              //End Validation
+                        
+                      });
+                    </script>
+

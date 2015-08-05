@@ -1,0 +1,9 @@
+                    {exp:channel:entries channel="grade" entry_id="{embed:idgrade}" limit="1" dynamic="no"}
+                    {if no_results}
+                         <div class="alert alert-warning">Не найдена комплектация. </div><br>
+                    {/if}
+                    <b>Комплектация: {title}</b><br>
+
+                    <b>Фундамент:</b><br>
+                    {grade_foundation}<br>
+                    {/exp:channel:entries}

@@ -1,0 +1,230 @@
+{siteheart}
+    <div class="container-fluid top-menu collapse" id="loginTop">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-9">
+             {exp:member:login_form 
+            form_class="form-registration form-inline"
+            form_id="topLoginForm"
+            return="users/"
+
+          }
+            <label class="sr-only" for="username">Логин</label>
+          <div class="form-group">
+            <input type="username" name="username"  class="form-control" id="username" placeholder="Введите логин" >
+          </div>
+            <label class="sr-only" for="password">Пароль</label>
+          <div class="form-group">
+            <input type="password" name="password"  class="form-control" id="password" placeholder="Введите пароль">
+          </div>
+          {if auto_login}
+          <div class="checkbox">
+            <label><input type="checkbox" name="auto_login" value="1"> запомнить меня</label>
+          </div>
+          {/if}
+          <button type="submit" class="btn btn-default"><i class="fa fa-sign-in"></i> Вход</button>
+          {/exp:member:login_form}
+          <a href="{path='users/forgot_password/'}">Забыли пароль?</a> | <a href="{path='users/join'}">Регистрация</a>
+          <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#topLoginForm, #LoginForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    username: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Логин обязателен'
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            }
+                        }
+                    }
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+          </div>
+          <div class="col-xs-3 sociallink-col">
+            {!--
+          {if logged_in}
+{screen_name}--{username}--<a href="{path=LOGOUT}">Log out</a>
+{/if}
+{exp:social_login_pro:form return="http://glavstroy365.ru/" id="another_social_login_form"}
+{providers}
+<input name="provider" type="radio" value="{provider_name}" id="{provider_name}_button">
+<label for="{provider_name}_button"><img src="{provider_icon}" title="Log in using {provider_title}" /></label>
+<br />
+{/providers}
+<input type="submit" value="proceed" />
+{/exp:social_login_pro:form} 
+ --}
+        
+            <small>Войти с помощью соц. сетей</small>
+            <a href="http://glavstroy365.ru/?ACT=95&provider=vkontakte&RET={current_url}" class="sociallink vk"></a>
+            <a href="http://glavstroy365.ru/?ACT=95&provider=facebook&RET={current_url}" class="sociallink face"></a>
+         
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-5 logotype">
+          <a href="{site_url}"><img src="/img2014/logo.png?1" alt=""></a>
+        </div>
+        <div class="col-xs-3 social">
+          мы в соцсетях<br/>
+          <a href="http://vk.com/glavstroy365" target="_blank"><img src="/img2014/vk.png"></a>
+          <a href="http://ok.ru/gs365" target="_blank"><img src="/img2014/odnokl.png"></a>
+          <a href="https://twitter.com/glavstroy365" target="_blank"><img src="/img2014/twit.png"></a>
+          {!--<a href="#"><img src="/img2014/ytube.png"></a>--}
+        </div>
+        <div class="col-xs-4 header-col">
+          {if logged_in}
+          <div class="btn-group btn-group-xs btn-header">
+              <a href="{path='users/'}" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="100" data-close-others="false">{username}, ваш личный кабинет <span class="caret"></span></a>
+              <ul class="dropdown-menu pull-right" role="menu">
+                <li><a href='/users/projects_list/'>Проекты</a></li>
+                <li><a href="/users/request_users/">Заявки на строительство</a></li>
+                <li><a href="/users/profile_company/">Мои компании</a></li>
+                <li><a href="/users/grades/">Мои комплектации</a></li>
+                <li><a href="/users/request/">Мои цены</a></li>
+                <li><a href="/users/gallery/">Мои фотогалереи</a></li>
+                <li><a href="/users/edit_user/">Редактировать профиль</a></li>
+                <li><a href="/users/edit_pass/">Сменить пароль</a></li>
+                <li class="divider"></li>
+                <li><a href="{path='logout'}">Выход</a></li>
+              </ul>
+          </div>
+          {if:else}
+          <div class="btn-group btn-group-xs btn-header">
+            <a class="btn btn-danger" data-toggle="collapse" href="#loginTop">Вход для строителей</a>
+            {!--
+            <a href="{path='users/join'}" class="btn btn-danger">Регистрация</a>
+            --}
+          </div>
+          {/if}
+          <div class="header-phones">
+            <a href="" data-toggle="modal" class="obr-sv" data-target="#ContactModal">Обратная связь</a>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Modal Contact -->
+<div class="modal fade" id="ContactModal" tabindex="-1" role="dialog" aria-labelledby="ContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+        <h4 class="modal-title" id="ContactModalLabel">Обратная связь</h4>
+      </div>
+      {exp:freeform:form
+        form_id="1"
+        required="user_fio|email|user_message|user_phone"
+        form:class="form-registration"
+        form:id="formContact"
+        form:role="form"
+        return="thanks/contact"
+      }
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="Inputuser_fio">ФИО</label>
+              <input type="text" class="form-control" id="Inputuser_fio" required="required" name="user_fio"  value="{username}" placeholder="Введите ФИО">
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="InputEmail">Email</label>
+              <input type="email" class="form-control" id="InputEmail" required="required" name="email" value="{email}" placeholder="Email">
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="InputPhone">Телефон</label>
+              <input type="text" class="form-control" id="InputPhone" required="required" name="user_phone" placeholder="Телефон">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="Inputuser_message">Ваше сообщение</label>
+              <textarea name="user_message" id="Inputuser_message" required="required" class="form-control" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" name="memid" value="{member_id}">
+        <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+      <input type="hidden" name="user_region" id="user_region" value="{exp:ee_geo:city}{region_name}{/exp:ee_geo:city}">
+      {/exp:freeform:form}
+    </div>
+  </div>
+</div>
+          <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#formContact').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    user_message: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Сообщение обязательно'
+                            }
+                        }
+                    },
+                    user_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Телефон обязателен'
+                            }
+                        }
+                    },
+                    user_fio: {
+                        validators: {
+                            notEmpty: {
+                                message: 'ФИО обязательны'
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email обязателен'
+                            },
+                            emailAddress: {
+                                message: 'Неверный формат Email'
+                            }
+                        }
+                    },
+                  }
+              });
+              //End Validation
+          });
+
+          </script>

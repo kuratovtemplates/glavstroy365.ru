@@ -1,0 +1,5 @@
+    {exp:tag:related_entries entry_id="{embed:entry_id}" orderby="random" rank_method="clicks|total_entries" sort="asc" limit="5" status="open|special"}
+		{if count=='1'}          <h3>Смотрите также:</h3>      <ul>{/if}
+			<li><a href="{comment_url_title_auto_path}">{title}</a></li>
+		{if count=='{total_results}'}</ul> {/if}
+    {/exp:tag:related_entries}

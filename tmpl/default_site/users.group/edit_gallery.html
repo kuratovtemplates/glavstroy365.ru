@@ -1,0 +1,350 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                             
+    {embed="embed/.meta" title="Редактирование галереи"}
+    <link href="{path=css/_ee_channel_form_css}" type="text/css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="{path='users'}">Личный кабинет</a></li>
+          <li class="active">Редактирование галереи</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Редактирование галереи</h1>
+          {if segment_4 == "thanks"}
+            <div class="alert alert-success" role="alert">
+              <strong>Галерея сохранена!</strong> Вернитесь на <a href="/users/">главную личного кабинета</a>, либо к <a href="/users/gallery/">списку Ваших галерей</a>
+            </div>
+          {/if}
+          
+          {exp:channel:form 
+            channel="gallery" 
+            return="users/edit_gallery/{segment_3}/thanks" 
+            datepicker="no" 
+            include_jquery="yes"
+            author_only="yes"
+            entry_id="{segment_3}"
+            class="form-registration"
+          }
+             
+             <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Название галереи :&nbsp;*</label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="title" id="title"  value="{title}" >
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Укажите объект на карте:</label>
+                </div>
+                <div class="col-xs-8">
+                  <script type="text/javascript">
+                  
+                  function initialize() {
+                    var gal_lat = "{gallery_lat}";
+                    var gal_lng = "{gallery_lng}";
+
+                    gal_lat = (gal_lat == "") ? 58.528708 : gal_lat;
+                    gal_lng = (gal_lng == "") ? 31.272159 : gal_lng;
+                    
+                    var mapOptions = {
+                      center: new google.maps.LatLng(gal_lat,gal_lng),
+                      zoom: 8
+                    };
+                    var map = new google.maps.Map(document.getElementById('map-canvas'),
+                      mapOptions);
+                  
+                    var input = /** @type {HTMLInputElement} */(
+                        document.getElementById('pac-input'));
+                  
+                    var types = document.getElementById('type-selector');
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+                  
+                    var autocomplete = new google.maps.places.Autocomplete(input);
+                    autocomplete.bindTo('bounds', map);
+                  
+                    var myLatlng = new google.maps.LatLng(gal_lat,gal_lng);
+                    var infowindow = new google.maps.InfoWindow();
+                    var marker = new google.maps.Marker({
+                      map: map,
+                      draggable: true,
+                      anchorPoint: new google.maps.Point(0, -29),
+                      position: myLatlng,
+                    });
+
+                      if (gal_lat == 58.528708) marker.setVisible(false);
+                    
+                  
+                    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                      infowindow.close();
+                      marker.setVisible(false);
+                      var place = autocomplete.getPlace();
+
+                      if (!place.geometry) {
+                        return;
+                      }
+                  
+                      // If the place has a geometry, then present it on a map.
+                      if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                      } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17);  // Why 17? Because it looks good.
+                      }
+                      marker.setIcon(/** @type {google.maps.Icon} */({
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(35, 35)
+                      }));
+                      marker.setPosition(place.geometry.location);
+                      marker.setVisible(true);
+                  
+                      var address = '';
+                      if (place.address_components) {
+                        address = [
+                          (place.address_components[0] && place.address_components[0].short_name || ''),
+                          (place.address_components[1] && place.address_components[1].short_name || ''),
+                          (place.address_components[2] && place.address_components[2].short_name || '')
+                        ].join(' ');
+                      }
+                  
+                      //infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                      infowindow.open(map, marker);
+                      //add coordinates to hidden fields
+                      $("#gallery_lng").val(place.geometry.location.lng());
+                      $("#gallery_lat").val(place.geometry.location.lat());
+                      
+                    });
+
+                    google.maps.event.addListener(marker, "dragend", function(event) { 
+                      var lat = event.latLng.lat(); 
+                      var lng = event.latLng.lng();
+                      $("#gallery_lng").val(lng);
+                      $("#gallery_lat").val(lat);
+                    }); 
+                  
+                    // Sets a listener on a radio button to change the filter type on Places
+                    // Autocomplete.
+                    function setupClickListener(id, types) {
+                      var radioButton = document.getElementById(id);
+                      google.maps.event.addDomListener(radioButton, 'click', function() {
+                        autocomplete.setTypes(types);
+                      });
+                    }
+                  
+                    setupClickListener('changetype-all', []);
+                    setupClickListener('changetype-establishment', ['establishment']);
+                    setupClickListener('changetype-geocode', ['geocode']);
+                  }
+                  
+                
+                  google.maps.event.addDomListener(window, 'load', initialize);
+
+                  </script>
+                   
+                      <input id="pac-input" class="controls" type="text" placeholder="Введите адрес">
+                     
+                      <div id="map-canvas" class="googlemap_add"></div>
+                       <input  type="hidden" id="gallery_lat" name="gallery_lat" value="{gallery_lat}">
+                       <input  type="hidden" id="gallery_lng" name="gallery_lng" value="{gallery_lng}">
+                  
+                    
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Фотографии:</label>
+                </div>
+                <div class="col-xs-8 gallery-grid-photos">
+                  <div class="form-group">
+                  {field:gallery_photos_grid}
+                  </div>
+                </div>
+              </div>
+              
+              {!--
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Фотографии:</label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+
+                  {field:gallery_photos_ci}
+                  </div>
+                </div>
+              </div>
+            --}
+            {!--
+              <div class="row">
+                <div class="col-xs-4">  
+                  <label class="inputlabel">Фотографии:</label>
+                </div>
+                <div class="col-xs-8">  
+                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                  <span class="btn btn-success fileinput-button">
+                      <i class="glyphicon glyphicon-plus"></i>
+                      <span>Выберите фотографии...</span>
+                      <!-- The file input field used as target for the file upload widget -->
+                       <input id="fileupload" type="file" name="files[]">
+                  </span>
+                  <br>
+                  <br>
+                  <!-- The global progress bar -->
+                  <div id="progress" class="progress progress-striped">
+                      <div class="progress-bar progress-bar-success"></div>
+                  </div>
+                  <!-- The container for the uploaded files -->
+                  <div id="files" class="files">
+
+                    <img src="/img2014/nologo.jpg" alt="">
+
+                  <input id="company_logo" type="hidden" value="{company_logo}" name="company_logo">
+                  </div>
+
+                </div>
+              </div>
+              <div class="row signature">
+                <div class="col-xs-8 col-xs-offset-4">  
+                  Изображение в формате jpg; png; gif на белом или прозрачном фоне
+                </div>
+              </div>
+              --}
+  
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Описание: </label>
+                </div>
+                <div class="col-xs-8">
+                    <textarea name="gallery_about" id="" cols="60" rows="6">{gallery_about}</textarea>
+                </div>
+              </div> 
+              <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Сохранить</button>
+                </div>
+              </div>
+             
+          {/exp:channel:form}
+          {!--
+          <link rel="stylesheet" href="//glavstroy365.ru/css2014/ci_style.css" type="text/css" media="print, projection, screen" />
+          --}
+           <script type="text/javascript">
+          $(document).ready(function() {
+
+            //window.setTimeout(function(){$(".alert").fadeOut("slow");}, 3000);
+
+              //Validation
+               $('#publishForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Наименование компании обязательное поле'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Наименование компании должено содержать больше 5 символов'
+                            }
+                        }
+                    },
+                    company_email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email обязателен'
+                            },
+                            emailAddress: {
+                                message: 'Не верный формат Email'
+                            }
+                        }
+                    },                   
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+
+         
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+
+    <!--JS For File Upload-->
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="/jqfu/js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="/jqfu/js/jquery.fileupload.js"></script>
+
+   <script>
+    /*jslint unparam: true */
+    /*global window, $ */
+    $(function () {
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+        var url = '/jqfu/server/php/';
+        $('#progress').hide();
+        $('#fileupload').fileupload({
+            url: url,
+            maxNumberOfFiles: 10,
+            formData: {
+              UserId: '{member_id}', 
+              Mode: 'company', 
+              EntryId: 'logos'
+            },
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('#files > img').attr("src", file.thumbnailUrl);
+                    $('#company_logo').val(file.url);
+                });
+                $('#progress').delay(1000).fadeOut();
+            },
+            progressall: function (e, data) {
+              $('#progress').show();
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+    </script>
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

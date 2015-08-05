@@ -1,0 +1,18 @@
+          {exp:channel:entries channel="grade" author_id="CURRENT_USER"  dynamic="no"}
+          {if no_results}
+              <div class="alert alert-warning">У вас пока нет комплектаций. </div>
+              <a class="btn btn-danger btn-default" href="/users/add_grade/"> <i class="fa fa-plus"></i> Добавить комплектацию</a>
+          {/if}
+          {if count == '1'}
+          <div class="row">
+            <div class="col-xs-12">
+              <label for="title">Выберите комплектацию</label>
+              <select name="request_grade" class="selectpicker" data-width="100%" data-live-search="true">
+          {/if}
+              <option value="{entry_id}" {if embed:selectedgrade == {entry_id}}selected{/if}>{title}</option>
+          {if count == total_results}
+              </select>
+            </div>
+          </div>
+          {/if}
+          {/exp:channel:entries}

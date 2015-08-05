@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                         
+    {embed="embed/.meta"  title="Сравнение комплектаций" title_suffix="Проекты"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li> <a href="{path='projects'}">Проекты</a></li>
+          <li class="active">Сравнение предложений</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <h1 class="text-center">Сравнение предложений</h1>
+                    {if segment_3 !=""}
+                    
+        <div class="row">
+          <div class="col-xs-6 col-xs-offset-3 text-center">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-primary" id="buttonDiffrent">
+                <input type="radio" name="options" > Показать только отличия
+              </label>
+              <label class="btn btn-primary" id="buttonAll">
+                <input checked="checked" type="radio" name="options"  > Показаь все параметры
+              </label>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+
+        
+                          <div class="col-xs-12">
+                                  <table id="compareTable">
+                                  <tbody>
+                                    <tr data-property="title_company">
+                                      <td>
+                                        <b>Компания</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="price_compl">
+                                      <td>
+                                        <b>Цена</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="days_compl">
+                                      <td >
+                                        <b>Количество дней</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="title_complectation">
+                                      <td>
+                                        <b>Комплектация</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="order_button"><td><b></b></th></tr>
+                                    <tr data-property=""><th colspan="3" id="parametrHeader"><b>Параметры комплектаций</b></th></tr>
+
+
+                                    <tr data-property="material"><td><b>Материал</b></td></tr>
+                                    <tr data-property="grade_foundation"><td><b>Фундамент</b></td></tr>
+                                    <tr data-property="grade_base_obviazka"><td><b>Обвязка</b></td></tr>
+                                    <tr data-property="grade_base_balki"><td><b>Несущие балки под лаги</b></td></tr>
+                                    <tr data-property="grade_base_lagi"><td><b>Лаги</b></td></tr>
+                                    <tr data-property="grade_blockhouse_walls"><td><b>Стены 1-го этажа (сруб)</b></td></tr>
+                                    <tr data-property="grade_blockhouse_peregorodki"><td><b>Перегородки 1 этажа</b></td></tr>
+                                    <tr data-property="grade_blockhouse_prokladka"><td><b>Прокладка джута между венцами в срубе</b></td></tr>
+                                    <tr data-property="grade_angle"><td><b>Угловые соединения бруса</b></td></tr>
+                                    <tr data-property="grade_floors_1floor_chernovoj"><td><b>Черновой пол 1-го этажа</b></td></tr>
+                                    <tr data-property="grade_floors_1floor_uteplenie"><td><b>Утепление пола 1-го этажа</b></td></tr>
+                                    <tr data-property="grade_floors_1floor_paroizoliaci"><td><b>Паро- гидроизоляция 1-го этажа</b></td></tr>
+                                    <tr data-property="grade_floors_1floor_chistovoj"><td><b>Чистовой пол 1-го этажа</b></td></tr>
+                                    <tr data-property="grade_potolok_2floor"><td><b>Потолок первого этажа</b></td></tr>
+                                    <tr data-property="grade_floorslabs"><td><b>Межэтажные перекрытия</b></td></tr>
+                                    <tr data-property="grade_mansard_walls"><td><b>Стены 2-го этажа (мансарды)</b></td></tr>
+                                    <tr data-property="grade_mansard_peregorodki"><td><b>Перегородки мансарды</b></td></tr>
+                                    <tr data-property="grade_mansard_uteplenie"><td><b>Утепление мансарды</b></td></tr>
+                                    <tr data-property="grade_mansard_otdelka"><td><b>Отделка мансарды</b></td></tr>
+                                    <tr data-property="grade_floors_2floor"><td><b>Пол 2-го этажа (мансарды)</b></td></tr>
+                                    <tr data-property="grade_floors_2floorutiplenie"><td><b>Утепление пола 2-го этажа</b></td></tr>
+                                    <tr data-property="grade_floors_paroizoliacija"><td><b>Паро- гидроизоляция 2-го этажа</b></td></tr>
+                                    <tr data-property="grade_staircase"><td><b>Лестница на второй этаж</b></td></tr>
+                                    <tr data-property="grade_raftersystem_stropila"><td><b>Стропила</b></td></tr>
+                                    <tr data-property="grade_raftersystem_balka"><td><b>Подстропильная балка</b></td></tr>
+                                    <tr data-property="grade_raftersystem_obreshetka"><td><b>Обрешетка</b></td></tr>
+                                    <tr data-property="grade_roof"><td><b>Кровля</b></td></tr>
+                                    <tr data-property="grade_steam_otdelka"><td><b>Отделка парной</b></td></tr>
+                                    <tr data-property="grade_steam_falga"><td><b>Отделка теплоизоляционной фольгой</b></td></tr>
+                                    <tr data-property="grade_steam_polog"><td><b>Полог из осины</b></td></tr>
+                                    <tr data-property="grade_steam_pech"><td><b>Печь</b></td></tr>
+                                    <tr data-property="grade_commonroom_stolik"><td><b>Столик с лавками в ком. отдыха</b></td></tr>
+                                    <tr data-property="grade_washroot"><td><b>Помывочная</b></td></tr>
+                                    <tr data-property="grade_doors_vhodnaja"><td><b>Входная дверь</b></td></tr>
+                                    <tr data-property="grade_doors_mezhkomnatnye"><td><b>Межкомнатные двери</b></td></tr>
+                                    <tr data-property="grade_windows"><td><b>Окна</b></td></tr>
+                                    <tr data-property="grade_note"><td><b>Примечание</b></td></tr>
+
+                                  </tbody>
+                                  </table>
+                          <script type="text/javascript">
+                          var arr_compl = [];
+                          {exp:channel:entries channel="request" entry_id="{segment_3}" limit="10" dynamic="no"}
+                            {if no_results}
+                                 <div class="alert alert-warning">Не найден предложения. </div><br>
+                            {/if}
+                              $("#parametrHeader").attr("colspan",{total_results}+1);
+
+                                var complectation{count} = {
+                                  title_company: "{exp:query sql="SELECT `title` as company_title, `url_title` as company_url_title FROM `exp_channel_titles` WHERE author_id = '{author_id}' AND channel_id = '1'"}<b>{company_title}</b>{/exp:query}",   
+                                  url_title_company: "{exp:query sql="SELECT `title` as company_title, `url_title` as company_url_title FROM `exp_channel_titles` WHERE author_id = '{author_id}' AND channel_id = '1'"}{company_url_title}{/exp:query}",   
+                                  title_complectation:"{exp:query sql="SELECT `title` as grade1_title, `url_title` as grade1_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_grade}' AND channel_id = '3'"}<h5><b>{grade1_title}</b></h5>{/exp:query}",   
+                                  material:"{exp:query sql="SELECT exp_categories.cat_name AS catname FROM exp_category_posts INNER JOIN exp_categories ON exp_category_posts.cat_id = exp_categories.cat_id WHERE exp_category_posts.entry_id = '{request_grade}'"}{catname}{/exp:query}",   
+                                  price_compl: "<h5>{request_price} руб.</h5>",
+                                  days_compl: "<b>{request_time} дней</b>",
+                                  order_button: "<a type='button' class='btn btn-danger' data-toggle='modal' href='{path='embed/order-form'}/{entry_id}/'' data-target='#modalOrder'>Заказать</a>"
+                                }
+
+                                {embed="embed/.grade-show-compare" idgrade="{request_grade}" complectationcount="complectation{count}"}
+
+                                arr_compl.push(complectation{count});
+                          {/exp:channel:entries}
+                                  
+                          $(document).ready(function(){
+                            $('.btn').button();
+                           
+
+                            for (i = 0; i < arr_compl.length; ++i) {
+                              $('#compareTable').find('tr').each(function(){
+                                var propertydata = $(this).data("property");
+                                $(this).find('td').eq(0).after('<td>'+arr_compl[i][propertydata]+'</td>');
+                              });
+                            }
+
+                            /*Hide equal*/
+                            $("#buttonDiffrent").click(function(){
+                              var count_tr = 0;
+                              $('#compareTable').find('tr').each(function(){
+                                count_tr++;
+                                if (count_tr > 6){
+                                  var equal_tr = true;
+                                  var count_td = 0;
+                                  var textval = $(this).find('td').eq(1).text();
+                                  $(this).find('td').each(function(){
+                                    count_td++;
+                                    if (count_td > 1) {
+                                      if (textval != $(this).text()) {
+                                        equal_tr = false;
+
+                                      }
+                                    }
+                                  });
+                                  if(equal_tr) {
+                                    $(this).hide(700);
+                                  }
+                                }
+                              });
+                            });
+                            $("#buttonAll").click(function(){
+                              var active_tr = $('#compareTable').find('tr');
+                              for (var i = 0, len = active_tr.length; i < len; i++) {
+                                  $(active_tr[i]).show(700);
+                              }
+                            });
+                            /*Hide equal*/
+                            
+/*Clear cache modal window*/
+  $('body').on('hidden.bs.modal', '.modal', function () {
+      $(this).removeData('bs.modal');
+  });
+  /*Clear cache modal window*/
+
+                          });
+                          </script>
+
+                    {if:else}
+                           <div class="alert alert-warning">Не найдены предложения. </div><br>
+                    {/if}
+          </div>
+      </div>
+      </div>
+      </div>
+    
+      <!-- Modal Order -->
+<div class="modal fade" id="modalOrder" tabindex="-1" role="dialog" aria-labelledby="modalOrder" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
+
+
+      <!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>     
+    {embed="embed/.footer"}
+  </body>
+</html>

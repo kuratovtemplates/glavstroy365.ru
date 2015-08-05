@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="{if segment_2!='doma' AND segment_2!='bani'}Проекты домов и бань{if:else}{segment_2_category_name}{/if}"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li> <a href="{path='projects'}">Проекты</a></li>
+          {if segment_2=='doma'|| segment_2=='bani'}
+          <li class="active">{segment_2_category_name}</li>
+          {/if}
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col"><!---->
+                  <h1>{if segment_2!='doma' AND segment_2!='bani'}Проекты домов и бань{if:else}{segment_2_category_name}{/if}</h1>
+          {exp:md_detect_page_type url_segment="{segment_2}"}
+              {if pagination_page == FALSE}
+                  {exp:query sql="SELECT
+                  exp_categories.cat_name AS categ_name,
+                  exp_categories.cat_description AS categ_des
+                  FROM exp_categories
+                  WHERE exp_categories.cat_url_title = '{segment_2}' LIMIT 0,1"}
+                      <h5>{categ_des}</h5>
+                  {/exp:query}
+                {if:else}
+              {/if}
+          {/exp:md_detect_page_type}
+
+          <div class="row project-row">
+            <div class="col-xs-12">
+              <div class="row">
+                
+                {!--
+                <form method="post" action="{path='projects/'}/{segment_2}"  id="search-form">
+                --}
+                {exp:md_detect_page_type url_segment="{segment_2}"}
+                {if pagination_page == FALSE}
+                <form method="post" action="{path='projects'}/{segment_2}"  id="search-form">
+                {if:else}
+                <form method="post" action="{path='projects'}/"  id="search-form">
+
+                {/if}
+                  {exp:super_search:search}
+                  <div class="row">
+                    <div class="col-xs-3" id="Select-cat_list-div">
+                      <p><b>Тип проекта</b></p>
+                      <input type="hidden" name="XID" value="{XID_HASH}" />
+                      <select id="Select-cat_list" data-width="100%"  class="selectpicker">
+                        <option value="">Все проекты</option>
+                        <option value="Дома" {if segment_2 =="doma"}selected="selected"{/if}>Дома</option>
+                        <option value="Бани" {if segment_2 =="bani"}selected="selected"{/if}>Бани</option>
+                      </select>
+                    </div>
+                    <div class="col-xs-2">
+                      <p><b>Размер</b></p>
+                      {sizes}
+                    </div>
+                    <div class="col-xs-3">
+                      <p><b>Этажность</b></p>
+                      <select id="Select-floor_list" name="projects_floors" data-width="100%"  class="selectpicker">
+                        <option value="">Любая этажность</option>
+                        <option {if super_search_projects_floors =="1 этаж"}selected="selected"{/if}>1 этаж</option>
+                        <option {if super_search_projects_floors =="1 этаж + мансарда"}selected="selected"{/if}>1 этаж + мансарда</option>
+                        <option {if super_search_projects_floors =="1,5 этажа"}selected="selected"{/if}>1,5 этажа</option>
+                        <option {if super_search_projects_floors =="2 этажа"}selected="selected"{/if}>2 этажа</option>
+                      </select>
+                    </div>
+                    <div class="col-xs-2">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox1" {if super_search_projects_extra_balkon =="Есть"}checked="checked"{/if} name="projects_extra_balkon" value="Есть"> Балкон
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox2" {if super_search_projects_extra_lestnica =="Есть"}checked="checked"{/if} name="projects_extra_lestnica" value="Есть"> Лестница 
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox3" {if super_search_projects_extra_2light =="Есть"}checked="checked"{/if} name="projects_extra_2light" value="Есть"> Вт. свет
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox4" {if super_search_projects_extra_sanuzel =="Есть"}checked="checked"{/if} name="projects_extra_sanuzel" value="Есть"> Санузел  
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox5" {if super_search_projects_extra_otlivy =="Есть"}checked="checked"{/if} name="projects_extra_otlivy" value="Есть"> Отливы  
+                        </label>
+                      </div>
+                    </div>
+                  
+                    <div class="col-xs-2">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox6"  {if super_search_projects_extra_bania =="Есть"}checked="checked"{/if} name="projects_extra_bania" value="Есть"> Баня 
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox7"  {if super_search_projects_extra_garazh =="Есть"}checked="checked"{/if} name="projects_extra_garazh" value="Есть"> Гараж 
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox8"  {if super_search_projects_extra_krylco =="Есть"}checked="checked"{/if} name="projects_extra_krylco" value="Есть"> Крыльцо   
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox9"  {if super_search_projects_extra_terassa =="Есть"}checked="checked"{/if} name="projects_extra_terassa" value="Есть"> Терраса
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="inlineCheckbox10"  {if super_search_projects_extra_veranda =="Есть"}checked="checked"{/if} name="projects_extra_veranda" value="Есть">  Веранда  
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Поиск</button>
+                    
+                      <a href="{path='projects'}" class="btn btn-default">Очистить</a>
+                    </div>
+                  </div>
+                  {/exp:super_search:search}
+                </form>
+                <script type="text/javascript">
+                 $(document).ready(function() {
+                  $('.selectpicker').selectpicker();
+                 });
+                </script>
+              </div>
+            </div>
+          </div>
+          {exp:md_detect_page_type url_segment="{segment_2}"}
+
+          {if pagination_page == FALSE}
+          {if segment_2=='doma' OR  segment_2=='bani'}
+          {exp:super_search:results channel="projects" category="{segment_2}" category_indicator="category_url_title" limit="21" sort="asc" orderby="date"}
+          {if:else}
+          {exp:super_search:results channel="projects" limit="21" sort="asc" orderby="date"}
+          {/if}
+          {if count== "1"}
+            <div class="row">
+              <ul id="projects-main-gallery" class="clr text-center">
+            {/if}
+                <li>
+                  {projects_photos limit="1"}
+                  <a class="main-img" href="{title_permalink='projects'}" >
+                      {exp:ce_img:pair src='{url}' {wm_pic_small} height='166' width='222' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{caption}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  {/projects_photos}
+                  <div class="desc">{projects_extra_balkon}
+                    {exp:low_replace find="Дома|Бани" replace="Дом|Баня" multiple="yes"}{categories}{category_name}{/categories}{/exp:low_replace} {title} ({projects_size} м.)
+                    <br>
+                    <span>{embed='embed/.project-prices' projectid='{entry_id}'}</span>{edit_link}  
+                  </div>
+                  <div class="images">
+                    {projects_photos limit="2" offset="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_photos}
+                    {projects_planing limit="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_planing}
+                    <a href="{title_permalink='projects'}" class="more">Подробно</a>
+                  </div>
+                </li>
+            {if count== total_results}
+              </ul>
+            </div>
+            {/if}
+
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+          {/exp:super_search:results}
+          {if:else}
+
+          {exp:super_search:results channel="projects" limit="21" sort="asc" orderby="date"}
+          {if count== "1"}
+            <div class="row">
+              <ul id="projects-main-gallery" class="clr text-center">
+            {/if}
+                <li>
+                  {projects_photos limit="1"}
+                  <a class="main-img" href="{title_permalink='projects'}" >
+                      {exp:ce_img:pair src='{url}' height='166' width='222' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{caption}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  {/projects_photos}
+                  <div class="desc">
+                    {exp:low_replace find="Дома|Бани" replace="Дом|Баня" multiple="yes"}{categories}{category_name}{/categories}{/exp:low_replace} {title} ({projects_size} м.)
+                    <br>
+                    <span>{embed='embed/.project-prices' projectid='{entry_id}'}</span>{edit_link}
+                  </div>
+                  <div class="images">
+                    {projects_photos limit="2" offset="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_photos}
+                    {projects_planing limit="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_planing}
+                    <a href="{title_permalink='projects'}" class="more">Подробно</a>
+                  </div>
+                </li>
+            {if count== total_results}
+              </ul>
+            </div>
+            {/if}
+
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+          {/exp:super_search:results}
+          {/if}
+          {/exp:md_detect_page_type}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div>
+    {embed="embed/.footer" isitpropage="yes"}
+  </body>
+</html>

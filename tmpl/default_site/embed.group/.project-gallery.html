@@ -1,0 +1,45 @@
+          {exp:channel:entries channel="gallery" limit="10" search:gallery_project="{embed:idproject}" dynamic="no"}
+
+          {if count =="1"}
+          <h2>Фотогалерея</h2>
+          {/if}
+              {gallery_photos_grid limit="4"}
+              {if gallery_photos_grid:count == "1"}
+            <br>
+            <div class="row">
+              <h4>{title}</h4>
+            </div>
+            <div class="row gallery">
+              {/if}
+              <div class="col-xs-3">
+                <a href="{title_permalink='gallery'}" class="thumbnail" >
+                  {exp:ce_img:pair src='{gallery_photos_grid:gallery_photos_url}' width="250" height="250" allow_scale_larger="yes" crop='yes'}
+                  <img src="{made}" alt="{title}">
+                  {/exp:ce_img:pair}
+                </a>
+              </div>
+                {if gallery_photos_grid:count == "4" OR gallery_photos_grid:count == gallery_photos_grid:total_rows}
+            </div>
+                {/if}
+              {/gallery_photos_grid}
+            {if count == total_results}
+            <script type="text/javascript">
+              $(document).ready(function() {
+                $(".fancybox-thumb").fancybox({
+                  prevEffect  : 'none',
+                  nextEffect  : 'none',
+                  helpers : {
+                    title : {
+                      type: 'outside'
+                    },
+                    thumbs  : {
+                      width : 50,
+                      height  : 50
+                    }
+                  }
+                });
+              });
+            </script>       
+          <hr>
+            {/if}
+          {/exp:channel:entries}

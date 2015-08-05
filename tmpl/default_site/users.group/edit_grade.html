@@ -1,0 +1,733 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                  
+    {embed="embed/.meta" title="Редактировать комплектацию"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li><a href="/users/grades/">Комплектации</a></li>
+          <li class="active">Редактировать комплектацию</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Редактировать комплектацию</h1>
+          <br>
+        {exp:channel:form 
+            channel="grade" 
+            author_only="yes"
+            entry_id="{segment_3}"
+            return="/users/edit_grade/{segment_3}" 
+            datepicker="no" 
+            include_jquery="no"  
+            class="form-registration"
+            id="FormGrade"
+          }
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Материал: </label>
+                </div>
+                <div class="col-xs-8">
+                  <select name="category[]" id="categories" data-width="100%" class="selectpicker">
+                    {categories}
+                      <option value="{category_id}"{selected}>{category_name}</option>
+                    {/categories}
+                  </select>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Наименование: *</label>
+                </div>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" name="title" id="title" value="{title}" onkeyup="liveUrlTitle();" >
+                  <input name="url_title" type="hidden" id="url_title" value="{url_title}"  >
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Фундамент:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-foundation_list" name="grade_foundation" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="foundation_list"}
+                        <option  id="Select-{row_count}-foundation_list" value="{cell_1}" >{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-foundation_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                      </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_foundation_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-12">
+                  <h4>Основание дома</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Обвязка:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-base_obviazka_list" name="grade_base_obviazka" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="base_obviazka_list"}
+                        <option  id="Select-{row_count}-base_obviazka_list" value="{cell_1}">{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-base_obviazka_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_base_obviazka_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Несущие балки под лаги:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-base_balki_list" name="grade_base_balki" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="base_balki_list"}
+                        <option  id="Select-{row_count}-base_balki_list" value="{cell_1}">{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-base_balki_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_base_balki_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Лаги:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-base_lagi_list" name="grade_base_lagi" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="base_lagi_list"}
+                        <option  id="Select-{row_count}-base_lagi_list" value="{cell_1}">{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-base_lagi_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_base_lagi_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-12">
+                  <h4>Сруб дома и перегородки внутри</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Сруб дома (стены):</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-blockhouse_walls_list" name="grade_blockhouse_walls" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="blockhouse_walls_list"}
+                        <option  id="Select-{row_count}-blockhouse_walls_list" value="{cell_1}">{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-blockhouse_walls_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_blockhouse_walls_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Перегородки 1 этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-blockhouse_peregorodki_list" name="grade_blockhouse_peregorodki" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="blockhouse_peregorodki_list"}
+                        <option  id="Select-{row_count}-blockhouse_peregorodki_list" value="{cell_1}">{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-blockhouse_peregorodki_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_blockhouse_peregorodki_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Прокладка джута между венцами в срубе:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-blockhouse_prokladka_list" name="grade_blockhouse_prokladka" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="blockhouse_prokladka_list"}
+                        <option  id="Select-{row_count}-blockhouse_prokladka_list" value="{cell_1}">{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-blockhouse_prokladka_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_blockhouse_prokladka_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Угловые соединения бруса:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-angle_list" name="grade_angle" data-width="100%" class="selectpicker">
+                        {exp:low_variables:pair var="angle_list"}
+                        <option  id="Select-{row_count}-angle_list" value="{cell_1}">{cell_2}</option>
+                        {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-angle_list" value="Свой вариант">Свой вариант</option>{/if}
+                        {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_angle_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <h4>Полы</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Черновой пол 1-го этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-floors_1floor_chernovoj" name="grade_floors_1floor_chernovoj" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floors_1floor_chernovoj_list"}
+                  <option  id="Select-{row_count}-floors_1floor_chernovoj" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floors_1floor_chernovoj" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floors_1floor_chernovoj_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Утепление пола 1-го этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-floors_1floor_uteplenie" name="grade_floors_1floor_uteplenie" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floors_1floor_uteplenie_list"}
+                  <option  id="Select-{row_count}-floors_1floor_uteplenie" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floors_1floor_uteplenie" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floors_1floor_uteplenie_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Паро- гидроизоляция 1-го этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-floors_1floor_paroizoliaci" name="grade_floors_1floor_paroizoliaci" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floors_1floor_paroizoliaci_list"}
+                  <option  id="Select-{row_count}-floors_1floor_paroizoliaci" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floors_1floor_paroizoliaci" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floors_1floor_paroizoliaci_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Чистовой пол 1-го этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-floors_1floor_chistovoj" name="grade_floors_1floor_chistovoj" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floors_1floor_chistovoj_list"}
+                  <option  id="Select-{row_count}-floors_1floor_chistovoj" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floors_1floor_chistovoj" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floors_1floor_chistovoj_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Потолок первого этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-potolok_2floor" name="grade_potolok_2floor" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="potolok_2floor_list"}
+                  <option  id="Select-{row_count}-potolok_2floor" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-potolok_2floor" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_potolok_2floor_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Межэтажные перекрытия:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-floorslabs_list" name="grade_floorslabs" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floorslabs_list"}
+                  <option  id="Select-{row_count}-floorslabs_list" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floorslabs_list" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floorslabs_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+ 
+              <div class="row">
+                <div class="col-xs-6">
+                  <h4>Мансарда (2 этаж)</h4>
+                </div>
+                <div class="col-xs-6">
+                  <button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#idMansarda"><i class="fa fa-power-off"></i> Включить</button>
+                </div>
+              </div>
+              <div id="idMansarda" class="collapse">
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Стены мансарды:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-mansard_walls" name="grade_mansard_walls" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="mansard_walls_list"}
+                  <option  id="Select-{row_count}-mansard_walls" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-mansard_walls" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_mansard_walls_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Перегородки мансарды:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-mansard_peregorodki" name="grade_mansard_peregorodki" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="mansard_peregorodki_list"}
+                  <option  id="Select-{row_count}-mansard_peregorodki" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-mansard_peregorodki" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_mansard_peregorodki_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Утепление мансарды:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-mansard_uteplenie" name="grade_mansard_uteplenie" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="mansard_uteplenie_list"}
+                  <option  id="Select-{row_count}-mansard_uteplenie" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-mansard_uteplenie" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_mansard_uteplenie_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Отделка мансарды:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-mansard_otdelka" name="grade_mansard_otdelka" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="mansard_otdelka_list"}
+                  <option  id="Select-{row_count}-mansard_otdelka" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-mansard_otdelka" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_mansard_otdelka_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Пол 2-го этажа (мансарды):</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-floors_2floor" name="grade_floors_2floor" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floors_2floor_list"}
+                  <option  id="Select-{row_count}-floors_2floor" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floors_2floor" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floors_2floor_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Утепление пола 2-го этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-floors_2floorutiplenie" name="grade_floors_2floorutiplenie" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floors_2floorutiplenie_list"}
+                  <option  id="Select-{row_count}-floors_2floorutiplenie" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floors_2floorutiplenie" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floors_2floorutiplenie_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Паро- гидроизоляция 2-го этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-floors_paroizoliacija" name="grade_floors_paroizoliacija" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="floors_paroizoliacija_list"}
+                  <option  id="Select-{row_count}-floors_paroizoliacija" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-floors_paroizoliacija" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_floors_paroizoliacija_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Лестница на второй этаж:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-staircase" name="grade_staircase" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="staircase_list"}
+                  <option  id="Select-{row_count}-staircase" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-staircase" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_staircase_own" style="display: none;" >
+
+                </div>
+              </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-12">
+                  <h4>Стропильная система</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Стропила:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-raftersystem_stropila" name="grade_raftersystem_stropila" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="raftersystem_stropila_list"}
+                  <option  id="Select-{row_count}-raftersystem_stropila" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-raftersystem_stropila" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_raftersystem_stropila_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Подстропильная балка:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-raftersystem_balka" name="grade_raftersystem_balka" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="raftersystem_balka_list"}
+                  <option  id="Select-{row_count}-raftersystem_balka" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-raftersystem_balka" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_raftersystem_balka_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Обрешетка:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-raftersystem_obreshetka" name="grade_raftersystem_obreshetka" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="raftersystem_obreshetka_list"}
+                  <option  id="Select-{row_count}-raftersystem_obreshetka" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-raftersystem_obreshetka" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_raftersystem_obreshetka_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Кровля:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-roof_list" name="grade_roof" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="roof_list"}
+                  <option  id="Select-{row_count}-roof_list" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-roof_list" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_roof_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-6">
+                  <h4>Парная</h4>
+                </div>
+                <div class="col-xs-6">
+                  <button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#idParnaja"><i class="fa fa-power-off"></i> Включить</button>
+                </div>
+              </div>
+              <div class="collapse" id="idParnaja">
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Отделка парной:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-steam_otdelka" name="grade_steam_otdelka" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="steam_otdelka_list"}
+                  <option  id="Select-{row_count}-steam_otdelka" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-steam_otdelka" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_steam_otdelka_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Отделка теплоизоляционной фольгой:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-steam_falga" name="grade_steam_falga" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="steam_falga_list"}
+                  <option  id="Select-{row_count}-steam_falga" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-steam_falga" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_steam_falga_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Полог из осины:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-steam_polog" name="grade_steam_polog" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="steam_polog_list"}
+                  <option  id="Select-{row_count}-steam_polog" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-steam_polog" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_steam_polog_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Печь:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-steam_pech" name="grade_steam_pech" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="steam_pech_list"}
+                  <option  id="Select-{row_count}-steam_pech" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-steam_pech" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_steam_pech_own" style="display: none;" >
+                </div>
+              </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-6">
+                  <h4>Комната отдыха и помывочная:</h4>
+                </div>
+                <div class="col-xs-6">
+                  <button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#idKomnataOtdyha"><i class="fa fa-power-off"></i> Включить</button>
+                </div>
+              </div>
+              <div class="collapse" id="idKomnataOtdyha">
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Столик с лавками в ком. отдыха:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-commonroom_stolik" name="grade_commonroom_stolik" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="commonroom_stolik_list"}
+                  <option  id="Select-{row_count}-commonroom_stolik" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-commonroom_stolik" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_commonroom_stolik_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Помывочная:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-washroot" name="grade_washroot" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="washroot_list"}
+                  <option  id="Select-{row_count}-washroot" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-washroot" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_washroot_own" style="display: none;" >
+                </div>
+              </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-12">
+                  <h4>Двери:</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Входная дверь:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-doors_vhodnaja" name="grade_doors_vhodnaja" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="doors_vhodnaja_list"}
+                  <option  id="Select-{row_count}-doors_vhodnaja" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-doors_vhodnaja" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_doors_vhodnaja_own" style="display: none;" >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Межкомнатные двери:</label>
+                </div>
+                <div class="col-xs-8">
+                 <select id="Select-doors_mezhkomnatnye" name="grade_doors_mezhkomnatnye" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="doors_mezhkomnatnye_list"}
+                  <option  id="Select-{row_count}-doors_mezhkomnatnye" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-doors_mezhkomnatnye" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_doors_mezhkomnatnye_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Окна:</label>
+                </div>
+                <div class="col-xs-8">
+                  <select id="Select-windows" name="grade_windows" data-width="100%" class="selectpicker">
+                  {exp:low_variables:pair var="windows_list"}
+                  <option  id="Select-{row_count}-windows" value="{cell_1}">{cell_2}</option>
+                  {if {row_count} == {total_rows}}  <option data-divider="true"></option><option  id="Select-0-windows" value="Свой вариант">Свой вариант</option>{/if}
+                  {/exp:low_variables:pair}
+                  </select>
+                  <br>
+                  <input type="text" class="form-control" name="grade_windows_own" style="display: none;" >
+                </div>
+              </div>
+
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Примечания: </label>
+                </div>
+                <div class="col-xs-8">
+                    <textarea name="grade_note" id="" cols="60" rows="6">{grade_note}</textarea>
+                </div>
+              </div> 
+
+              <div class="row">
+                <div class="col-xs-6 col-xs-offset-6">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block"><i class="fa fa-floppy-o"></i> Сохранить комплектацию</button>
+                </div>
+              </div>
+              <script type="text/javascript">
+              UpdateSelectInGrade({
+                    grade_foundation:"{grade_foundation}",
+                    grade_base_obviazka:"{grade_base_obviazka}",
+                    grade_base_balki:"{grade_base_balki}",
+                    grade_base_lagi:"{grade_base_lagi}",
+                    grade_blockhouse_walls:"{grade_blockhouse_walls}",
+                    grade_blockhouse_peregorodki:"{grade_blockhouse_peregorodki}",
+                    grade_blockhouse_prokladka:"{grade_blockhouse_prokladka}",
+                    grade_angle:"{grade_angle}",
+                    grade_roof:"{grade_roof}",
+                    grade_floorslabs:"{grade_floorslabs}",
+                    grade_raftersystem_stropila:"{grade_raftersystem_stropila}",
+                    grade_raftersystem_balka:"{grade_raftersystem_balka}",
+                    grade_raftersystem_obreshetka:"{grade_raftersystem_obreshetka}",
+                    grade_ceilingheight_1floor:"{grade_ceilingheight_1floor}",
+                    grade_ceilingheight_2floor:"{grade_ceilingheight_2floor}",
+                    grade_mansard_walls:"{grade_mansard_walls}",
+                    grade_mansard_peregorodki:"{grade_mansard_peregorodki}",
+                    grade_mansard_uteplenie:"{grade_mansard_uteplenie}",
+                    grade_mansard_otdelka:"{grade_mansard_otdelka}",
+                    grade_steam_otdelka:"{grade_steam_otdelka}",
+                    grade_steam_falga:"{grade_steam_falga}",
+                    grade_steam_polog:"{grade_steam_polog}",
+                    grade_steam_pech:"{grade_steam_pech}",
+                    grade_commonroom_stolik:"{grade_commonroom_stolik}",
+                    grade_washroot:"{grade_washroot}",
+                    grade_floors_1floor_chernovoj:"{grade_floors_1floor_chernovoj}",
+                    grade_floors_1floor_uteplenie:"{grade_floors_1floor_uteplenie}",
+                    grade_floors_1floor_paroizoliaci:"{grade_floors_1floor_paroizoliaci}",
+                    grade_floors_1floor_chistovoj:"{grade_floors_1floor_chistovoj}",
+                    grade_floors_2floor:"{grade_floors_2floor}",
+                    grade_floors_2floorutiplenie:"{grade_floors_2floorutiplenie}",
+                    grade_floors_paroizoliacija:"{grade_floors_paroizoliacija}",
+                    grade_potolok_2floor:"{grade_potolok_2floor}",
+                    grade_doors_vhodnaja:"{grade_doors_vhodnaja}",
+                    grade_doors_mezhkomnatnye:"{grade_doors_mezhkomnatnye}",
+                    grade_windows:"{grade_windows}",
+                    grade_staircase:"{grade_staircase}",
+                });
+
+                  UpdateRadioInGrade({
+                    
+                });
+              </script>
+          {/exp:channel:form}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+
+
+
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

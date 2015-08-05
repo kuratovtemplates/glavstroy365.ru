@@ -1,0 +1,89 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Мои комплектации"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Мои комплектации</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Комплектации</h1>
+          <br>
+          {if {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"}<"1"}
+          <div class="alert alert-warning">У вас пока нет компании. Добавление комплектаций не возможно без создания компании. </div>
+              <a class="btn btn-danger btn-default" href="/users/add_company/"> <i class="fa fa-plus"></i> Добавить компанию</a>
+          {if:else}
+          {exp:channel:entries channel="grade" author_id="CURRENT_USER"  limit="10"}
+          {if no_results}
+              <div class="alert alert-warning">У вас пока нет комплектаций. </div>
+              <a class="btn btn-danger btn-default" href="/users/add_grade/"> <i class="fa fa-plus"></i> Добавить комплектацию</a>
+          {/if}
+            <div class="row firm-row">
+              <div class="col-xs-6">
+                <span class="titlefirm">{title}</span><br>
+              </div>
+              <div class="col-xs-6">
+                <div class="btn-group btn-group-sm pull-right">
+                  <a type="button" href="/users/edit_grade/{entry_id}/" class="btn btn-primary btn-default"><i class="fa fa-pencil"></i> редактировать</a>
+                  <a type="button" class="btn btn-primary btn-default"><i class="fa fa-map-marker"></i> объекты <span class="badge">28</span></a>
+                </div>
+              </div>
+            </div> 
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+            {if count == total_results} <a class="btn btn-danger btn-default pull-right" href="/users/add_grade/"> <i class="fa fa-plus"></i> Добавить еще комплектацию</a>{/if}
+          {/exp:channel:entries}
+          {/if}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

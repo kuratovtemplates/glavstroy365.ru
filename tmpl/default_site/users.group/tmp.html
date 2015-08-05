@@ -1,0 +1,91 @@
+  <!DOCTYPE html>
+<html lang="ru">
+  <head>                                          
+    {embed="embed/.meta" title="Добавление галереи"}
+    <link href="{path=css/_ee_channel_form_css}" type="text/css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+
+    {exp:channel:form 
+            channel="gallery" 
+            return="users/add_gallery/thanks" 
+            datepicker="no" 
+            include_jquery="yes"
+            class="form-registration"
+          }
+             
+             <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Название галереи :&nbsp;*</label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="title" id="title"  onkeyup="liveUrlTitle();" >
+                  <input name="url_title" type="hidden" id="url_title"  >
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Фото2:</label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                  {field:gallery_photos_grid}
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="row">
+                <div class="col-xs-4">  
+                  <label class="inputlabel">Фотографии:</label>
+                </div>
+                <div class="col-xs-8">  
+                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                  <span class="btn btn-success fileinput-button">
+                      <i class="glyphicon glyphicon-plus"></i>
+                      <span>Выберите фотографии...</span>
+                      <!-- The file input field used as target for the file upload widget -->
+                       <input id="fileupload" type="file" name="files[]">
+                  </span>
+                  <br>
+                  <br>
+                  <!-- The global progress bar -->
+                  <div id="progress" class="progress progress-striped">
+                      <div class="progress-bar progress-bar-success"></div>
+                  </div>
+                  <!-- The container for the uploaded files -->
+                  <div id="files" class="files">
+
+                    <img src="/img2014/nologo.jpg" alt="">
+
+                  <input id="company_logo" type="hidden" value="{company_logo}" name="company_logo">
+                  </div>
+
+                </div>
+              </div>
+              <div class="row signature">
+                <div class="col-xs-8 col-xs-offset-4">  
+                  Изображение в формате jpg; png; gif на белом или прозрачном фоне
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Описание: </label>
+                </div>
+                <div class="col-xs-8">
+                    <textarea name="gallery_about" id="" cols="60" rows="6"></textarea>
+                </div>
+              </div> 
+              <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Сохранить</button>
+                </div>
+              </div>
+             
+          {/exp:channel:form}
+           </body>
+</html>

@@ -1,0 +1,678 @@
+{exp:channel:entries channel="projects" limit="1" require_entry="yes"}
+{if no_results}{redirect="404"}{/if}
+{exp:averageprice projectid='{entry_id}'}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                        
+    {embed="embed/.meta" entry_id="{entry_id}" title_suffix="Проекты"}
+    <script type="text/javascript" src="/js2014/request_user.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li> <a href="{path='projects'}">Проекты</a></li>
+          {categories}<li> <a href="/projects/{category_url_title}">{category_name}</a></li>{/categories}
+          <li class="active">{title}</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-12">
+          <h1>{projects_bigtitle} {edit_link}</h1>
+          <p><i class="fa fa-rub"></i> <a href="#prices">Цены</a> 
+            {exp:query sql="SELECT COUNT(exp_channel_data.entry_id) AS expr1 FROM exp_channel_data WHERE exp_channel_data.field_id_47 = {entry_id} GROUP BY exp_channel_data.field_id_47"}
+            ({expr1})
+            {/exp:query} | <i class="fa fa-comments-o"></i> <a href="#IdOtzyvy">Отзывы</a> {exp:threaded_comments:display entry_id="{entry_id}" limit="1"}({total_comments}){/exp:threaded_comments:display}
+          </p>
+        </div>
+      </div>
+      <div class="row project-item-row">
+        <div class="col-xs-7">
+          <div class="bigphoto-project" id="bigmama">
+             {projects_photos limit="1"}
+             <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" class="fancybox-thumb" rel="fancybox-thumb">
+             {exp:ce_img:pair src='{url}' {wm_pic} height='414' width='540' allow_scale_larger="yes" crop='yes'}
+              <img src="{made}" width="540" height="414" >
+              {/exp:ce_img:pair}
+            </a>
+            {/projects_photos}
+          </div>
+          <div id="thumbs" class="thumbs-content">
+            <ul>
+            {projects_photos limit="20"}
+              <li class="thumbnail {if count == 1}active{/if}" data-urlfull="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" {wm_pic} data-url="{exp:ce_img:pair src='{url}' {wm_pic} height='414' width='540' allow_scale_larger='yes' crop='no'}{made}{/exp:ce_img:pair}">
+                {exp:ce_img:pair src='{url}' {wm_pic_small} width='120' height='90' allow_scale_larger="yes" crop='yes'}
+                <img src="{made}" width="120" height="90" >
+                {/exp:ce_img:pair}
+              </li>
+            {/projects_photos}
+            {projects_planing}
+              <li class="thumbnail {if count == 1}active{/if}" data-urlfull="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" {wm_pic} data-url="{exp:ce_img:pair src='{url}' {wm_pic} height='414' width='540' allow_scale_larger='yes' crop='no'}{made}{/exp:ce_img:pair}">
+                {exp:ce_img:pair src='{url}' {wm_pic_small} width='120' height='90' allow_scale_larger="yes" crop='yes'}
+                <img src="{made}" width="120" height="90" >
+                {/exp:ce_img:pair}
+              </li>
+            {/projects_planing}
+            </ul>
+          </div>
+        </div>
+        <div class="col-xs-5">
+        <div class="row">
+          <div class="col-xs-12 people-vote">
+          {!--
+          <span class="">Народный рейтинг</span><br>
+          --}
+          <div id="rating-stat" data-entry="{entry_id}"></div>
+          {exp:rating:form
+              form:action="http://glavstroy365.ru/companies"
+              entry_id="{entry_id}"
+              collection="Rating"
+              form:id="idRatingForm"
+              ajax_request="yes"  
+              output_json="yes"
+              allow_duplicates="no"
+          }
+          <input type="hidden" id="username" name="name" value="{if logged_in}{name}{if:else}guest{/if}">
+          <input type="hidden" id="email" name="email" value="{if logged_in}{email}{if:else}contact@glavstroy365.ru{/if}">
+          <input type="hidden" id="ratingtop" name="rating">
+          {/exp:rating:form}
+
+          {exp:rating:stats
+            entry_id="{entry_id}"
+            precision="1"
+          }
+          {!--
+        <div class="">
+          Рейтинг <span id="avgRating">{overall_avg}</span><span id="sumRating" class="hidden">{overall_sum}</span> на основе <span id="countRating">{overall_count}</span> голосов
+        </div>
+        <div id="response"></div>
+        {if rating_no_results}
+        <div class="">
+          <span id="avgRating">{overall_avg}</span><span id="sumRating">{overall_sum}</span><span id="countRating">{overall_count}</span>
+        </div>
+          <div class="">
+            <p id="noRating">Нет оценок</p>
+          </div>
+        {/if}
+          --}
+
+          <div class="">
+          Рейтинг <span id="avgRating">{overall_avg}</span><span id="sumRating" class="hidden">{overall_sum}</span> на основе <span id="countRating">{overall_count}</span> голосов
+        </div>
+        <div id="response"></div>
+        {if rating_no_results}
+        <div class="hidden">
+          Рейтинг <span id="avgRating">{overall_avg}</span><span id="sumRating" class="hidden">{overall_sum}</span> на основе <span id="countRating">{overall_count}</span> голосов
+        </div>
+          <div class="">
+            <p id="noRating">Нет оценок</p>
+          </div>
+        {/if}
+    
+    {/exp:rating:stats}
+
+     <script type="text/javascript">
+        $(document).ready(function() {
+          var rating = $("#noRating").text();
+          var avgratingnew = 0;
+          if (rating != "Нет оценок") avgratingnew = +$("#avgRating").text();
+
+          $('#rating-stat').raty({ 
+            score: avgratingnew,
+            starType: 'i',
+            hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+            target : '#ratingtop',
+            targetType : 'score',
+            targetKeep : true,
+            halfShow: true,
+            path: '/raty/images',
+             click: function(score, evt) {
+                   evt.preventDefault();
+                  var theAction = $("#idRatingForm").attr("action");
+                  var theData = $("#idRatingForm").serialize();
+                  $.ajax({
+                              type: "POST",
+                              url: theAction, // <= Providing the URL
+                              data: theData, // <= Providing the form data, serialized above
+                              success: function(results){  
+                                      // What to do when the ajax is successful. 
+                                      // "results" is the response from the url (eg. "theAction" here)
+                                      console.log(results);
+                                      if (results.success){
+                                        var oldrating = 0;
+                                        var oldcountRating = 0;
+                                        var oldsumRating = 0;
+                                        
+                                        if ( $("#noRating").text() != "Нет оценок") {
+                                          var oldrating = $("#avgRating").text();
+                                          var oldcountRating = $("#countRating").text();
+                                          var oldsumRating = $("#sumRating").text();
+                                        } else {
+                                          $("#noRating").text("");
+                                          $("#noRating").parent("div").addClass("hidden");
+                                          $("#avgRating").parent("div").removeClass("hidden");
+                                        }
+                                        $("div#response").html("<span class='label label-success'><i class='fa fa-thumbs-o-up'></i>  Спасибо, Ваш голос учтен!</span>");
+                                        
+                                        
+                                        var newsumRating = parseInt(oldsumRating) + score;
+                                        var newcountRating =  parseInt(oldcountRating) + 1;
+                                        var newrating = newsumRating/newcountRating;
+                                        $("#avgRating").text(newrating.toFixed(1));
+                                        $("#countRating").text(newcountRating);
+                                        $("#sumRating").text(newsumRating);
+
+                                      } else {
+                                        $("div#response").html("<span class='label label-danger'>К сожалению, мы не учли ваш голос </span>");
+                                      }
+                                  },
+                              error: function(results){
+                                      // What to do when the ajax fails. 
+                                      console.log("ERROR");
+                                      $("div#response").html("<span class='label label-danger'>"+results.message+"</span>");
+                              }
+                  });
+            }
+          });
+        });
+      </script>
+
+    </div>
+</div>
+<br>
+          <span class="underline">Средняя цена:</span>
+          <p class="price"><span class="label label-danger" >{projects_avgprice} руб.</span></p>  
+          {!--Средняя цена--}
+          <p class="price hidden"><span class="label label-danger" id="averagePrice"></span></p>  {!--class="label label-danger"--}
+          <p><b>от <span id="lowestPrice">0</span> руб. ... <span id="highestPrice">0</span> руб.</b></p>
+            {if logged_in}
+          <p>
+            {embed='embed/.top-buttons' idproject="{entry_id}" nameproject="{title}"}  
+          </p>
+          {/if}
+          {if logged_out}
+          <p>
+            <a class="btn btn-success btn-block" data-target="#loginModal" data-toggle="modal" type="button">
+              <i class="fa fa-plus" data-original-title="" title=""></i>
+              Добавить свою цену
+            </a>
+          </p>
+          <!-- Modal -->
+          <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                  <h4 class="modal-title" id="loginModalLabel">Вход</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <p>Для того чтобы добавлять цену, надо зарегестрироваться на сайте и заполнить информацию о компании.</p>
+                    </div>
+                  </div>
+                    {embed="embed/.login_form" return="projects/{url_title}"}
+                </div>
+                <div class="modal-footer">
+                  <p><i class="fa fa-question-circle"></i> <a href="{path='users/forgot_password'}">Забыли пароль?</a> | <i class="fa fa-plus-circle"></i> <a href="{path='users/join'}">Регистрация</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/if}
+          
+          <p><b>Средний срок исполнения:</b> <span id="averageTime">0</span> дней</p>
+
+          {if projects_floors !=""}<p><b>Этажность:</b> {projects_floors}</p>{/if}
+          {if projects_size !=""}<p><b>Размеры:</b> {projects_size} м</p>{/if}
+          {if projects_area !=""}<p><b>Жилая площадь:</b> {projects_area} м<sup>2</sup></p>{/if}
+          {if projects_extra !=""}
+
+          {/if}
+          <div class="row">
+            <div class="col-xs-12">
+              <b>Дополнительные парамтеры:</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4">
+              {if projects_extra_balkon == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Балкон <br />
+              {if projects_extra_lestnica == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Лестница<br />
+              {if projects_extra_2light == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Второй свет<br />
+              {if projects_extra_sanuzel == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Санузел<br />
+            </div>
+            <div class="col-xs-4">
+              {if projects_extra_otlivy == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Отливы<br />
+              {if projects_extra_bania == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Баня<br />
+              {if projects_extra_garazh == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Гараж<br />
+            </div>
+            <div class="col-xs-4">
+              {if projects_extra_krylco == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if} Крыльцо<br />
+              {if projects_extra_terassa == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if}  Терраса<br />
+              {if projects_extra_veranda == "Есть"}<i class="fa fa-check text-success"></i>{if:else}<i class="fa fa-times text-danger"></i>{/if}  Веранда<br />
+          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row project-row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2 id="prices">Предложения компаний</h2>
+        </div>
+      </div>
+      <div class="row project-row">
+        <div class="col-xs-12">
+          <div class="row">
+            <form action="">
+              <div class="row">
+                <div class="col-xs-6">
+                  <p><b>Регион строительства</b></p>
+                 
+                  <select id="Select-region_list" name="grade_foundation" data-width="100%" data-live-search="true" class="selectpicker">
+                    <option value="Все регионы" selected="selected">Все регионы</option>
+                    {exp:low_variables:parse var='regions-severo-zpad'}
+                    {if row_count == "1"} 
+                    <optgroup label="Северо-западный">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regions-central'}
+                    {if row_count == "1"} 
+                    <optgroup label="Центральный">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regions-privolzhskij'}
+                    {if row_count == "1"} 
+                    <optgroup label="Приволжский">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regions-juzhnyj'}
+                    {if row_count == "1"} 
+                    <optgroup label="Южный">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regions-krymskij'}
+                    {if row_count == "1"} 
+                    <optgroup label="Крымский">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regions-severo-kavkaz'}
+                    {if row_count == "1"} 
+                    <optgroup label="Северо-Кавказский">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regiona-ural'}
+                    {if row_count == "1"} 
+                    <optgroup label="Уральский">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regions-sibir'}
+                    {if row_count == "1"} 
+                    <optgroup label="Сибирский">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                    {exp:low_variables:parse var='regions-dalnevostok'}
+                    {if row_count == "1"} 
+                    <optgroup label="Дальневосточный">
+                    {/if}
+                      <option>{cell_1}</option>
+                    {if row_count == total_rows} 
+                    </optgroup>
+                    {/if}
+                    {/exp:low_variables:parse}
+                  </select>
+                </div>
+                <div class="col-xs-6">
+                  <p><b>Материал</b></p>
+                   <select id="grade_material" name="grade_material" data-width="100%" class="selectpicker">
+                      <option selected="selected">Любой</option>
+                    {exp:channel:categories channel="grade"}
+                      <option>{category_name}</option>
+                    {/exp:channel:categories}
+                   </select>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> 
+      {embed="embed/.project-requests-table" idproject="{entry_id}"}
+      <!-- Modal -->
+      <div class="modal fade" id="compare-modal" tabindex="-1" role="dialog" aria-labelledby="compare-modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="row under-table">
+        <div class="col-xs-4 col-xs-offset-4">
+          <a class="btn btn-block btn-success addrow" id="addrows_button" type="button">
+            <i class="fa fa-align-left"></i>
+            Все предложения
+          </a>
+        </div>
+        <div class="col-xs-4 sravnit">
+          <h5><a id="compareLink" href="{path='projects/compare-request-page'}/">Сравнить <span>0</span> предложения</a></h5>
+        </div> 
+      </div>
+      
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $('#addrows_button').on('click', function(e) {
+               
+              var count_tr = $('#tableRequests tr').length - 1;
+              if( count_tr > 0){
+                $.ajax({
+                    url : 'http://glavstroy365.ru/embed/project-requests-row/{entry_id}/'+count_tr,
+                    type : 'GET',
+                    dataType : 'html',
+                    beforeSend: function() {
+                       $('#loader').show();
+                       $('#addrows_button i').removeClass('fa fa-align-left');
+                       $('#addrows_button i').addClass('fa fa-refresh fa-spin');
+                    },
+                    complete: function(){
+                      setTimeout(function() {
+                        $('#loader').hide();
+                        $('#addrows_button i').removeClass('fa fa-refresh fa-spin');
+                        $('#addrows_button i').addClass('fa fa-align-left');
+                      }, 1000);
+                    },
+                    success : function(data) {
+                      setTimeout(function() {
+                        $('#tableRequests tbody').append(data);
+                        $("#tableRequests").trigger("update");
+                      }, 1000);
+                    },
+                    error : function() {
+                        console.log('error');
+                    }
+                });
+              }
+          });
+        });
+      </script>
+
+      {if logged_in}
+        {embed="embed/.button_request" idproject="{entry_id}" nameproject="{title}" idmember='3' }
+      {/if}
+      <hr>
+      <div class="row">
+        {embed="embed/.project-gallery" idproject="{entry_id}"}
+      </div>
+
+{if logged_in}
+
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-4 text-center">
+          <a class="btn btn-block btn-success" href="/users/add_gallery/{entry_id}">
+            <i class="fa fa-plus" data-original-title="" title=""></i>
+            Добавить фотографии к проекту
+          </a>
+        </div>
+      </div>
+{/if}
+
+    </div>
+    
+     <br/>
+    <div class="container-fluid otzyvy-proj-container" id="IdOtzyvy">
+      <hr class="shadow">
+      <div class="container">
+        <h1>Отзывы о проекте</h1>
+
+{exp:threaded_comments:display  entry_id="{entry_id}" limit="10" orderby="date" sort="desc" paginate="bottom"}
+<ul class="panelul panel-default">
+{comments}
+
+<li id="comment_{comment_id}"> 
+  <div class="panel-heading"> 
+    <i class="fa fa-user"></i> {name} : {if comment_rating =="-"} <span class="label label-danger"><i class="fa fa-thumbs-o-down"></i> отрицательный отзыв</span>{/if}{if comment_rating =="0"} <span class="label label-info"><i class="fa fa-exchange"></i> нейтральный отзыв</span>{/if}{if comment_rating =="+"} <span class="label label-success"><i class="fa fa-thumbs-o-up"></i> положительный отзыв</span>{/if}
+    <span class="label label-default pull-right">
+      <i class="fa fa-calendar"></i> 
+      {comment_date format="%j %F %Y"}
+    </span>
+  </div>
+  <div class="panel-body">
+  <div class="comment-text comment_body">{comment}</div>
+  <p class="text-right">
+    {!--
+    <a data-toggle="modal" href="/embed/complaint-form/{entry_id}/{comment_id}/" data-target="#modalComplaint" class="btn btn-warning" rel="tooltip" title="Пожаловаться"> <i class="fa fa-bullhorn"></i></a>
+   <a href="javascript:void(0)" class="btn btn-success reply" rel="{comment_id}" ><i class="fa fa-comment-o"></i> Ответить</a> <a href="javascript:void(0)" class="btn btn-success quote reply" rel="{comment_id}"><i class="fa fa-quote-left"></i> Ответить с цитированием</a></p>
+   --}
+
+   <i class="fa fa-bullhorn"></i> <a data-toggle="modal" href="/embed/complaint-form/{entry_id}/{comment_id}/" data-target="#modalComplaint">Пожаловаться</a>
+   | <i class="fa fa-comment-o"></i> <a href="javascript:void(0)" class="reply" rel="{comment_id}" >Ответить</a> | <i class="fa fa-quote-left"></i> <a href="javascript:void(0)" class="quote reply" rel="{comment_id}"> Ответить с цитированием</a></p>
+
+  </div>
+{thread_open}<ul class="cmt_lvl_{level}">{/thread_open}
+{thread_close}</li></ul>{/thread_close}
+{thread_container_close}</li>{/thread_container_close}
+{/comments}
+</ul>
+<br>
+<div class="pagination-links">
+{pagination_links}
+</div>
+{/exp:threaded_comments:display}
+
+<p class="text-center"><a href="javascript:void(0)" class="btn btn-success reply" rel="0"><i class="fa fa-comment-o"></i> Оставить отзыв</a></p> 
+
+
+        <div class="panel panel-default hidden" id="formReviewholder">
+          <div class="panel-body">
+
+{exp:threaded_comments:form 
+  entry_id="{entry_id}" 
+  enable_uploads="y" 
+  upload_dir_id="5" 
+  parent_id="{segment_3}"
+  form_class="form-registration"
+  form_id="form-comment"
+}
+{if error}
+<div class="alert alert-success" role="alert">{error_text}</div>
+{if:else}
+{if logged_out}
+        <div class="row">
+          <div class="col-xs-6">
+            <label for="comment-author">Ваше имя</label>
+            <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" name="name" id="comment-author" rel="tooltip" data-title="Введите ваше имя">
+                  <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                </div>
+            </div>
+          </div>
+            <div class="col-xs-6">
+              <label for="comment-email">Ваш Email</label>
+              <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="email" id="comment-email" rel="tooltip" data-title="Введите Ваш Email" >
+                    <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                </div>
+              </div>
+          </div>
+        </div>
+{/if}
+
+
+          <div class="row">
+            <div class="col-xs-6">
+              <label for="comment-comment">Ваш отзыв</label>
+              <div class="form-group">
+                <select name="comment_rating" id="comment_rating" class="selectpicker show-tick">
+                  <option value="-" data-icon="fa fa-thumbs-o-down">Отрицательный</option>
+                  <option value="0" data-icon="fa fa-exchange" selected="selected">Нейтральный</option>
+                  <option value="+" data-icon="fa fa-thumbs-o-up">Положительный</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <label for="comment-comment">Прикрепить файл</label>
+              <div class="form-group">
+                <input type="file" name="userfile[]" />
+              </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+          <label for="comment-comment">Текст</label>
+          <div class="form-group">
+            <textarea class="form-control" name="comment" id="comment-comment" rows="3"></textarea>
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+      {if logged_out}
+      <div class="col-xs-3">
+        <label for="save_info"><input type="checkbox" id="save_info" name="save_info" value="yes" {save_info} /> Запомнить меня</label>
+      </div>
+      {/if}
+      <div class="col-xs-4">
+        <label for="notify_me"><input type="checkbox" id="notify_me" name="notify_me" value="yes" {notify_me} /> Сообщать мне об ответах</label>
+      </div>
+    </div>
+
+{if captcha}{captcha}{/if}
+
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="submit" type="submit"  class="btn btn-success pull-right" ><i class="fa fa-comments-o"></i> Оставить отзыв</button>
+      </div>
+    </div>
+
+{/if}
+{/exp:threaded_comments:form} 
+  </div>
+</div>
+{!-- this code will set proper parent_id and move the form --}
+<style type="text/css">
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.selectpicker').selectpicker('val', 'Все регионы');
+  $('.reply').click(function() {
+    $('#form-comment textarea[name=comment]').val("");
+    $('#form-comment input[name=parent_id]').val($(this).attr('rel'));
+    $('#formReviewholder').insertAfter( // Insert the comment form after...
+    $(this)
+    .parent() // The containing p tag
+    );
+    $('#formReviewholder').removeClass('hidden');
+  });
+  $('.quote').click(function() {
+    console.log( $(this).parent().parent().find('.comment-text'));
+    $('#form-comment textarea[name=comment]').val('[quote]'+
+    $(this).parent().parent().find('.comment-text').text()+
+    '[/quote]\n'
+    );
+  });
+});
+</script> 
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    $('input[rel="tooltip"]').tooltip({
+        'trigger':'focus', 
+        'title': $(this).data("title")
+    });
+    
+   
+                //Validation
+               $('#form-comment').bootstrapValidator({
+                    message: 'Данные не верны',
+                    excluded: ':disabled',
+                  fields: {
+                    comment: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Введите Ваш отзыв'
+                            }                           
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите Ваше имя'
+                            }                           
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите email'
+                            },
+                            emailAddress:{
+                              message: 'Не верный формат Email'
+                            }
+                           
+                        }
+                    },
+                  }
+              });
+              //End Validation
+    
+});
+</script>
+      
+      </div>
+    </div>
+    <div class="container-fluid projects-container">
+      <hr class="shadow">
+      <div class="container">
+        {embed="embed/.project-analog" size="{projects_size}" identry="{entry_id}"}
+        <p class="text-center"><a class="red" href="{path='projects'}">Перейти в галерею типовых проектов</a></p>
+      {otma}
+      </div>
+    </div>
+    {embed="embed/.footer" entry_id='{entry_id}'}
+  </body>
+</html>
+{/exp:channel:entries}

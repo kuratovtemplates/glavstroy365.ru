@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="{exp:channel:category_heading}{category_name}{/exp:channel:category_heading}" title_suffix="Проекты"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li> <a href="{path='companies/'}">Компании</a></li>
+          <li> <a href="{path='companies/'}/{exp:namecompany userid='{segment_3}' return='url_title'}">{exp:namecompany userid='{segment_3}' return="name"}</a></li>
+          <li> Проекты {exp:namecompany userid='{segment_3}' return="name"}</li>
+          
+          
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col"><!---->
+          <h1>Проекты домов компании {exp:namecompany userid='{segment_3}' return="name"}</h1>
+        
+          {embed="embed/.company-projects-id" idprojects="{exp:idprojects userid='{segment_3}'}" idmember="{segment_3}"}
+          
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right" entry_id="{exp:namecompany userid='{segment_3}' return="id"}"}
+        </div>
+      </div>
+    </div>
+    {embed="embed/.footer"}
+            <!-- Modal Order -->
+            <div class="modal fade" id="modalOrderCompany" tabindex="-1" role="dialog" aria-labelledby="modalOrderCompany" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+
+                </div>
+              </div>
+            </div>
+  </body>
+</html>

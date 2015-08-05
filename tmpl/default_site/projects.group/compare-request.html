@@ -1,0 +1,220 @@
+                    {if segment_3 !=""}
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Сравнение предложений</h4>
+                          </div>
+                          <div class="modal-body">
+                                  <table id="compareTable">
+                                  <tbody>
+                                    <tr data-property="title_company">
+                                      <td>
+                                        <b>Компания</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="price_compl">
+                                      <td>
+                                        <b>Цена</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="days_compl">
+                                      <td >
+                                        <b>Количество дней</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="title_complectation">
+                                      <td>
+                                        <b>Комплектация</b>
+                                      </td>
+                                    </tr>
+
+                                    <tr data-property="grade_foundation">
+                                      <td>
+                                        <b>Фундамент</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_base">
+                                      <td>
+                                        <b>Основание дома</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_blockhouse">
+                                      <td>
+                                        <b>Сруб дома и перегородки внутри</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_angle">
+                                      <td>
+                                        <b>Угловые соединения бруса</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_roof">
+                                      <td>
+                                        <b>Кровля</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_floorslabs">
+                                      <td>
+                                        <b>Межэтажные перекрытия</b>
+                                      </td>
+                                    </tr>
+
+                                    <tr data-property="grade_raftersystem">
+                                      <td>
+                                        <b>Стропильная система</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_ceilingheight">
+                                      <td>
+                                        <b>Высота потолков</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_mansard">
+                                      <td>
+                                        <b>Мансарда</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_steam">
+                                      <td>
+                                        <b>Парная</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_furnace">
+                                      <td>
+                                        <b>Печь</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_commonroom">
+                                      <td>
+                                        <b>Комната отдыха</b>
+                                      </td>
+                                    </tr>
+
+                                    <tr data-property="grade_washroot">
+                                      <td>
+                                        <b>Помывочное отделение</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_1floorceilings">
+                                      <td>
+                                        <b>Потолки 1-го этажа</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_floors">
+                                      <td>
+                                        <b>Полы</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_staircase">
+                                      <td>
+                                        <b>Лестница</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_doors">
+                                      <td>
+                                        <b>Двери</b>
+                                      </td>
+                                    </tr>
+                                    <tr data-property="grade_windows">
+                                      <td>
+                                        <b>Окна</b>
+                                      </td>
+                                    </tr>
+
+                                    <tr data-property="grade_note">
+                                      <td>
+                                        <b>Примечание</b>
+                                      </td>
+                                    </tr>
+
+                                  </tbody>
+                                  </table>
+                          <script type="text/javascript">
+                          var arr_compl = [];
+                          {exp:channel:entries channel="request" entry_id="{segment_3}" limit="10" dynamic="no"}
+                            {if no_results}
+                                 <div class="alert alert-warning">Не найден предложения. </div><br>
+                            {/if}
+
+                                var complectation{count} = {
+                                  title_company: "{exp:query sql="SELECT `title` as company_title, `url_title` as company_url_title FROM `exp_channel_titles` WHERE author_id = '{author_id}' AND channel_id = '1'"}{company_title}{/exp:query}",   
+                                  url_title_company: "{exp:query sql="SELECT `title` as company_title, `url_title` as company_url_title FROM `exp_channel_titles` WHERE author_id = '{author_id}' AND channel_id = '1'"}{company_url_title}{/exp:query}",   
+                                  title_complectation:"{exp:query sql="SELECT `title` as grade1_title, `url_title` as grade1_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_grade}' AND channel_id = '3'"}{grade1_title}{/exp:query}",   
+                                  price_compl: "{request_price} руб.",
+                                  days_compl: "{request_time} дней"
+                                }
+
+                                {embed="embed/.grade-show-compare" idgrade="{request_grade}" complectationcount="complectation{count}"}
+
+                                arr_compl.push(complectation{count});
+                          {/exp:channel:entries}
+                                  
+                          $(document).ready(function(){
+                            for (i = 0; i < arr_compl.length; ++i) {
+                              $('#compareTable').find('tr').each(function(){
+                                var propertydata = $(this).data("property");
+                                $(this).find('td').eq(0).after('<td>'+arr_compl[i][propertydata]+'</td>');
+                              });
+                            }
+                          });
+                          </script>
+
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                          </div>
+                    {if:else}
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Сравнение предложений</h4>
+                      </div>
+                      <div class="modal-body">
+                           <div class="alert alert-warning">Не найден предложения. </div><br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                      </div>
+                    {/if}
+
+                    {!--exp:channel:entries channel="grade" entry_id="{segment_3}" limit="1" dynamic="no"}
+                    <div class="modal-header">
+      							  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      							  <h4 class="modal-title" id="myModalLabel">Комплектация: {title}</h4>
+      							</div>
+      							<div class="modal-body">
+	      							<p><b>Комплектация: {title}</b></p>
+	                    {if grade_foundation !=""}<p><b>Фундамент:</b> {grade_foundation} </p>{/if}
+	                    {if grade_base !=""}<p><b>Основание дома:</b> {grade_base} </p>{/if}
+	                    {if grade_blockhouse !=""}<p><b>Сруб дома и перегородки внутри:</b> {grade_blockhouse} </p>{/if}
+	                    {if grade_angle !=""}<p><b>Угловые соединения бруса:</b> {grade_angle} </p>{/if}
+	                    {if grade_roof !=""}<p><b>Кровля:</b> {grade_roof} </p>{/if}
+	                    {if grade_floorslabs !=""}<p><b>Межэтажные перекрытия:</b> {grade_floorslabs} </p>{/if}
+	                    {if grade_raftersystem !=""}<p><b>Стропильная система:</b> {grade_raftersystem} </p>{/if}
+	                    {if grade_ceilingheight !=""}<p><b>Высота потолков:</b> {grade_ceilingheight}{/if}
+											{if grade_mansard !=""}<p><b>Мансарда:</b> {grade_mansard}{/if}
+											{if grade_steam !=""}<p><b>Парная:</b>	{grade_steam}{/if}
+											{if grade_furnace !=""}<p><b>Печь:</b>	{grade_furnace}{/if}
+											{if grade_commonroom !=""}<p><b>Комната отдыха:</b>	{grade_commonroom}{/if}
+											{if grade_washroot !=""}<p><b>Помывочное отделение:</b>	{grade_washroot}{/if}
+											{if grade_1floorceilings !=""}<p><b>Потолки 1-го этажа:</b>	{grade_1floorceilings}{/if}
+											{if grade_floors !=""}<p><b>Полы:</b>	{grade_floors}{/if}
+											{if grade_staircase !=""}<p><b>Лестница:</b>	{grade_staircase}{/if}
+											{if grade_doors !=""}<p><b>Двери:</b>	{grade_doors}{/if}
+											{if grade_windows !=""}<p><b>Окна:</b>	{grade_windows}{/if}
+											{if grade_note !=""}<p><b>Примечание:</b> {grade_note}{/if}
+      							</div>
+      							<div class="modal-footer">
+      							  <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      							</div>
+                    {if no_results}
+                    <div class="modal-header">
+      							  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      							  <h4 class="modal-title" id="myModalLabel">Комплектация</h4>
+      							</div>
+      							<div class="modal-body">
+                         <div class="alert alert-warning">Не найдена комплектация. </div><br>
+                    </div>
+      							<div class="modal-footer">
+      							  <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      							</div>
+                    {/if}
+                    {/exp:channel:entries--}

@@ -1,0 +1,90 @@
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {exp:nsm_better_meta:template}
+    <!-- Note there is no responsive meta tag here -->
+    <link rel="shortcut icon" href="/assets/ico/favicon.ico">
+    <!-- Bootstrap core CSS -->
+    <link href="/css2014/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css2014/bootstrap-switch.min.css" />
+
+    {if segment_2=="add_grade" || segment_2=="edit_grade"}{/if}
+    {if segment_2=="project" || segment_2=="edit_request"}{/if}
+    <link href="/css2014/bootstrap-select.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css2014/style.css?4.91" rel="stylesheet">
+    <link href="/css2014/style-new.css?2.93" rel="stylesheet">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/fontello-ab88a247/css/fontello.css">
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+ 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    
+    <!--CSS For File Upload-->
+    <link rel="stylesheet" href="/jqfu/css/jquery.fileupload.css">
+   
+     <!-- custom scrollbar stylesheet -->
+    <link rel="stylesheet" href="/customscrollbar/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="/css2014/bootstrapValidator.min.css"/>
+
+    <link rel="stylesheet" href="/css2014/jquery.nouislider.css?1" />
+    <link rel="stylesheet" href="/css2014/jquery.nouislider.pips.css" />
+
+    <script src="/js2014/bootstrap.min.js"></script>
+    <script src="/js2014/bootbox.min.js"></script>
+
+    {if segment_2=="add_grade" || segment_2=="edit_grade"}
+    <script src="/js2014/add_grade.js"></script>     
+    {/if}
+
+    <script src="/js2014/bootstrap-select.min.js"></script>
+
+    <script src="/customscrollbar/jquery.mCustomScrollbar.js"></script>
+    <script src="/js2014/bootstrap-switch.min.js"></script>
+    <script src="/js2014/scripts.js?1"></script>
+
+    <!-- Add mousewheel plugin (this is optional) -->
+    <script type="text/javascript" src="/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+    <!-- Add fancyBox main JS and CSS files -->
+    <script type="text/javascript" src="/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
+    <link rel="stylesheet" type="text/css" href="/fancybox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+    <!-- Add Button helper (this is optional) -->
+    <link rel="stylesheet" type="text/css" href="/fancybox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5" />
+    <script type="text/javascript" src="/fancybox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
+    <!-- Add Thumbnail helper (this is optional) -->
+    <link rel="stylesheet" type="text/css" href="/fancybox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" />
+    <script type="text/javascript" src="/fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+    
+    <!--HoverPlugin-->
+    <script type="text/javascript" src="/js2014/bootstrap-hover-dropdown.min.js"></script>
+    
+    <!--Validator-->
+    <script type="text/javascript" src="/js2014/bootstrapValidator.min.js"></script>
+    
+    <!-- Registration Form JS -->
+    <script src="/js2014/registration.js"></script>
+    {if segment_1=="projects" || segment_1=="gallery" || segment_2=="edit_request" || segment_2=="project"}
+    <script  type="text/javascript" src="/js2014/project.js"></script>
+    <script  type="text/javascript" src="/js2014/jquery.tablesorter.min.js"></script>
+    {/if}
+    {if segment_1==""}
+    <script  type="text/javascript" src="/js2014/jquery.jcarousel.min.js"></script>    
+    {/if}
+
+    <script src="/js2014/jquery.nouislider.all.js"></script>
+
+
+    <link rel="stylesheet" href="/raty/jquery.raty.css">
+    <script src="/raty/jquery.raty.js"></script>
+    
+
+{if segment_2 != "company" AND segment_1!="" AND segment_1!="rasstoyanie"}
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBjBSm4zqxEUkXo7LftjkqhI_DLA2hTbj8&sensor=false&libraries=places"></script>
+{/if}

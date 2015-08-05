@@ -1,0 +1,15 @@
+{exp:rating:insert_rating_vote
+    rating_id="{segment_3}"
+}
+ 
+    {if failure}
+        <h2>Error!</h2>
+    {/if}
+    {if success}
+        <h2>Thank You!</h2>
+    {/if}
+    <p>{message}</p>
+ 
+{/exp:rating:insert_rating_vote}
+
+{if failure}Error!{/if}{if success}Thanks for your vote{/if}

@@ -1,0 +1,86 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                
+    {embed="embed/.meta" title="Заявки на строительство "}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Заявки на строительство</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Заявки на строительство</h1>
+          <br>
+          {exp:channel:entries channel="request_users" limit="10"}
+          {if no_results}
+              <div class="alert alert-warning">Пока нет заявок на строительство. </div>
+          {/if}
+            <div class="row firm-row">
+              <div class="col-xs-6">
+                <span class="titlefirm"><a href="{title_permalink='users/request_user_page'}">{requset_users_typebuilding}</a></span><br>
+                ID заявки: {entry_id} <br>
+                Дата заявки: {entry_date format="%d.%m.%Y - %G:%i"}<br>
+                Материал исполнения: {requset_users_material} <br>
+                <h5>Бюджет до {requset_users_price} руб.</h5>
+                {if requset_users_fio !=""}<h5>Ф.И.О.: {requset_users_fio}</h5>{/if}
+              </div>
+              <div class="col-xs-6">
+                <div class="btn-group btn-group-sm pull-right">
+                  <a type="button" href="{title_permalink='users/request_user_page'}" class="btn btn-primary btn-default">детальнее...</a>
+                </div>
+              </div>
+            </div> 
+              {paginate}
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+
+          {/exp:channel:entries}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

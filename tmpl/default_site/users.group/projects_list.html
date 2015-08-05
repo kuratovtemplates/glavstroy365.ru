@@ -1,0 +1,281 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                           
+    {embed="embed/.meta" title="Проекты для оценки"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Проекты для оценки</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+
+          {if segment_3=='first'}
+          <div class="alert alert-success alert-dismissible" role="alert"><b>Все шаги пройдены!</b><br>Присваиваете свои цены проектам. Вы также можете просматривать <a href="/users/request_users/">заявки на строительство</a> от посетителей сайта и добавлять <a href="/users/gallery/">фотографии</a> выполненных работ в фотогалерею.<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button></div>
+          {/if}
+          <h1>Проекты для оценки</h1>
+          <div class="alert alert-warning">Здесь представлены проекты, которые вы не оценили. Если у вас уже добавлена <a href="http://glavstroy365.ru/users/grades/">комплектация</a>, вы можете оценить проект в соответствии с комплектацией.</div>
+
+          <?
+            //Get all projects id from requests user
+            $results = ee()->db->select("exp_channel_data.field_id_47 AS `idrequests`")
+                    ->from('channel_titles')
+                    ->join('exp_channel_data', 'exp_channel_titles.entry_id = exp_channel_data.entry_id')
+                    ->where(array(
+                        'exp_channel_titles.author_id' =>  ee()->session->userdata('member_id'),
+                        'exp_channel_titles.channel_id' => '4',
+                        'exp_channel_titles.status' => 'open'
+                    ))
+                    ->get();
+
+                    $idsprojects = "";
+                    if ($results->num_rows() > 0)
+                    {
+                        foreach($results->result_array() as $row)
+                        {
+
+                            $idsprojects .= $row['idrequests']."|";
+                        }
+                    }
+
+                    $str_entryids = ($idsprojects!="") ? "not ".$idsprojects : "";
+          ?>
+
+          {exp:channel:entries channel="projects" entry_id="<? echo $str_entryids; ?>" dynamic="no" limit="12"}
+          {if no_results}
+              <div class="alert alert-warning">Нет проектов без ваших цен. Вы оценили все проекты</div>
+          {/if}
+            
+            <div class="row firm-row">
+              <div class="col-xs-3 text-center">
+                  {projects_photos limit="1"}
+                  <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" class="fancybox-thumb" rel="fancybox-thumb-{entry_id}" >
+                      {exp:ce_img:pair src='{url}' height='90' width='120' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{caption}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  {/projects_photos}
+                  Основное фото
+              </div>
+              <div class="col-xs-3 text-center">
+                {projects_planing limit="1"}
+                <a  href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" class="fancybox-thumb" rel="fancybox-thumb-{entry_id}" >
+                  {exp:ce_img:pair src='{url}' height='90' width='120' allow_scale_larger="yes" crop='yes'}
+                  <img src="{made}"  />
+                  {/exp:ce_img:pair}
+                </a>
+                Планировка
+                {/projects_planing}
+              </div>
+              <div class="col-xs-6 ">    
+                <h3>{title}</h3>
+                <div class="btn-group btn-group-sm">
+                  <a type="button" href="{title_permalink='projects'}" class="btn btn-primary btn-default">Подробне...</a>
+                  <a type="button" class="btn btn-warning btn-default" data-toggle='modal' data-target='#myModal-{entry_id}'>Добавить цену</a>
+                </div>
+                
+              </div>
+                  
+                <!-- Modal -->
+      <div class="modal fade" id="myModal-{entry_id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Предложение для проекта</h4>
+              {modal_request_comment}
+            </div>
+             {if {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"}<"1"}
+              <div class="modal-body">
+          <div class="alert alert-warning">У вас пока нет компании. Добавление комплектаций не возможно без создания компании. </div>
+              <a class="btn btn-danger btn-default" href="/users/add_company/"> <i class="fa fa-plus"></i> Добавить сначала компанию</a>
+            </div>
+          {if:else}
+          {if {exp:number_member_entries:count status="open" member_id={member_id} channels="grade"}<"1"}
+          <div class="modal-body">
+           <div class="alert alert-warning">У вас пока нет <a href="http://glavstroy365.ru/users/grades/">комплектаций</a>. Пожалуйста добавьте комплектацию, чтобы оценить проект. Ведь вы указываете цену за проект в соответствии с комплектацией.</div>
+              <a class="btn btn-danger btn-default" href="/users/add_grade/"> <i class="fa fa-plus"></i> Добавить сначала комплектацию</a>
+            </div>
+          {if:else}
+              {exp:channel:form 
+                channel="request" 
+                datepicker="no" 
+                return="projects/{entry_id}" 
+                include_jquery="no"  
+                class="form-registration"
+              }
+            <div class="modal-body">
+              <input name="request_project" type="hidden" id="request_project" value="{entry_id}" >
+              {embed="embed/.grade-select" selectedgrade=""}
+              <div class="row">
+                <div class="col-xs-6">
+                  <input type="hidden" class="form-control" name="title" id="title" value="Предложение для проекта {entry_id}"  onload="liveUrlTitle();" >
+                  <input name="url_title" type="hidden" id="url_title" value="request_idproject_{entry_id}_user_{member_id}" >
+                  <label for="request_price">Цена</label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" class="form-control" name="request_price" id="request_price" value=""  rel="tooltip" data-title="Введите цену за проект в руб." >
+                      <div class="input-group-addon">руб.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <label for="request_time">Время исполнения в днях</label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" class="form-control" name="request_time" id="request_time"  value="{request_time}"  rel="tooltip" data-title="Количество дней">
+                      <div class="input-group-addon">дней</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <label for="request_credit">
+                    <input type="checkbox"  name="credit" id="credit" {if request_credit =="y"}checked="checked"{/if}>
+                    <input type="hidden" value="{request_credit}"  name="request_credit" id="request_credit" >
+                     <i class='fa fa-pie-chart'></i> Возможно построить в кредит 
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <label for="request_insurance">
+                    <input type="checkbox"  name="insurance" {if request_insurance=="y"}checked="checked"{/if}>
+                    <input type="hidden" value="{request_insurance}" name="request_insurance" id="request_insurance">
+                    <i class="fa fa-shield"></i> Включить страховку от пожара
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-success">Добавить предложение</button>
+            </div>
+              {/exp:channel:form}
+
+              <script type="text/javascript">
+          $(document).ready(function() {
+               $("[name='credit']").bootstrapSwitch({
+                size: "small",
+                onText: "да",
+                offText: "нет",
+                state: true
+              });
+                
+
+              $("[name='insurance']").bootstrapSwitch({
+                size: "small",
+                onText: "да",
+                offText: "нет",
+                state: true       
+              });
+              
+
+              $("[name='credit']").on('switchChange.bootstrapSwitch', function (event, state) {
+                (state.value) ? $("[name='request_credit']").val("y") : $("[name='request_credit']").val("n");
+              });
+
+              $("[name='insurance']").on('switchChange.bootstrapSwitch', function (event, state) {
+                (state.value) ? $("[name='request_insurance']").val("y") : $("[name='request_insurance']").val("n");
+              });
+
+              //Validation
+               $('#publishForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                  fields: {
+                    request_price: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите цену'
+                            },
+                            digits:{
+                              message: 'Используйте только цирфы'
+                            }
+                           
+                        }
+                    },
+                    request_time: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите кол-во дней'
+                            },
+                            digits:{
+                              message: 'Используйте только цирфы'
+                            }
+                        }
+                    }
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+           {/if}
+          {/if}
+          </div>
+        </div>
+      </div>
+
+
+            </div>
+          
+
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+
+          {/exp:channel:entries}
+          
+            
+          
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="users/signin"}
+{/if}

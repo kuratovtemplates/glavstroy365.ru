@@ -1,0 +1,44 @@
+
+        {exp:channel:entries channel="projects" dynamic="no" limit="6" entry_id="not {embed:identry}" search:projects_size="{embed:size}"}
+        {if count=='1'}
+        <h2 class="text-center">Аналогичные проекты</h2>
+         <div class="row">
+          <ul id="projects-main-gallery" class="clr text-center">
+        {/if}
+            <li>
+              <a class="main-img" href="{title_permalink='projects'}">
+                {projects_photos limit="1"}
+                {exp:ce_img:pair src='{url}' height='196' width='263' allow_scale_larger="yes" crop='yes'}
+                <img src="{made}" alt="" />
+                {/exp:ce_img:pair}
+                {/projects_photos}
+              </a>
+              <div class="desc">
+                {title}
+                  <br>
+                  <span>{embed='embed/.project-prices' projectid='{entry_id}'}</span>
+              </div>
+              <div class="images">
+                {projects_photos limit="2" offset="1"}
+                <a href="{url}" rel="small-images[{entry_id}]">
+                {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                <img src="{made}" width="80" height="59" alt="" />
+                {/exp:ce_img:pair}
+                </a>
+                {/projects_photos}
+                {projects_planing limit="1"}
+                <a href="{url}" rel="small-images[{entry_id}]">
+                {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                <img src="{made}" width="80" height="59" alt="" />
+                {/exp:ce_img:pair}
+                </a>
+                {/projects_planing}
+
+                <a href="{title_permalink='projects'}" class="more">Подробно</a>
+              </div>
+            </li>
+        {if count=='{total_results}'}
+          </ul>
+        </div>
+        {/if}
+        {/exp:channel:entries}

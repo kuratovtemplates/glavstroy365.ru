@@ -1,0 +1,61 @@
+          {if embed:idprojects !='0' }
+          {exp:channel:entries channel="projects" entry_id="{embed:idprojects}" dynamic="no"  limit="9" sort="asc" orderby="date"}
+          {if count== "1"}
+            <div class="row">
+              <ul id="projects-main-gallery" class="clr text-center">
+            {/if}
+                <li>
+                  {projects_photos limit="1"}
+                  <a class="main-img" href="{title_permalink='companies/project'}/{embed:idmember}" >
+                      {exp:ce_img:pair src='{url}' height='166' width='222' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{caption}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  {/projects_photos}
+                  <div class="desc nodot">
+                    {exp:low_replace find="Дома|Бани" replace="Дом|Баня" multiple="yes"}{categories}{category_name}{/categories}{/exp:low_replace} {title} ({projects_size} м.)
+                    <br>
+                    <span>{embed='embed/.project-prices-user' projectid='{entry_id}' userid='{embed:idmember}'}</span>
+                  </div>
+                  <div class="images">
+                    {projects_photos limit="2" offset="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_photos}
+                    {projects_planing limit="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_planing}
+                    <a href="{title_permalink='companies/project'}/{embed:idmember}" class="more">Подробно</a>
+                  </div>
+                </li>
+            {if count== total_results}
+              </ul>
+            </div>
+
+            {/if}
+            
+          {/exp:channel:entries}
+
+          {exp:channel:entries channel="projects" entry_id="{embed:idprojects}" dynamic="no"  sort="asc" orderby="date"}
+          {if count=="1"}
+          <script>
+            var count1 = {total_results};
+            $("#countprojects").text(count1);
+          </script>
+          <br>
+          <a href="{path='companies/projects'}/{embed:idmember}" class="btn btn-success">Все проекты компании ({total_results})</a>
+          <br>
+          {/if}
+          {/exp:channel:entries}
+          {if:else}
+          Пока нет предложений
+          {/if}
+          
+          

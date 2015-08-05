@@ -1,0 +1,50 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                             
+    {embed="embed/.meta" title="Личный кабинет"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Пользователи</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Личный кабинет</h1>
+         
+
+            {exp:user:stats}
+              <p>Логин: <b>{screen_name}</b></p>
+              <p>Email: <b>{email}</b></p>
+              <p>Купон: <b>{member_coupon} </b>(вы можете запросить еще купон на скидку 30% для получения <a href="http://glavstroy365.ru/podpiska">заявок</a>, при условии оценки все <a href="http://glavstroy365.ru/projects">проектов</a> на сайте)</p>
+              <p>Компаний:<b> {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"}</b></p>
+              <p>Зарегистрирован: <b>{join_date format="%m %d, %Y"}</b></p>
+            {/exp:user:stats}
+            
+          
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+    <br>
+    <div class="container-fluid project-podbor">
+      <a href="{site_url}#indexForm">Подобрать проект?</a>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

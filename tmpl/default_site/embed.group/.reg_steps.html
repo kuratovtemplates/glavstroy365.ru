@@ -1,0 +1,41 @@
+<style>
+.reg_steps {
+white-space: nowrap;
+margin: 0 0 25px;
+padding: 0 0 20px;
+border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.reg_step {
+position: relative;
+display: inline-block;
+width: 30%;
+margin: 0 3% 0 0;
+vertical-align: bottom;
+}
+.reg_step_number {
+font-size: 36px;
+display: inline-block;
+margin: 0 15px 0 0;
+}
+.reg_step_text {
+display: inline-block;
+line-height: 1.4em;
+white-space: normal;
+}
+.gray { color: #BDBDBD;
+}
+.reg_step_header {
+font-size: 24px;
+margin: 0 0 15px;
+}
+.strike .reg_step_text, .strike .reg_step_number {
+  text-decoration: line-through;
+}
+
+</style>
+<div class="reg_step_header">Три простых шага к успешным продажам:</div>
+<div class="reg_steps">
+<div class="reg_step {if '{embed:gray}'=='step_1'}gray{if:elseif '{embed:gray}'=='step_2' OR '{embed:gray}'=='step_3'}strike{/if}"><div class="reg_step_number">1.</div><div class="reg_step_text">Регистрация <br>пользователя</div></div>
+<div class="reg_step {if '{embed:gray}'=='step_2'}gray{if:elseif '{embed:gray}'=='step_3'}strike{/if}"><div class="reg_step_number">2.</div><div class="reg_step_text">Добавление <br>компании</div></div>
+<div class="reg_step {if '{embed:gray}'=='step_3'}gray{/if}"><div class="reg_step_number">3.</div><div class="reg_step_text">Начало<br> работы</div></div>
+</div>

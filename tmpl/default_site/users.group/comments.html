@@ -1,0 +1,51 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                               
+    {embed="embed/.meta" title="Отзывы"}
+   <script type="text/javascript" src="/js2014/comment.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Отзывы</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Отзывы</h1>
+          <br>
+          {exp:channel:entries channel="companies" author_id="CURRENT_USER" disable="pagination" dynamic="no" limit=1}
+          {embed='embed/.usercompanycomments' identry='{entry_id}'}
+           {/exp:channel:entries}
+          {!--exp:comment:edit_comment_script--}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+      <!-- Modal complaint -->
+            <div class="modal fade" id="modalComplaint" tabindex="-1" role="dialog" aria-labelledby="modalComplaint" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  
+                </div>
+              </div>
+            </div>
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

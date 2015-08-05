@@ -1,0 +1,158 @@
+                    {exp:channel:entries channel="request"  entry_id="{segment_3}" dynamic="no" limit="1"}
+                    <div class="modal-header">
+      				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      				<h4 class="modal-title" id="myModalLabel">Оформление заказа</h4>
+      				</div>
+                    {exp:freeform:form
+                      admin_notification_template="order_user" 
+                      notify_admin="yes" 
+                      form_id="2" 
+                      form:class="form-registration" 
+                      form:id="idOrderForm" 
+                      required="email|user_phone"
+                      return="companies/thanks/order"
+                    } 
+                    <div class="modal-body">
+                      <table>
+                        <tbody>
+                          
+                          {exp:query sql="SELECT `title` as company_title, `url_title` as company_url_title FROM `exp_channel_titles` WHERE author_id = '{author_id}' AND channel_id = '1'"}
+                          <tr>
+                            <td>Компания</td>
+                            <td><a target="_blank" href="{path='companies/'}/{company_url_title}">{company_title}</a></td>
+                            <input type="hidden" name="name_company_order" id="name_company_order" value="{company_title}" >
+                            <input type="hidden" name="url_company_order" id="url_company_order" value="{company_url_title}" >
+                            <input type="hidden" name="company_email" id="company_email" value="{embed='embed/.email_author/' authorid='{author_id}'}" >
+                          </tr>
+                          {if no_results}<tr><td colspan=2>Нет информации о строителе</td></tr>{/if}
+                          {/exp:query}
+                          
+                          {exp:query sql="SELECT `title` as project_title, `url_title` as project_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_project}' AND channel_id = '2'"}
+                          <tr>
+                            <td>Проект</td>
+                            <td><a target="_blank" href="{path='projects/'}/{project_url_title}">{project_title}</a></td>
+                            <input type="hidden" name="name_project_order" id="name_project_order" value="{project_title}" >
+                            <input type="hidden" name="url_project_order" id="url_project_order" value="{project_url_title}" >
+                            {if no_results}<tr><td colspan=2>Нет информации о проекте</td></tr>{/if}
+                          </tr>
+                          {/exp:query}
+                          
+                          {exp:query sql="SELECT `title` as grade1_title, `url_title` as grade1_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_grade}' AND channel_id = '3'"}
+                          <tr>
+                            <td>Комплектация</td>
+                            <td><a class="btn btn-primary btn-block" data-toggle="modal" href="{path='projects/grademodal'}/{request_grade}" data-target="#modal">{grade1_title}</a></td>
+                            <input type="hidden" name="name_grade_order" id="name_grade_order" value="{grade1_title}" >
+                          </tr>
+                          {/exp:query}
+                          <tr>
+                            <td>Время исполнения</td>
+                            <td>{request_time} дней</td>
+                            <input type="hidden" name="time_order" id="time_order" value="{request_time}" >
+                          </tr>
+                          <tr>
+                            <td><h4>Цена</h4></td>
+                            <td><h4>{request_price} руб.</h4></td>
+                            <input type="hidden" name="price_order" id="price_order" value="{request_price}" >
+                          </tr>
+
+                        </tbody>
+                      </table>
+                      <h4>Введите данные:</h4>
+
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <label for="fio">Фамилия Имя Отчество</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="user_fio" id="user_fio" rel="tooltip" data-title="Введите Ваше ФИО" >
+                              <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <label for="email">Ваш Email</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="email" id="email" rel="tooltip" data-title="Введите Ваш Email" >
+                              <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-6">
+                          <label for="user_phone">Ваш телефон</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" name="user_phone" id="user_phone" rel="tooltip" data-title="Введите ваш телефон">
+                              <div class="input-group-addon"><i class="fa fa-phone"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <label for="fio">Комментарии к заказу</label>
+                          <div class="form-group">
+                            <textarea class="form-control" name="user_message" id="user_message" rows="3"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="user_region" id="user_region" value="{exp:ee_geo:city}{region_name}{/exp:ee_geo:city}">
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-danger">Оформить заказ</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    </div>
+                    {/exp:freeform:form} 
+
+                    {if no_results}
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Оформление заказа</h4>
+                    </div>
+                    <div class="modal-body">
+                         <div class="alert alert-warning">Не найдено преложение от компании</div><br>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      							</div>
+                    {/if}
+                    {/exp:channel:entries}
+                    <script type="text/javascript">
+                      $(document).ready(function() {
+                        $('input[rel="tooltip"]').tooltip({
+                          'trigger':'focus', 
+                          'title': $(this).data("title")
+                        });
+                        //Validation
+               $('#idOrderForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                  fields: {
+                    user_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите телефон'
+                            },
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите email'
+                            },
+                            emailAddress:{
+                              message: 'Не верный формат Email'
+                            }
+                           
+                        }
+                    },
+                    
+                  }
+              });
+              //End Validation
+                        
+                      });
+                    </script>
+

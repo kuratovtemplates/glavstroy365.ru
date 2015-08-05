@@ -1,0 +1,36 @@
+{exp:channel:entries channel="static" limit="1"}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" entry_id="{entry_id}"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">{title}</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-12">
+          <h1>{title} {edit_link}</h1>
+            <div class="col-xs-12">
+              <p>{static_text}</p>
+              {if show_form=='yes'}
+              {feedback}
+              {/if}
+            </div>
+          </div>
+      </div>
+    </div>
+    {embed="embed/.footer" show="{show}"}
+  </body>
+</html>
+{/exp:channel:entries}

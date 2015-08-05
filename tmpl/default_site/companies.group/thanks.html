@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Сообщение отправлено" title_suffix="Компании"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li> <a href="{path='companies/'}">Компании</a></li>
+          <li class="active">Сообщение отправлено</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+        {if segment_3=='company'}
+          <h1>Сообщение отправлено</h1>
+          <div class="alert alert-success">Ваше сообщение для компании отправлено!</div>
+        {conversia}
+        {if:elseif segment_3=='order'}
+          <h1>Заказ отправлен</h1>
+          <div class="alert alert-success">Ваш заказ отправлен на электронный адрес компании!</div>
+        {if:else}
+        {conversia}
+          {redirect="404"}
+        {/if}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>

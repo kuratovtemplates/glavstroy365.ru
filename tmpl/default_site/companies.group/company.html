@@ -1,0 +1,420 @@
+{exp:channel:entries channel="companies" limit="1" require_entry="yes"}
+{if no_results}{redirect="404"}{/if}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                          
+    {embed="embed/.meta" title_suffix="Компания" entry_id="{entry_id}" title_suffix="отзывы о компании, фотографии выполненных работ"}
+    <script type="text/javascript" src="/js2014/comment.js"></script>
+    <script type="text/javascript" src="/js2014/request_user.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li> <a href="{path='companies/'}">Компании</a></li>
+          <li class="active">{title}</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row firm-row">
+        <div class="col-xs-2 text-center">
+          {exp:ce_img:pair src='{company_logo}'  width='150' allow_scale_larger="yes" crop='yes'}
+          <img src="{made}" width="150" >
+          {/exp:ce_img:pair}
+        </div> 
+        <div class="col-xs-3">
+          <span class="titlefirm">{title}</span><br>
+          <a href="http://{exp:low_replace find="http://" replace=""}{company_site}{/exp:low_replace}" target="_blank">http://{exp:low_replace find="http://" replace=""}{company_site}{/exp:low_replace}</a><br>
+          Выполено проектов - {exp:number_member_entries:count status="open" member_id="{author_id}" channels="gallery"}  (<a href="#map_wrapper">на карте</a>)
+        </div>
+
+        <div class="col-xs-4">
+          <ul class="firm-menu">
+            <li class="yellow"><a href="#projects-anchor">Проекты (<span id="countprojects"></span>)</a></li>
+            <li class="yellow">
+              <a href="#reviews-anchor">Отзывы ({exp:countcommentreviews entryid='{entry_id}'})</a> 
+            </li>
+            <li class="yellow"><a href="#gall-anchor">Галереи ({exp:number_member_entries:count status="open" member_id="{author_id}" channels="gallery"})</a></li>
+            <li>
+              <i class="fa fa-thumbs-o-up text-success"></i> {exp:countcommentreviews type_review='+' entryid='{entry_id}'} |
+              <i class="fa fa-exchange text-info"></i> {exp:countcommentreviews type_review='0' entryid='{entry_id}'} |
+              <i class="fa fa-thumbs-o-down text-danger"></i> {exp:countcommentreviews type_review='-' entryid='{entry_id}'}
+            </li>
+            
+          </ul>
+        </div>  
+        <div class="col-xs-3 people-vote">
+          <span class="">Народный рейтинг</span><br>
+          <div id="rating-stat" data-entry="{entry_id}"></div>
+          {exp:rating:form
+              form:action="http://glavstroy365.ru/companies"
+              entry_id="{entry_id}"
+              collection="Rating"
+              form:id="idRatingForm"
+              ajax_request="yes"  
+              output_json="yes"
+              allow_duplicates="no"
+          }
+          <input type="hidden" id="username" name="name" value="{if logged_in}{name}{if:else}guest{/if}">
+          <input type="hidden" id="email" name="email" value="{if logged_in}{email}{if:else}contact@glavstroy365.ru{/if}">
+          <input type="hidden" id="ratingtop" name="rating">
+          {/exp:rating:form}
+
+          {exp:rating:stats
+            entry_id="{entry_id}"
+            precision="1"
+          }
+        <div class="">
+          Рейтинг <span id="avgRating">{overall_avg}</span><span id="sumRating" class="hidden">{overall_sum}</span> на основе <span id="countRating">{overall_count}</span> голосов
+        </div>
+        <div id="response"></div>
+        {if rating_no_results}
+        <div class="hidden">
+          Рейтинг <span id="avgRating">{overall_avg}</span><span id="sumRating" class="hidden">{overall_sum}</span> на основе <span id="countRating">{overall_count}</span> голосов
+        </div>
+          <div class="">
+            <p id="noRating">Нет оценок</p>
+          </div>
+        {/if}
+    
+    {/exp:rating:stats}
+
+     <script type="text/javascript">
+        $(document).ready(function() {
+          var rating = $("#noRating").text();
+          var avgratingnew = 0;
+          if (rating != "Нет оценок") avgratingnew = +$("#avgRating").text();
+
+          $('#rating-stat').raty({ 
+            score: avgratingnew,
+            starType: 'i',
+            hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+            target : '#ratingtop',
+            targetType : 'score',
+            targetKeep : true,
+            halfShow: true,
+            path: '/raty/images',
+             click: function(score, evt) {
+                   evt.preventDefault();
+                  var theAction = $("#idRatingForm").attr("action");
+                  var theData = $("#idRatingForm").serialize();
+                  $.ajax({
+                              type: "POST",
+                              url: theAction, // <= Providing the URL
+                              data: theData, // <= Providing the form data, serialized above
+                              success: function(results){  
+                                      // What to do when the ajax is successful. 
+                                      // "results" is the response from the url (eg. "theAction" here)
+                                      console.log(results);
+                                      if (results.success){
+                                        var oldrating = 0;
+                                        var oldcountRating = 0;
+                                        var oldsumRating = 0;
+                                        
+                                        if ( $("#noRating").text() != "Нет оценок") {
+                                          var oldrating = $("#avgRating").text();
+                                          var oldcountRating = $("#countRating").text();
+                                          var oldsumRating = $("#sumRating").text();
+                                        } else {
+                                          $("#noRating").text("");
+                                          $("#noRating").parent("div").addClass("hidden");
+                                          $("#avgRating").parent("div").removeClass("hidden");
+                                        }
+                                        $("div#response").html("<span class='label label-success'><i class='fa fa-thumbs-o-up'></i>  Спасибо, Ваш голос учтен!</span>");
+                                        
+                                        
+                                        var newsumRating = parseInt(oldsumRating) + score;
+                                        var newcountRating =  parseInt(oldcountRating) + 1;
+                                        var newrating = newsumRating/newcountRating;
+                                        $("#avgRating").text(newrating.toFixed(1));
+                                        $("#countRating").text(newcountRating);
+                                        $("#sumRating").text(newsumRating);
+
+                                      } else {
+                                        $("div#response").html("<span class='label label-danger'>К сожалению, мы не учли ваш голос </span>");
+                                      }
+                                  },
+                              error: function(results){
+                                      // What to do when the ajax fails. 
+                                      console.log("ERROR");
+                                      $("div#response").html("<span class='label label-danger'>"+results.message+"</span>");
+                              }
+                  });
+            }
+          });
+        });
+      </script>
+
+    </div>
+      </div> 
+
+
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>О компании {title} {edit_link}</h1>
+          {edit_company}
+          <p>{company_about}</p>
+          <span id="projects-anchor"></span>
+          <h3>Проекты и цены</h3>
+        
+         {embed="embed/.company-projects" idprojects="{exp:idprojects userid='{author_id}'}" idmember="{author_id}"}
+         
+         
+          {embed="embed/.company_map" auth_id="{author_id}"}
+          <span id="gall-anchor"></span>
+           {embed="embed/.company-gallery" idmember="{author_id}"}
+        </div>
+        <div class="col-xs-3 left-col">
+         {company_right}
+         {banners_row}
+        </div>
+      </div>
+    </div> 
+
+    <br>
+    <div class="container-fluid otzyvy-proj-container">
+      <hr class="shadow">
+      <span id="reviews-anchor"></span>
+      <div class="container">
+        <h1>Отзывы о работе</h1>
+
+{exp:threaded_comments:display  entry_id="{entry_id}" limit="10" orderby="date" sort="desc" paginate="bottom"}
+<ul class="panelul panel-default">
+{comments}
+
+<li id="comment_{comment_id}" {if comment_author_id == author_id}class="author"{/if}> 
+  <div class="panel-heading"> 
+    <i class="fa fa-user"></i> {name}: {if comment_rating =="-"} <span class="label label-danger"><i class="fa fa-thumbs-o-down"></i> отрицательный отзыв</span>{/if}{if comment_rating =="0"} <span class="label label-info"><i class="fa fa-exchange"></i> нейтральный отзыв</span>{/if}{if comment_rating =="+"} <span class="label label-success"><i class="fa fa-thumbs-o-up"></i> положительный отзыв</span>{/if}
+    <span class="label label-default pull-right">
+      <i class="fa fa-calendar"></i> 
+      {comment_date format="%j %F %Y"}
+    </span>
+  </div>
+  <div class="panel-body">
+  <div class="comment-text comment_body">{comment}</div>
+  <p class="text-right">
+    {!--
+    <a data-toggle="modal" href="/embed/complaint-form/{entry_id}/{comment_id}/" data-target="#modalComplaint" class="btn btn-warning" rel="tooltip" title="Пожаловаться"> <i class="fa fa-bullhorn"></i></a>
+   <a href="javascript:void(0)" class="btn btn-success reply" rel="{comment_id}" ><i class="fa fa-comment-o"></i> Ответить</a> <a href="javascript:void(0)" class="btn btn-success quote reply" rel="{comment_id}"><i class="fa fa-quote-left"></i> Ответить с цитированием</a></p>
+   --}
+
+   <i class="fa fa-bullhorn"></i> <a data-toggle="modal" href="/embed/complaint-form/{entry_id}/{comment_id}/" data-target="#modalComplaint">Пожаловаться</a>
+   | <i class="fa fa-comment-o"></i> <a href="javascript:void(0)" class="reply" rel="{comment_id}" >Ответить</a> | <i class="fa fa-quote-left"></i> <a href="javascript:void(0)" class="quote reply" rel="{comment_id}"> Ответить с цитированием</a>
+
+  </div>
+{thread_open}<ul class="cmt_lvl_{level}">{/thread_open}
+{thread_close}</li></ul>{/thread_close}
+{thread_container_close}</li>{/thread_container_close}
+{/comments}
+</ul>
+<br>
+<div class="pagination-links">
+{pagination_links}
+</div>
+{/exp:threaded_comments:display}
+
+<p class="text-center"><a href="javascript:void(0)" class="btn btn-success reply" rel="0"><i class="fa fa-comment-o"></i> Оставить отзыв</a></p> 
+
+
+        <div class="panel panel-default hidden" id="formReviewholder">
+          <div class="panel-body">
+
+     
+
+
+   
+{exp:threaded_comments:form 
+  entry_id="{entry_id}" 
+  parent_id="{segment_3}"
+  form_class="form-registration"
+  form_id="form-comment"
+}
+{if error}
+<div class="alert alert-success" role="alert">{error_text}</div>
+{if:else}
+{if logged_out}
+        <div class="row">
+          <div class="col-xs-6">
+            <label for="comment-author">Ваше имя</label>
+            <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" name="name" id="comment-author" rel="tooltip" data-title="Введите ваше имя">
+                  <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                </div>
+            </div>
+          </div>
+            <div class="col-xs-6">
+              <label for="comment-email">Ваш Email</label>
+              <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="email" id="comment-email" rel="tooltip" data-title="Введите Ваш Email" >
+                    <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <input type="hidden" name="comment_author_id" value="0" >
+{if:else}
+        <input type="hidden" name="comment_author_id" value="{member_id}" >
+{/if}
+
+
+          <div class="row">
+            <div class="col-xs-6">
+              <label for="comment-comment">Ваш отзыв</label>
+              <div class="form-group">
+                <select name="comment_rating" id="comment_rating" class="selectpicker show-tick">
+                  <option value="-" data-icon="fa fa-thumbs-o-down">Отрицательный</option>
+                  <option value="0" data-icon="fa fa-exchange" selected="selected">Нейтральный</option>
+                  <option value="+" data-icon="fa fa-thumbs-o-up">Положительный</option>
+                </select>
+              </div>
+            </div>
+        </div>
+    <p>По возможности просим ссылаться на конкретный договор, даты, а также указывать ФИО и другую информацию, которая способствует идентификации вас, как заказчика.</p>
+    <div class="row">
+        <div class="col-xs-12">
+          <label for="comment-comment">Комментарий</label>
+          <div class="form-group">
+            <textarea class="form-control" name="comment" id="comment-comment" rows="3"></textarea>
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+      {if logged_out}
+      <div class="col-xs-3">
+        <label for="save_info"><input type="checkbox" id="save_info" name="save_info" value="yes" {save_info} /> Запомнить меня</label>
+      </div>
+      {/if}
+      <div class="col-xs-4">
+        <label for="notify_me"><input type="checkbox" id="notify_me" name="notify_me" value="yes" {notify_me} /> Сообщать мне об ответах</label>
+      </div>
+    </div>
+
+{if captcha}{captcha}{/if}
+
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="submit" type="submit"  class="btn btn-success pull-right" ><i class="fa fa-comments-o"></i> Оставить отзыв</button>
+      </div>
+    </div>
+
+{/if}
+{/exp:threaded_comments:form} 
+  </div>
+</div>
+{!-- this code will set proper parent_id and move the form --}
+<style type="text/css">
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.selectpicker').selectpicker('val', '0');
+  $('.reply').click(function() {
+    $('#form-comment textarea[name=comment]').val("");
+    $('#form-comment input[name=parent_id]').val($(this).attr('rel'));
+    $('#formReviewholder').insertAfter( // Insert the comment form after...
+    $(this)
+    .parent() // The containing p tag
+    );
+    $('#formReviewholder').removeClass('hidden');
+  });
+  $('.quote').click(function() {
+    console.log( $(this).parent().parent().find('.comment-text'));
+    $('#form-comment textarea[name=comment]').val('[quote]'+
+    $(this).parent().parent().find('.comment-text').text()+
+    '[/quote]\n'
+    );
+  });
+});
+</script> 
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    $('input[rel="tooltip"]').tooltip({
+        'trigger':'focus', 
+        'title': $(this).data("title")
+    });
+    
+   
+                //Validation
+               $('#form-comment').bootstrapValidator({
+                    message: 'Данные не верны',
+                    excluded: ':disabled',
+                  fields: {
+                    comment: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Введите Ваш отзыв'
+                            }                           
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите Ваше имя'
+                            }                           
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите email'
+                            },
+                            emailAddress:{
+                              message: 'Не верный формат Email'
+                            }
+                           
+                        }
+                    },
+                  }
+              });
+              //End Validation
+    
+});
+</script>
+      
+      </div>
+    </div>
+
+
+    {embed="embed/.footer"}
+            <!-- Modal Order -->
+            <div class="modal fade" id="modalOrderCompany" tabindex="-1" role="dialog" aria-labelledby="modalOrderCompany" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Rating -->
+            <div class="modal fade" id="modalRating" tabindex="-1" role="dialog" aria-labelledby="modalRating" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  
+                </div>
+              </div>
+            </div>
+
+             <!-- Modal complaint -->
+            <div class="modal fade" id="modalComplaint" tabindex="-1" role="dialog" aria-labelledby="modalComplaint" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  
+                </div>
+              </div>
+            </div>
+  </body>
+</html>
+ {/exp:channel:entries}

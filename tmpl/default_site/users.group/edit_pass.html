@@ -1,0 +1,154 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                               
+    {embed="embed/.meta" title="Редактирование" title_suffix="Строительные компании"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="{site_url}{segment_1}">Пользователи</a></li>
+          <li class="active">Редактирование профиля</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Редактирование</h1>
+          {if segment_3=="ok"}
+          <div class="row">
+            <div class="alert alert-success">
+              <span type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></span>
+              <p class="bg-success">Вы успешно спенили пароль. Разлогиньтесь и войдите подновым паролем. <a href="{path='logout'}"><i class="fa fa-sign-out"></i>Выход</a></p>
+            </div>
+          </div>
+          {/if}
+          <div class="row">
+            {exp:user:edit
+              return="users/edit_pass/ok"
+              form:class="form-registration"
+              error_page="{segment_1}/error" 
+              required="password|password_confirm|current_password"
+              password_required="y"
+              form:id="EditPassForm"
+            }
+              {if no_results}
+               
+              {/if}
+
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Новый пароль*: </label>
+                </div>
+                <div class="col-xs-8"> 
+                  <div class="form-group">
+                    <input type="password" name="password" class="form-control" rel="tooltip" data-title="Введите новый пароль (более 5 символов)"/> 
+                  </div>
+                </div>
+              </div>              
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Повторите новый пароль*: </label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="password" name="password_confirm" class="form-control" rel="tooltip" data-title="Поторите новый пароль (во избежание ошибки)" /> 
+                  </div>
+                </div>
+              </div>
+               <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Введите старый пароль*: </label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="password" name="current_password" class="form-control" rel="tooltip" data-title="Введите старый пароль для того чтобы изменения вступили в силу"/> 
+                  </div>
+                </div>
+              </div>
+               <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Сохранить</button>
+                </div>
+              </div>
+            {/exp:user:edit}
+          <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#EditPassForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Пароль должен содержать больше 5 символов'
+                            },
+                            identical: {
+                                field: 'password_confirm',
+                                message: 'Пароль и его подтверждение не совпадают'
+                            }
+                        }
+                    },
+                    password_confirm: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Пароль должен содержать больше 5 символов'
+                            },
+                            identical: {
+                                field: 'password',
+                                message: 'Пароль и его подтверждение не совпадают'
+                            }
+                        }
+                    },
+                    current_password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Пароль должен содержать больше 5 символов'
+                            }
+                        }
+                    },
+                   
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+          </div>
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="users/signin/"}
+{/if}

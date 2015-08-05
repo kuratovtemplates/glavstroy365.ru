@@ -1,0 +1,41 @@
+          {exp:channel:entries channel="companies" limit="1" author_id="{embed:idmember}" dynamic="no"}
+         <a data-toggle="modal" href="{path='embed/order-form-company-page'}/{author_id}" data-target="#modalOrderCompany" class="btn btn-danger btn-lg btn-block">Связаться с компанией</a>
+          <div class="address-row">
+          <a href="{title_permalink='companies'}" >
+          {exp:ce_img:pair src='{company_logo}'  width='150' allow_scale_larger="yes" crop='yes'}
+           <img src="{made}" width="150" >
+          {/exp:ce_img:pair}
+          </a>
+          <br>
+          <span class="titlefirm"> <a href="{title_permalink='companies'}" >{title}</a></span>
+          <span>Адрес:</span>
+           {company_address}
+            
+            <span>Телефоны:</span>
+            {if company_phone1 !=""}{company_phone1}<br>{/if}
+            {if company_phone2 !=""}{company_phone2}<br>{/if}
+            {if company_phone3 !=""}{company_phone3}<br>{/if}
+            {if company_phone4 !=""}{company_phone4}<br>{/if}
+            
+          </div>
+          <div class="mapareas-row">
+          <h4>Регионы строительства:</h4>
+            <div class="links">
+               <span id="regions-links"></span>
+              <span id="regions-links-more" class="collapse"></span>
+              <a data-toggle='collapse' href='#regions-links-more'>другие регионы</a>
+            </div>
+              <script type="text/javascript">
+                var str = "{regions_company}";
+                var res = str.split(", "); 
+                var cut_res = res.slice(0, 6);
+                var cut_res2 = res.slice(6);
+                var str1 = cut_res.join(", ");
+                var str2 = cut_res2.join(", ");
+                
+                document.getElementById("regions-links").innerHTML = str1;
+                document.getElementById("regions-links-more").innerHTML = str2;
+              </script>
+            
+          </div>
+           {/exp:channel:entries}

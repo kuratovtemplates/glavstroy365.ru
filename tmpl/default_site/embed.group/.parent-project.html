@@ -1,0 +1,22 @@
+{exp:channel:entries channel="projects" limit="1" dynamic="no" entry_id="{embed:idproject}"}
+          <div class="row parent-project">
+            <div class="col-xs-3">
+            {projects_photos limit="1"}
+             <a href="{title_permalink='projects'}">
+             {exp:ce_img:pair src='{url}' height='90' width='150' allow_scale_larger="yes" crop='yes'}
+              <img src="{made}" >
+              {/exp:ce_img:pair}
+            </a>
+            {/projects_photos}
+
+            </div>
+            <div class="col-xs-9">
+             <h4><a href="{title_permalink='projects'}">{title}</a></h4>
+             <i class="fa fa-rub"></i> <a href="{title_permalink='projects'}#prices">Цены</a> 
+              {exp:query sql="SELECT COUNT(exp_channel_data.entry_id) AS expr1 FROM exp_channel_data WHERE exp_channel_data.field_id_47 = {entry_id} GROUP BY exp_channel_data.field_id_47"}
+            ({expr1})
+            {/exp:query}| <i class="fa fa-comments-o"></i> <a href="#IdOtzyvy">Отзывы</a> {exp:threaded_comments:display entry_id="{embed:idgall}" limit="1"}({total_comments}){/exp:threaded_comments:display}
+           
+            </div>
+          </div>
+          {/exp:channel:entries}

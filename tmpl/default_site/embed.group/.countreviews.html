@@ -1,0 +1,16 @@
+ {exp:channel:entries channel="companies" author_id="CURRENT_USER"  dynamic="no" limit=1}
+ {exp:query sql="SELECT
+  COUNT(exp_ratings.entry_id) as countrating
+FROM exp_ratings
+WHERE exp_ratings.entry_id = {entry_id}
+AND exp_ratings.quarantine != 'y'
+"}{countrating}{/exp:query}
+{!--
+  {exp:query sql="SELECT
+  COUNT(exp_ratings.entry_id) as countrating
+FROM exp_ratings
+WHERE exp_ratings.entry_id = {entry_id}
+AND exp_ratings.quarantine != 'y'
+AND exp_ratings.status = 'moderate'"}({countrating}){/exp:query}
+--}
+{/exp:channel:entries}

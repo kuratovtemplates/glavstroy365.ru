@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                               
+    {embed="embed/.meta" title="Спасибо"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          {if segment_3=="company"}
+          <li><a href="{path='users/'}">Личный кабинет</a></li>
+          <li class="active">Компания зарегистрирована</li>
+          {/if}
+          {if segment_3=="grade"}
+          <li><a href="{path='users/'}">Личный кабинет</a></li>
+          <li><a href="{path='users/grades/'}">Комплектации</a></li>
+          <li class="active">Комплектация добавлена</li>
+          {/if}
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          {if segment_3=="company"}
+            {embed="embed/.reg_steps" gray="step_3"}
+          <h1>Компания зарегистрирована</h1>
+          <div class="alert alert-success alert-dismissible" role="alert">Спасибо! Ваша компания зарегистрирована. <br>Вам доступны <a href="/users/request_users/">заявки от Заказчиков</a> в ознакомительном режиме.<br>
+           Вы можете начать добавлять свою комплектации, а затем цены к каждому проекту. <br>Желаем вам приятной работы с сайтом!<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button></div>
+
+            <a class="btn btn-danger btn-default" href="/users/add_grade/first/"> <i class="fa fa-plus"></i> Добавить свою комплектацию</a>
+          {/if}
+
+          {if segment_3=="grade"}
+          <h1>Комплектация добавлена</h1>
+          <div class="alert alert-success">Спасибо комплектация добавлена. Вы можете создать несколько универсальных комплектаций и оценивать проекты. Не обязательно для каждого проекта создавать отдельную комплектацию.</div>
+            <a class="btn btn-danger btn-default" href="/users/projects_list/"> <i class="fa fa-plus"></i> Начать оценивать проекты</a>
+          {/if}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Фотогалереи - Главстрой</title>
+    {embed="embed/.meta"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Фотогалереи</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Фотогалереи компаний</h1>
+          {exp:channel:entries channel="gallery" limit="12"}
+            {if count== "1"}
+            <div class="row">
+              <ul id="projects-main-gallery" class="clr text-center">
+            {/if}
+                <li>
+                  {if gallery_photos_grid >1}
+                  {gallery_photos_grid limit="1"}
+                  <a class="main-img" href="{title_permalink='gallery'}" >
+                      {exp:ce_img:pair src='{gallery_photos_grid:gallery_photos_url}' height='216' width='222' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{title}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  <div class="desc">
+                    Фотографий: {gallery_photos_grid:field_total_rows}
+                    <br>
+                    {!--
+                    <span>{exp:power_truncate length="45" cut_words="t" suffix="..."}{title}{/exp:power_truncate}</span>
+                    --}
+                    <span>{title}</span>
+                  </div>
+                  {/gallery_photos_grid}
+                  <div class="images">
+                    {gallery_photos_grid limit="3" offset="1"}
+                    <a href="{gallery_photos_grid:gallery_photos_url}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{gallery_photos_grid:gallery_photos_url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/gallery_photos_grid}
+                    <a href="{title_permalink='gallery'}" class="more">Подробно</a>
+                  </div>
+                  {if:else}
+                  
+                  
+                  {gallery_photos_ci limit="1"}
+                  <a class="main-img" href="{title_permalink='gallery'}" >
+                      {exp:ce_img:pair src='{image:url}' height='216' width='222' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{title}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  <div class="desc">
+                    Фотографий: 
+                    <br>
+                    <span>{title}</span>
+                  </div>
+                  {/gallery_photos_ci}
+                  <div class="images">
+                    {gallery_photos_ci limit="3" offset="1"}
+                    <a href="{image:url}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{image:url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/gallery_photos_ci}
+                    <a href="{title_permalink='gallery'}" class="more">Подробно</a>
+                  </div>
+                  
+                  {/if}
+                </li>
+            {if count== total_results}
+              </ul>
+            </div>
+            {/if}
+
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+          {/exp:channel:entries}
+          
+          <p>
+            <a class="btn btn-success" {if logged_out}data-target="#loginModal" data-toggle="modal"{if:else}href="users/add_gallery/"{/if} type="button">
+              <i class="fa fa-plus" data-original-title="" title=""></i>
+              Добавить фотографии
+            </a>
+          </p>
+          {if logged_out}
+          <!-- Modal -->
+          <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                  <h4 class="modal-title" id="loginModalLabel">Вход</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <p>Для того чтобы добавлять фотографии, надо зарегестрироваться на сайте и заполнить информацию о компании.</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                      {exp:member:login_form 
+                        return="users/add_gallery/"
+                        form_class="form-registration"
+                        form_id="LoginFormModal"
+                      }
+                    <div class="col-xs-6">
+                      <div class="form-group">
+                        <label class="sr-only" for="username">Логин</label>
+                        <input type="username" name="username"  class="form-control" id="username" placeholder="Введите логин" >
+                      </div>
+                    </div>
+                    <div class="col-xs-6">
+                      <div class="form-group">
+                        <label class="sr-only" for="password">Пароль</label>
+                        <input type="password" name="password"  class="form-control" id="password" placeholder="Введите пароль">
+                      </div>
+                    </div>
+                  </div> 
+                  <div class="row">
+                    <div class="col-xs-8">
+                      {if auto_login}
+                      <div class="checkbox">
+                        <label><input type="checkbox" name="auto_login" value="1"> запомнить меня</label>
+                      </div>
+                      {/if}
+                    </div>
+                    <div class="col-xs-4">
+                      <button type="submit" class="btn btn-danger btn-block"><i class="fa fa-sign-in"></i> Вход</button>
+                    </div>
+                  </div> 
+                      {/exp:member:login_form}
+                </div>
+                <div class="modal-footer">
+                  <p><i class="fa fa-question-circle"></i> <a href="{path='users/forgot_password'}">Забыли пароль?</a> | <i class="fa fa-plus-circle"></i> <a href="{path='users/join'}">Регистрация</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/if}  
+          
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>

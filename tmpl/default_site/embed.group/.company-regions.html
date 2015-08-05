@@ -1,0 +1,11 @@
+	<div class="row project-row">
+        <div class="col-xs-12">
+          <div class="row">
+            <h3>Регионы строительства:</h3>
+            {exp:channel:entries channel="companies" limit="1" author_id="{embed:idmember}" dynamic="no"}
+			<p>{regions_company}</p>
+			{/exp:channel:entries}
+          </div>
+        </div>
+    </div> 
+    <hr>

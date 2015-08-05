@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Спасибо"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Спасибо</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          {if segment_2 =="contact"}
+          <h1>Сообщение отправлено</h1>
+          <div class="alert alert-success">Спасибо. Ваше сообщение отправлено. В ближайшее время с Вами свяжется администрация по указанным контактам.</div>
+        {conversia}
+          {if:else}
+          <h1>Заявка принята</h1>
+          <div class="alert alert-success">Спасибо за Вашу заявку. В ближайшее время с Вами свяжется менеджер фирмы-строителя.</div>
+          <p>Пока можете <a href="{path='projects/'}/">ознакомиться в этом разделе</a> с уже готовыми проектами и предоставленными предложениями комплектаций от строителей.</p>
+        {conversia}
+          {/if}
+         
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div>  
+    {embed="embed/.footer"}
+  </body>
+</html>

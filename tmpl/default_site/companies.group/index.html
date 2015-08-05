@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                 
+    {embed="embed/.meta" title="Строительные компании. Отзывы о строительных фирмах"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Строительные компании</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Строительные компании, отзывы, оценки</h1>
+          <div class="row project-row">
+            <div class="col-xs-12">
+            {if segment_2==''}<p>Здесь представлены строительные фирмы, которые занимаются изготовлением домов и бань из профилированного бруса, а также клееного бруса и каркасных строений. Вы можете почитать отзывы и оценки компаний. Все они основаны на данных, которые оставляют заказчики.</p>{/if}
+              <div class="">
+                <form method="post" id="search-form" action="{path='companies'}/">
+                {exp:super_search:search}
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <input type="hidden" name="channel" value="companies" /> 
+                      <p><b>Регион строительства</b></p>
+                       <select id="Select-region_list" name="regions_company" data-width="100%" data-live-search="true" class="selectpicker">
+                          <option value="Все регионы" selected="selected">Все регионы</option>
+                          {exp:low_variables:parse var='regions-severo-zpad'}
+                          {if row_count == "1"} 
+                          <optgroup label="Северо-западный">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regions-central'}
+                          {if row_count == "1"} 
+                          <optgroup label="Центральный">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regions-privolzhskij'}
+                          {if row_count == "1"} 
+                          <optgroup label="Приволжский">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regions-juzhnyj'}
+                          {if row_count == "1"} 
+                          <optgroup label="Южный">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regions-krymskij'}
+                          {if row_count == "1"} 
+                          <optgroup label="Крымский">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regions-severo-kavkaz'}
+                          {if row_count == "1"} 
+                          <optgroup label="Северо-Кавказский">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regiona-ural'}
+                          {if row_count == "1"} 
+                          <optgroup label="Уральский">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regions-sibir'}
+                          {if row_count == "1"} 
+                          <optgroup label="Сибирский">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                          {exp:low_variables:parse var='regions-dalnevostok'}
+                          {if row_count == "1"} 
+                          <optgroup label="Дальневосточный">
+                          {/if}
+                            <option>{cell_1}</option>
+                          {if row_count == total_rows} 
+                          </optgroup>
+                          {/if}
+                          {/exp:low_variables:parse}
+                       </select>
+                    </div>
+                  </div>
+                {/exp:super_search:search}
+                </form>
+                
+                <script type="text/javascript">
+                 $(document).ready(function() {
+                  if("{super_search_regions_company}" !=""){
+                    $('.selectpicker').selectpicker('val', '{super_search_regions_company}');
+                  }
+                  $("#Select-region_list").change(function() {
+                    val = $('.selectpicker option:selected').val();
+                    if (val == "Все регионы"){
+                       window.location = "http://glavstroy365.ru/companies";
+                    }else {
+                      $("#search-form").submit();
+                    }
+                  });
+                 });
+                </script>
+              </div>
+            </div>
+          </div>
+          {exp:super_search:results channel="companies"  limit="10"}
+          {if super_search_no_results}
+          
+              <div class="alert alert-warning">Нет компаний соответствующих Вашему запросу</div>
+          
+          {/if}
+          <div class="row firm-row">
+              <div class="col-xs-3 text-center">
+                 <a class="main-img" href="{title_permalink='companies'}" >
+                {if company_logo != ""} 
+                    {exp:ce_img:pair src="{company_logo}" width="120" height="90"}
+                      <img src="{made}" alt=""  />
+                    {/exp:ce_img:pair}
+                 {if:else}
+                 {exp:ce_img:pair src="/img2014/nologo.jpg" width="120" height="90"}
+                    <img src="{made}" alt="">
+                  {/exp:ce_img:pair}
+                  {/if}
+                </a>
+              </div> 
+              <div class="col-xs-5">
+                <span class="titlefirm"><a class="main-img" href="{title_permalink='companies'}" >{title}</a></span><br>
+                проекты ({exp:idprojects userid='{author_id}' type='count'}), отзывы ({exp:countcommentreviews entryid='{entry_id}'}), галереи ({exp:number_member_entries:count status="open" member_id="{author_id}" channels="gallery"})
+                 
+                  
+                </ul>
+              </div>
+              <div class="col-xs-4 people-vote">
+                <span class="">Народный рейтинг</span><br><br>
+                {exp:rating:stats
+                  entry_id="{entry_id}"
+                  precision="1"
+                }
+                <div class="rating-stars" id="rating_{entry_id}" ></div>
+                 {if rating_no_results}
+                 <div class="rating-stars" id="rating_{entry_id}"></div>
+                  <script type="text/javascript">
+                    $('#rating_{entry_id}').raty({ 
+                      score: 0,
+                      starType: 'i',
+                      readOnly: true,
+                      hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+                    });
+                  </script>
+                 {/if}
+
+                <script type="text/javascript">
+                    $('#rating_{entry_id}').raty({ 
+                      score: {overall_avg},
+                      starType: 'i',
+                      readOnly: true,
+                      hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+                    });
+                </script>
+                {/exp:rating:stats}
+
+              </div>
+            </div>
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+          {/exp:super_search:results}
+          {!--
+          {exp:channel:entries channel="companies" limit="12"}
+          {if no_results}
+              <div class="alert alert-warning">Нет компаний. </div>
+          {/if}
+            <div class="row firm-row">
+              <div class="col-xs-3 text-center">
+                 <a class="main-img" href="{title_permalink='companies'}" >
+                {if company_logo != ""} 
+                    {exp:ce_img:pair src="{company_logo}" width="120" height="90"}
+                      <img src="{made}" alt=""  />
+                    {/exp:ce_img:pair}
+                 {if:else}
+                 {exp:ce_img:pair src="/img2014/nologo.jpg" width="120" height="90"}
+                    <img src="{made}" alt="">
+                  {/exp:ce_img:pair}
+                  {/if}
+                </a>
+              </div> 
+              <div class="col-xs-5">
+                <span class="titlefirm"><a class="main-img" href="{title_permalink='companies'}" >{title}</a></span><br>
+              </div>
+              <div class="col-xs-4 people-vote">
+                <span class="">Народный рейтинг</span><br><br>
+                {exp:rating:stats
+                  entry_id="{entry_id}"
+                  precision="1"
+                }
+                <div class="rating-stars" id="rating_{entry_id}" ></div>
+                 {if rating_no_results}
+                 <div class="rating-stars" id="rating_{entry_id}"></div>
+                  <script type="text/javascript">
+                    $('#rating_{entry_id}').raty({ 
+                      score: 0,
+                      starType: 'i',
+                      readOnly: true,
+                      hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+                    });
+                  </script>
+                 {/if}
+
+                <script type="text/javascript">
+                    $('#rating_{entry_id}').raty({ 
+                      score: {overall_avg},
+                      starType: 'i',
+                      readOnly: true,
+                      hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+                    });
+                </script>
+                {/exp:rating:stats}
+
+              </div>
+            </div> 
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+          {/exp:channel:entries}
+          --}
+          
+
+
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>

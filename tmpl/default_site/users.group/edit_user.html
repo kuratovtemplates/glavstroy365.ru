@@ -1,0 +1,168 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                     
+    {embed="embed/.meta" title="Редактирование" title_suffix="Строительные компании"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="{site_url}{segment_1}">Пользователи</a></li>
+          <li class="active">Редактирование профиля</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Редактирование профиля</h1>
+          {if segment_3=="ok"}
+          <div class="row">
+            <div class="alert alert-success">
+              <span type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></span>
+              Ваш профиль сохранен
+            </div>
+          </div>
+          {/if}
+          <div class="row">
+            {exp:user:edit
+              return="users/edit_user/ok"
+              form:class="form-registration"
+              error_page="{segment_1}/error" 
+              required="username|email"
+              form:id="EditUserForm"
+              password_required="no" 
+              screen_name_password_required="no" 
+            }
+              {if no_results}
+               
+              {/if}
+
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Ваш логин*: </label>
+                </div>
+                <div class="col-xs-8"> 
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="username" name="username" rel="tooltip" value="{username}" data-title="Введите Ваш логин (более 3 символов)">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Ваш Email*: </label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="email" name="email"  rel="tooltip" value="{email}" data-title="Email для напоминания пароля">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Купон на скидку: </label>используется один раз
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="member_coupon" name="member_coupon"  rel="tooltip" value="{member_coupon}" data-title="используется один раз">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Действующий пароль: </label> 
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="password" class="form-control" id="current_password" name="current_password"  rel="tooltip" value="" data-title="для того чтобы изменения вступили в силу">
+                  </div>
+                </div>
+              </div>
+               <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Сохранить</button>
+                </div>
+              </div>
+            {/exp:user:edit}
+          <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#EditUserForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    username: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Логин обязателен'
+                            },
+                            stringLength: {
+                                min: 4,
+                                message: 'Логин должен содержать больше 3 символов'
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Пароль должен содержать больше 5 символов'
+                            }
+                        }
+                    },
+                    current_password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Пароль должен содержать больше 5 символов'
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email обязателен'
+                            },
+                            emailAddress: {
+                                message: 'Не верный формат Email'
+                            }
+                        }
+                    }
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+          </div>
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+    <br>
+    <div class="container-fluid project-podbor">
+      <a href="{site_url}#indexForm">Подобрать проект?</a>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="users/signin/"}
+{/if}

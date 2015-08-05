@@ -1,0 +1,57 @@
+{if logged_in}
+{redirect="users"}
+{if:else}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                  
+    {embed="embed/.meta" title="Вход" title_suffix="Строительные компании"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="{site_url}{segment_1}">Пользователи</a></li>
+          <li class="active">Вход</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Вход</h1>
+				  {exp:member:login_form 
+            return="{segment_1}"
+            form_class="form-registration form-inline"
+            form_id="LoginForm"
+          }
+          <div class="form-group">
+            <label class="sr-only" for="username">Логин</label>
+            <input type="username" name="username"  class="form-control" id="username" placeholder="Введите логин" >
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="password">Пароль</label>
+            <input type="password" name="password"  class="form-control" id="password" placeholder="Введите пароль">
+          </div>
+          {if auto_login}
+          <div class="checkbox">
+            <label><input type="checkbox" name="auto_login" value="1"> запомнить меня</label>
+          </div>
+          {/if}
+          <button type="submit" class="btn btn-danger"><i class="fa fa-sign-in"></i> Вход</button>
+          {/exp:member:login_form}
+          <p><i class="fa fa-question-circle"></i> <a href="{path='{segment_1}/forgot_password'}">Забыли пароль?</a> | <i class="fa fa-plus-circle"></i> <a href="{path='{segment_1}/join'}">Регистрация</a></p>
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{/if}

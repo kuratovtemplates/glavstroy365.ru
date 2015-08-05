@@ -1,0 +1,31 @@
+    <div class="container-fluid">
+      <nav class="mod_navbar" role="navigation">
+        <div class="container">
+          <div class="collapse navbar-collapse">
+            <ul class="m-nav">
+              <li {if segment_1 == "order_user"}class="m-active"{/if}><a href="/order_user">ОТПРАВИТЬ ЗАЯВКУ</a> </li>
+              <li class="m-dropdown{if segment_1 == "projects"} m-active{/if}">
+              <a href="{path='/projects/'}">
+                  Проекты  <b class="caret"></b>
+                </a>
+                 <ul class="m-child">
+                  <li><a href="/projects/doma">Дома</a></li>
+                  <li><a href="/projects/bani">Бани</a></li>
+                </ul>
+              </li>
+              <li {if segment_1 == "companies"}class="m-active"{/if}><a href="{path='/companies/'}">компании</a></li>
+              <li {if segment_1 == "gallery"}class="m-active"{/if}><a href="{path='/gallery/'}">Фотогалерея</a></li>
+              <li {if segment_1 == "zakazhchiku"}class="m-active"{/if}><a href="/zakazhchiku">заказчику</a></li>
+              <li {if segment_1 == "stroitelu"}class="m-active"{/if}><a href="/stroitelu">Строителю</a></li>
+              <li  class="m-dropdown"><a href="">полезное <b class="caret"></b></a>
+                <ul class="m-child">
+                  <li><a href="/rasstoyanie">Расчет расстояния</a></li>
+                  <li><a href="/articles">Статьи</a></li>
+                   <li><a href="/news">Новости</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>

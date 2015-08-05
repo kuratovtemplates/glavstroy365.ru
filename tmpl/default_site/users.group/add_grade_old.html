@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                              
+    {embed="embed/.meta" title="Добавление комплектации" title_suffix="Комплектации"}
+
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="{path='users/'}">Личный кабинет</a></li>
+          <li><a href="{path='users/grades/'}">Комплектации</a></li>
+          <li class="active">Добавление комплектации</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Добавление комплектации</h1>
+          {exp:channel:form 
+            channel="grade" 
+            return="{segment_1}/thanks/grade" 
+            datepicker="no" 
+            include_jquery="no"  
+            class="form-registration"
+          }
+             
+             <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Наименование: *</label>
+                </div>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" name="title" id="title"  onkeyup="liveUrlTitle();" >
+                  <input name="url_title" type="hidden" id="url_title"  >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Фундамент:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="foundation_list"}
+                  <label for="Radio-{row_count}-foundation_list"><input  type="radio" name="grade_foundation" value="{cell_1}" id="Radio-{row_count}-foundation_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-foundation_list"><input  type="radio" name="grade_foundation" id="Radio-0-foundation_list" value="" > Свой вариант</label>
+                  <br>
+                  <input type="text" class="form-control" name="grade_foundation_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Основание дома:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="base_list"}
+                  <label for="Radio-{row_count}-base_list"><input  type="radio" name="grade_base" value="{cell_1}" id="Radio-{row_count}-base_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-base_list"><input  type="radio" name="grade_base" id="Radio-0-base_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_base_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Сруб дома и перегородки внутри:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="blockhouse_list"}
+                  <label for="Radio-{row_count}-blockhouse_list"><input  type="radio" name="grade_blockhouse" value="{cell_1}" id="Radio-{row_count}-blockhouse_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-blockhouse_list"><input  type="radio" name="grade_blockhouse" id="Radio-0-blockhouse_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_blockhouse_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Угловые соединения бруса:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="angle_list"}
+                  <label for="Radio-{row_count}-angle_list"><input  type="radio" name="grade_angle" value="{cell_1}" id="Radio-{row_count}-angle_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-angle_list"><input  type="radio" name="grade_angle" id="Radio-0-angle_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_angle_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Кровля:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="roof_list"}
+                  <label for="Radio-{row_count}-roof_list"><input  type="radio" name="grade_roof" value="{cell_1}" id="Radio-{row_count}-roof_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-roof_list"><input  type="radio" name="grade_roof" id="Radio-0-roof_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_roof_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Межэтажные перекрытия:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="floorslabs_list"}
+                  <label for="Radio-{row_count}-floorslabs_list"><input  type="radio" name="grade_floorslabs" value="{cell_1}" id="Radio-{row_count}-floorslabs_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-floorslabs_list"><input  type="radio" name="grade_floorslabs" id="Radio-0-floorslabs_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_floorslabs_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Стропильная система:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="raftersystem_list"}
+                  <label for="Radio-{row_count}-raftersystem_list"><input  type="radio" name="grade_raftersystem" value="{cell_1}" id="Radio-{row_count}-raftersystem_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-raftersystem_list"><input  type="radio" name="grade_raftersystem" id="Radio-0-raftersystem_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_raftersystem_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Высота потолков:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="ceilingheight_list"}
+                  <label for="Radio-{row_count}-ceilingheight_list"><input  type="radio" name="grade_ceilingheight" value="{cell_1}" id="Radio-{row_count}-ceilingheight_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-ceilingheight_list"><input  type="radio" name="grade_ceilingheight" id="Radio-0-ceilingheight_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_ceilingheight_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Мансарда:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="mansard_list"}
+                  <label for="Radio-{row_count}-mansard_list"><input  type="radio" name="grade_mansard" value="{cell_1}" id="Radio-{row_count}-mansard_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-mansard_list"><input  type="radio" name="grade_mansard" id="Radio-0-mansard_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_mansard_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Парная:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="steam_list"}
+                  <label for="Radio-{row_count}-steam_list"><input  type="radio" name="grade_steam" value="{cell_1}" id="Radio-{row_count}-steam_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-steam_list"><input  type="radio" name="grade_steam" id="Radio-0-steam_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_steam_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Печь:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="furnace_list"}
+                  <label for="Radio-{row_count}-furnace_list"><input  type="radio" name="grade_furnace" value="{cell_1}" id="Radio-{row_count}-furnace_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-furnace_list"><input  type="radio" name="grade_furnace" id="Radio-0-furnace_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_furnace_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Комната отдыха:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="commonroom_list"}
+                  <label for="Radio-{row_count}-commonroom_list"><input  type="radio" name="grade_commonroom" value="{cell_1}" id="Radio-{row_count}-commonroom_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-commonroom_list"><input  type="radio" name="grade_commonroom" id="Radio-0-commonroom_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_commonroom_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Помывочное отделение:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="washroot_list"}
+                  <label for="Radio-{row_count}-washroot_list"><input  type="radio" name="grade_washroot" value="{cell_1}" id="Radio-{row_count}-washroot_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-washroot_list"><input  type="radio" name="grade_washroot" id="Radio-0-washroot_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_washroot_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Потолки 1-го этажа:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="1floorceilings_list"}
+                  <label for="Radio-{row_count}-1floorceilings_list"><input  type="radio" name="grade_1floorceilings" value="{cell_1}" id="Radio-{row_count}-1floorceilings_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-1floorceilings_list"><input  type="radio" name="grade_1floorceilings" id="Radio-0-1floorceilings_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_1floorceilings_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Полы:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="floors_list"}
+                  <label for="Radio-{row_count}-floors_list"><input  type="radio" name="grade_floors" value="{cell_1}" id="Radio-{row_count}-floors_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-floors_list"><input  type="radio" name="grade_floors" id="Radio-0-floors_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_floors_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Лестница:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="staircase_list"}
+                  <label for="Radio-{row_count}-staircase_list"><input  type="radio" name="grade_staircase" value="{cell_1}" id="Radio-{row_count}-staircase_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-staircase_list"><input  type="radio" name="grade_staircase" id="Radio-0-staircase_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_staircase_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Двери:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="doors_list"}
+                  <label for="Radio-{row_count}-doors_list"><input  type="radio" name="grade_doors" value="{cell_1}" id="Radio-{row_count}-doors_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-doors_list"><input  type="radio" name="grade_doors" id="Radio-0-doors_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_doors_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Окна:</label>
+                </div>
+                <div class="col-xs-8">
+                  {exp:low_variables:pair var="windows_list"}
+                  <label for="Radio-{row_count}-windows_list"><input  type="radio" name="grade_windows" value="{cell_1}" id="Radio-{row_count}-windows_list" > {cell_2}</label><br>
+                  {/exp:low_variables:pair}
+                  <label for="Radio-0-windows_list"><input  type="radio" name="grade_windows" id="Radio-0-windows_list" value="" > Свой вариант</label><br>
+                  <input type="text" class="form-control col-xs-12" name="grade_windows_own" style="display: none;" >
+                </div>
+              </div>
+              <hr>
+
+
+              <div class="row">
+                <div class="col-xs-4">
+                  <label class="inputlabel">Примечания: </label>
+                </div>
+                <div class="col-xs-8">
+                    <textarea name="grade_note" id="" cols="60" rows="6"></textarea>
+                </div>
+              </div> 
+              <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block"> Добавить комплектацию</button>
+                </div>
+              </div>
+             
+                      {!--source: [{exp:low_variables:pair var="foundation_list"}"{cell_1}",{/exp:low_variables:pair}],--}
+
+               <script type="text/javascript">
+                $(document).ready(function () {
+
+
+                });
+              </script>
+          {/exp:channel:form}
+
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+
+  </body>
+</html>

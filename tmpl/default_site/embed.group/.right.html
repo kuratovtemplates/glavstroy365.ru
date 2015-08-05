@@ -1,0 +1,134 @@
+        {if '{embed:entry_id}'!=''}
+          {exp:channel:entries channel="companies" entry_id="{embed:entry_id}" limit="1" dynamic="no"}
+            {company_right}
+          {/exp:channel:entries}
+        {/if}
+
+        {if segment_1 == "gallery" AND segment_2==''}
+        {if segment_2 != "user"}
+           <p>
+            <a class="btn btn-success" {if logged_out}data-target="#loginModal" data-toggle="modal"{if:else}href="users/add_gallery/"{/if} type="button">
+              <i class="fa fa-plus" data-original-title="" title=""></i>
+              Добавить фотографии
+            </a>
+          </p>
+          {/if}
+          {if logged_out}
+          <!-- Modal -->
+          <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                  <h4 class="modal-title" id="loginModalLabel">Вход</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <p>Для того чтобы добавлять фотографии, надо зарегестрироваться на сайте и заполнить информацию о компании.</p>
+                    </div>
+                  </div>
+                    {embed="embed/.login_form" return="users/add_gallery/"}
+                </div>
+                <div class="modal-footer">
+                  <p><i class="fa fa-question-circle"></i> <a href="{path='users/forgot_password'}">Забыли пароль?</a> | <i class="fa fa-plus-circle"></i> <a href="{path='users/join'}">Регистрация</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/if}
+          {/if}
+
+                    {if logged_in}
+          {if segment_1=="users"}
+          <ul class="nav nav-pills nav-stacked">
+                <li {if segment_2==""}class="active"{/if}><a href="/users/"><i class="fa fa-home"></i> Главная ЛК</a></li>
+
+                      {exp:query sql="SELECT
+                      COUNT(exp_channel_titles.entry_id) as countprojectentries
+                    FROM exp_channel_data
+                      INNER JOIN exp_channel_titles
+                        ON exp_channel_data.entry_id = exp_channel_titles.entry_id
+                    WHERE exp_channel_titles.channel_id = 2
+                    AND exp_channel_titles.status = 'open'
+                    AND exp_channel_titles.entry_id NOT IN (SELECT
+                        exp_channel_data.field_id_47
+                      FROM exp_channel_titles
+                        INNER JOIN exp_channel_data
+                          ON exp_channel_titles.entry_id = exp_channel_data.entry_id
+                      WHERE exp_channel_titles.author_id = <? echo ee()->session->userdata('member_id') ?>
+                      AND exp_channel_titles.channel_id = 4
+                      AND exp_channel_titles.status = 'open')"}
+                {if countprojectentries!='0'}<li {if segment_2=="projects_list"}class="active"{/if}>
+                  <a href='/users/projects_list/'>
+                    <i class="fa fa-building-o"></i> Проекты <span class="label label-danger">нужно оценить</span>
+                    <span class="badge pull-right">{countprojectentries}
+                    </span>
+                  </a>
+                </li>{/if}{/exp:query}
+                <li {if segment_2=="request_users"}class="active"{if:else}class="bg-danger"{/if}><a href="/users/request_users/"><i class="fa fa-check-square-o"></i> Заявки на строительство <span class="badge pull-right">{exp:number_member_entries:count member_id="" status="open" channels="request_users"}</span></a></li>
+                <li {if segment_2=="profile_company"}class="active"{/if}>
+                  <a href="/users/profile_company/"><i class="fa fa-briefcase"></i> Мои компании <span class="badge pull-right">{exp:number_member_entries:count status="open" member_id={member_id} channels="companies"}</span></a>
+                  <ul class="nav nav-pills nav-stacked">
+                    <li {if segment_2=="reviews"}class="active"{/if}><a href="/users/reviews/"><i class="fa fa-star-half-o"></i> Оценки </a></li>
+                    <li {if segment_2=="comments"}class="active"{/if}><a href="/users/comments/"><i class="fa fa-comments-o"></i> Отзывы </a></li>
+                  </ul>
+                </li>
+                <li {if segment_2=="grades"}class="active"{/if}><a href="/users/grades/"><i class="fa fa-tasks"></i> Мои комплектации <span class="badge pull-right">{exp:number_member_entries:count status="open" member_id={member_id} channels="grade"}</span></a></li>
+                <li {if segment_2=="request"}class="active"{/if}><a href="/users/request/"><i class="fa fa-file-text-o"></i> Мои цены <span class="badge pull-right">{exp:number_member_entries:count status="open" member_id={member_id} channels="request"}</span></a></li>
+                <li {if segment_2=="gallery"}class="active"{/if}><a href="/users/gallery/"><i class="fa fa-picture-o"></i>  Мои фотогалереи <span class="badge pull-right">{exp:number_member_entries:count status="open" member_id={member_id} channels="gallery"}</span></a></li>
+                <li {if segment_2=="edit_user"}class="active"{/if}><a href="/users/edit_user/"><i class="fa fa-pencil"></i> Редактировать профиль</a></li>
+                <li {if segment_2=="edit_pass"}class="active"{/if}><a href="/users/edit_pass/"><i class="fa fa-unlock-alt"></i>  Сменить пароль</a></li>
+                {if group_id == '1'}<li {if segment_2=="update_prices"}class="active"{/if}><a href="/users/update_prices/"><i class="fa fa-rub"></i>  Обновить цены</a></li>{/if}
+                <li><a href="{path='logout'}"><i class="fa fa-sign-out"></i> Выход</a></li>
+          </ul>
+          {/if}
+          {/if}
+          <div class="banners-row">
+            {exp:low_variables:pair  var="banner_240_265" multiple="yes"}
+              <a href="{cell_3}" rel="nofollow" target="_blank">
+              {exp:ce_img:pair src='{cell_2}'  width='240' height='265' allow_scale_larger="yes" crop='yes' }
+              <img src="{made}" alt="">
+              {/exp:ce_img:pair}
+              </a>
+            {/exp:low_variables:pair}
+            {exp:low_variables:pair  var="banner_240_120" multiple="yes"}
+              <a href="{cell_3}" rel="nofollow" target="_blank">
+              {exp:ce_img:pair src='{cell_2}'  width='240' height='120' allow_scale_larger="yes" crop='yes' }
+              <img src="{made}" alt="">
+              {/exp:ce_img:pair}
+              </a>
+            {/exp:low_variables:pair}
+          </div>  <br>
+          <span class="rightblock-title">
+            Новости <i class="fa fa-newspaper-o pull-right"></i>
+          </span>
+
+          <ul class="block-news">
+            {exp:channel:entries channel="news" dynamic="no" limit="3" disable="categories|category_fields|member_data|pagination"}
+              <li><small>{entry_date format="%d %M %Y"}</small><br><a href="{title_permalink='news'}">{title}</a></li>
+            {/exp:channel:entries}
+          </ul><br>
+          <span class="rightblock-title">
+            Полезные материалы<i class="fa fa-info pull-right"></i>
+          </span>
+          <ul class="block-news">
+            {exp:channel:entries channel="articles" dynamic="no" limit="3" disable="categories|category_fields|member_data|pagination"}
+              <li><a href="{title_permalink='articles'}">{title}</a></li>
+            {/exp:channel:entries}
+          </ul> <br>
+          <span class="rightblock-title">
+            Новые проекты <i class="fa fa-home pull-right"></i>
+          </span>
+          <ul class="right-projects">
+            {exp:channel:entries channel="projects" dynamic="no" limit="3" disable="categories|category_fields|member_data|pagination"}
+              <li>
+                   <span class="pull-left w1">{projects_photos limit="1"}{exp:ce_img:pair src='{url}' width='60' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{caption}">
+                      {/exp:ce_img:pair}{/projects_photos}</span>
+
+                      <span class="pull-right w2"><a href="{title_permalink='projects'}"><b>{title}</b> <br>{projects_size}м /  {projects_area}м<sup>2</sup></a></span></li>
+            {/exp:channel:entries}
+          </ul>
+          {vk}<br>
+          {gplus}

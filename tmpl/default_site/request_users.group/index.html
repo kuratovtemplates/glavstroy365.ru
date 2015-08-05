@@ -1,0 +1,32 @@
+<a href="http://glavstroy365.ru/"><img src="http://glavstroy365.ru/img2014/logo.png" alt=""></a><br/><br/>
+<span style="font-size: 18px;">Получена новая заявка от пользователя на сайте glavstroy365.ru</span><br/><br/>
+{exp:channel:entries channel="request_users" entry_id="{parcel:entry_id}" dynamic="no"}
+<b>ID заявки:</b> {parcel:entry_id}<br/>
+<b>Тип строения:</b> {parcel:requset_users_typebuilding}<br/>
+<span style="font-size: 18px;">Цена от <span style="color: #d51c1c;">{requset_users_price}</span> руб.</span>
+<br/>
+<br/>
+<b>Материал исполнения: </b>{requset_users_material}<br/>
+{if requset_users_length != "" OR requset_users_width != ""}<b>Габариты строения: </b> длина - {requset_users_length}м, ширина - {requset_users_width}м<br/>{/if}
+
+{if requset_users_square !=""}<b>Площадь:</b> {requset_users_square} м<sup>2</sup><br/>{/if}
+{if requset_users_walls !=""}<b>Толщина стен:</b> {requset_users_walls}мм<br/>{/if}
+{if requset_users_tolshuteplenija !=""}<b>Толщина утепления:</b> {requset_users_tolshuteplenija}мм<br/>{/if}
+<b>Этажность: </b>{requset_users_floors}<br/>
+{if requset_users_terrace !="" OR requset_users_garage !="" OR requset_users_secondlight !="" OR requset_users_wc !="" OR requset_users_lean !="" OR requset_users_balcony !=""}
+	<b>Дополнительные параметры: </b> 
+{/if}
+{if requset_users_terrace !=""}{requset_users_terrace}, {/if}
+{if requset_users_garage !=""}{requset_users_garage}, {/if}
+{if requset_users_secondlight !=""}{requset_users_secondlight}, {/if}
+{if requset_users_wc !=""}{requset_users_wc}, {/if}
+{if requset_users_lean !=""}{requset_users_lean}, {/if}
+{if requset_users_balcony !=""}{requset_users_balcony} {/if}
+<br>
+<br>
+{if requset_users_fio !=""}<b>ФИО:</b> {requset_users_fio} <br/>{/if}
+{if requset_users_phone !=""}<b>Тел.:</b> {requset_users_phone} <br />{/if}
+{if requset_users_mail !=""}<b>Email:</b> {requset_users_mail} <br>{/if}
+<br>
+Остальная информация по ссылке <a href="">заявка от пользователя id:{parcel:entry_id}</a>
+{/exp:channel:entries}

@@ -1,0 +1,19 @@
+
+{exp:member:custom_profile_data} 
+{exp:query sql="SELECT COUNT(exp_channel_data.entry_id) AS countgall, exp_members.group_id  AS idgroupmember FROM exp_channel_data INNER JOIN exp_channel_titles ON exp_channel_data.entry_id = exp_channel_titles.entry_id INNER JOIN exp_members ON exp_channel_titles.author_id = exp_members.member_id WHERE exp_channel_data.field_id_110 = {embed:idproject} AND exp_channel_titles.author_id = {member_id} AND exp_channel_titles.status = 'Open' LIMIT 1"}
+
+{if {countgall} == "0" }
+      <a class="btn btn-success btn-block" href="/users/add_gallery/{embed:idproject}">
+              <i class="fa fa-plus" data-original-title="" title=""></i>
+              Добавить фотографию
+      </a>  
+{/if}
+{/exp:query}
+
+{exp:query sql="SELECT COUNT(exp_channel_data.entry_id) AS countrequests, exp_members.group_id  AS idgroupmember FROM exp_channel_data INNER JOIN exp_channel_titles ON exp_channel_data.entry_id = exp_channel_titles.entry_id INNER JOIN exp_members ON exp_channel_titles.author_id = exp_members.member_id WHERE exp_channel_data.field_id_47 = {embed:idproject} AND exp_channel_titles.author_id = {member_id} AND exp_channel_titles.status = 'Open' LIMIT 1"}
+
+{if {countrequests} == "0" }  
+    <a type='button' class='btn btn-block btn-success' data-toggle='modal' data-target='#myModal'><i class='fa fa-plus'></i> Добавить свою цену</a>
+{/if}
+{/exp:query}
+{/exp:member:custom_profile_data}

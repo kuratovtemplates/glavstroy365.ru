@@ -1,0 +1,456 @@
+{exp:channel:entries channel="companies" limit="1"}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>{title} - Компании - Главстрой</title>
+    {embed="embed/.meta"}
+    <script type="text/javascript" src="/js2014/request_user.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная страница</a></li>
+          <li> <a href="{path='companies/'}">Компании</a></li>
+          <li class="active">{title}</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row firm-row">
+        <div class="col-xs-2 text-center">
+          {exp:ce_img:pair src='{company_logo}'  width='150' allow_scale_larger="yes" crop='yes'}
+          <img src="{made}" width="150" >
+          {/exp:ce_img:pair}
+        </div> 
+        <div class="col-xs-3">
+          <span class="titlefirm">{title}</span><br>
+          <a href="http://{company_site}">http://{company_site}</a><br>
+          Выполено проектов - 28 (<a href="">на карте</a>)
+        </div>
+        <div class="col-xs-4">
+          <ul class="firm-menu">
+            <li class="yellow"><a href="">Отзывы</a></li>
+            <li class="yellow"><a href="">Галерея</a></li>
+          </ul>
+        </div>  
+        <div class="col-xs-3 people-vote">
+          <span class="">Народный рейтинг</span><br>
+          <div id="rating-stat" data-entry="{entry_id}"></div>
+          {exp:rating:form
+              form:action="http://glavstroy365.ru/companies/kompanija-sonika/"
+              entry_id="{entry_id}"
+              collection="Rating"
+              form:id="idRatingForm"
+              ajax_request="yes"  
+              output_json="yes"
+              allow_duplicates="yes"             
+          }
+{!-- allow_duplicates="no"--}
+          <input type="hidden" id="username" name="name" value="{if logged_in}{name}{if:else}guest{/if}">
+          <input type="hidden" id="email" name="email" value="{if logged_in}{email}{if:else}contact@glavstroy365.ru{/if}">
+          <input type="hidden" id="ratingtop" name="rating">
+          {/exp:rating:form}
+
+          {exp:rating:stats
+            entry_id="{entry_id}"
+            precision="1"
+          }
+        <div class="show">
+        Средняя оценка: <span id="avgRating">{overall_avg}</span> из 5 <br> ( всего <span id="sumRating">{overall_sum}</span> баллов из <span id="countRating">{overall_count}</span> оценок )
+        <div id="response"></div>
+        </div>
+        {if rating_no_results}
+        <div class="hidden">
+          Средняя оценка: <span id="avgRating">{overall_avg}</span> из 5 <br> ( всего <span id="sumRating">{overall_sum}</span> баллов из <span id="countRating">{overall_count}</span> оценок )
+          <div id="response"></div>
+        </div>
+        <div class="">
+          <p id="noRating">Нет оценок</p>
+        </div>
+        {/if}
+    
+    {/exp:rating:stats}
+
+     <script type="text/javascript">
+        $(document).ready(function() {
+          var rating = $("#noRating").text();
+          var avgratingnew = 0;
+          if (rating != "Нет оценок") avgratingnew = parseInt($("#avgRating").text());
+
+          $('#rating-stat').raty({ 
+            score: avgratingnew,
+            starType: 'i',
+            hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+            target : '#ratingtop',
+            targetType : 'score',
+            targetKeep : true,
+            path: '/raty/images',
+             click: function(score, evt) {
+                   evt.preventDefault();
+                  var theAction = $("#idRatingForm").attr("action");
+                  var theData = $("#idRatingForm").serialize();
+                  $.ajax({
+                              type: "POST",
+                              url: theAction, // <= Providing the URL
+                              data: theData, // <= Providing the form data, serialized above
+                              success: function(results){  
+                                      // What to do when the ajax is successful. 
+                                      // "results" is the response from the url (eg. "theAction" here)
+                                      console.log(results);
+                                      if (results.success){
+                                        $("div#response").html("<span class='label label-success'><i class='fa fa-thumbs-o-up'></i>  Спасибо, Ваш голос учтен!</span>");
+                                        var oldrating = 0;
+                                        var oldcountRating = 0;
+                                        var oldsumRating = 0;
+                                        
+                                        if ( $("#noRating").text() != "Нет оценок") {
+                                          var oldrating = $("#avgRating").text();
+                                          var oldcountRating = $("#countRating").text();
+                                          var oldsumRating = $("#sumRating").text();
+                                        } else {
+                                          $("#noRating").text("");
+                                          $("#noRating").parent("div").addClass("hidden");
+                                          $("#avgRating").parent("div").removeClass("hidden");
+                                        }
+                                        
+                                        
+                                        var newsumRating = parseInt(oldsumRating) + score;
+                                        var newcountRating =  parseInt(oldcountRating) + 1;
+                                        var newrating = newsumRating/newcountRating;
+                                        $("#avgRating").text(newrating.toFixed(1));
+                                        $("#countRating").text(newcountRating);
+                                        $("#sumRating").text(newsumRating);
+
+                                      } else {
+                                        $("div#response").html("<i class='fa fa-frown-o'></i> <span class='label label-danger'>К сожалению, мы не учли ваш голос </span>");
+                                      }
+                                  },
+                              error: function(results){
+                                      // What to do when the ajax fails. 
+                                      console.log("ERROR");
+                                      $("div#response").html("<span class='label label-danger'>"+results.message+"</span>");
+                              }
+                  });
+            }
+          });
+        });
+      </script>
+
+    </div>
+      </div> 
+
+
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>О компании</h1>
+          <p>{company_about}</p>
+          <div class="googlemap">
+            <img src="/img2014/map.jpg" width="650px" alt="">
+          </div>
+           {embed="embed/.company-gallery" idmember="{author_id}"}
+        </div> 
+        <div class="col-xs-3 left-col">
+          <a data-toggle="modal" href="{path='embed/order-form-company-page'}/{author_id}" data-target="#modalOrderCompany" class="btn btn-danger btn-lg btn-block">Отправить заявку</a>
+            
+
+          <div class="address-row">
+            <span>Адрес:</span>
+           {company_address}
+            
+            <span>Телефоны:</span>
+            {if company_phone1 !=""}{company_phone1}<br>{/if}
+            {if company_phone2 !=""}{company_phone2}<br>{/if}
+            {if company_phone3 !=""}{company_phone3}<br>{/if}
+            {if company_phone4 !=""}{company_phone4}<br>{/if}
+            
+          </div>
+          <div class="mapareas-row">
+            <div class="links">
+              {regions_company}
+            </div>
+          </div>
+          <div class="banners-row">
+            <a href=""><img src="/img2014/banners/1.png" alt=""></a>
+            <a href=""><img src="/img2014/banners/2.png" alt=""></a>
+            <a href=""><img src="/img2014/banners/3.png" alt=""></a>
+            <a href=""><img src="/img2014/banners/4.png" alt=""></a>
+          </div>
+        </div>
+      </div>
+    </div> 
+    <br>
+    <div class="container-fluid otzyvy-proj-container">
+      <hr class="shadow">
+      <div class="container">
+        <h1>Отзывы о работе</h1>
+        {exp:rating:entries
+        entry_id="{entry_id}" 
+        collection="Review"
+        paginate="bottom"
+        limit="10"
+        }
+        <div class="panel panel-default">
+          <div class="panel-heading"> 
+            <i class="fa fa-user"></i> {name}: {stars}{rating}{/stars}
+            <span class="label label-default pull-right">
+              <i class="fa fa-calendar"></i> 
+              {rating_date format="%j %F %Y"}
+            </span>
+          </div>
+          <div class="panel-body">
+            <p>{review}</p>
+          </div>
+        </div>
+        {rating_paginate}
+            <p>Страница {current_page} из {total_pages} страниц
+            {pagination_links}</p>
+        {/rating_paginate}
+        {/exp:rating:entries} 
+
+        <div class="panel panel-default" id="formReviewholder">
+          <div class="panel-body">
+          {exp:rating:form
+    entry_id="{entry_id}"
+    collection="Review"
+    return="companies/{segment_3}/#formReviewholder"
+    form:class="form-registration"
+    form:id="idRatingForm1" 
+    status="moderate"
+    allow_duplicates="yes"
+    
+}
+
+{!--allow_duplicates="no" --}
+{!--
+ {if not_duplicate}--}
+    <!-- only show this to guests -->
+    {if logged_out}
+    <div class="row">
+        <div class="col-xs-6">
+            <label for="name">Ваше имя</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="name" id="name" rel="tooltip" data-title="Введите ваше имя">
+                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <label for="email">Ваш Email</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="email" id="email" rel="tooltip" data-title="Введите Ваш Email" >
+                    <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
+                </div>
+          </div>
+        </div>
+    </div>
+    {/if}
+    <div class="row">
+        <div class="col-xs-12">
+          <label for="rating">Выставьте рейтинг</label>
+          <div class="form-group">
+            <div class="input-group" id="rating-stars">
+            </div>
+          </div>
+        </div>
+    </div>
+    <input type="hidden" name="rating" id="rating" value="">
+    <div class="row">
+        <div class="col-xs-12">
+          <label for="review">Ваш отзыв</label>
+          <div class="form-group">
+            <textarea class="form-control" name="review" id="review" rows="3"></textarea>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="submit" type="submit"  class="btn btn-success pull-right" ><i class="fa fa-comments-o"></i> Оставить отзыв</button>
+      </div>
+    </div>{!--
+{/if} 
+ {if duplicate}
+ Спасибо за ваш отзыв
+ <script type="text/javascript">
+  $(document).ready(function() {
+    window.setTimeout(function() { $("#formReviewholder").hide( "slow"); }, 3000);
+  });
+</script>
+ {/if}
+ --}
+ 
+{/exp:rating:form}
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    $('#rating-stars').raty({ 
+        starType: 'i',
+        hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+        target : '#rating',
+        targetType : 'score',
+        targetKeep : true,
+        path: '/raty/images',
+         // The name of hidden field generated by Raty
+        scoreName: 'star',
+        // Re-validate the star rating whenever user change it
+        /*
+        click: function (score, evt) {
+            $('#idRatingForm1')
+                .data('bootstrapValidator')             // Return the bootstrapValidator instance
+                .updateStatus('star', 'NOT_VALIDATED')  // Mark the star field as not validated yet
+                .validateField('star');                 // Validate it again
+        }
+        */
+    });
+
+    $('input[rel="tooltip"]').tooltip({
+        'trigger':'focus', 
+        'title': $(this).data("title")
+    });
+    
+   
+                //Validation
+               $('#idRatingForm1').bootstrapValidator({
+                    message: 'Данные не верны',
+                    excluded: ':disabled',
+                  fields: {
+                    /*
+                    star: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Оцените'
+                            }
+                        }
+                    },*/
+                    review: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Введите Ваш отзыв'
+                            }                           
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите Ваше имя'
+                            }                           
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Укажите email'
+                            },
+                            emailAddress:{
+                              message: 'Не верный формат Email'
+                            }
+                           
+                        }
+                    },
+                  }
+              });
+              //End Validation
+    
+});
+</script>
+       {!--
+        <p class="text-center">
+          <a class="btn btn-success" data-toggle="modal" href="{path='embed/rating-form'}/{url_title}" data-target="#modalRating"><i class="fa fa-comments-o"></i> Оставьте отзыв о работе компании!</a>
+        </p>
+        --}
+      </div>
+    </div>
+
+
+    
+    <div class="container-fluid project-podbor">
+      <a href="{site_url}#indexForm">Подобрать проект?</a>
+    </div>
+    <div class="container-fluid projects-container">
+      <hr class="shadow">
+      <div class="container">
+        <h2>Аналогичные проекты</h2>
+        <p class="text-center"><em>Во время подписания договора вы вносите свои правки и пожелания, вносите предоплату <br>
+        Подписания договора вы вносите свои правки и пожелания</em></p>
+        <div class="row">
+          <ul id="projects-main-gallery" class="clr text-center">
+            <li>
+              <a class="main-img" href="/img2014/projects/image-1.jpg" rel="big-images"><img src="/img2014/projects/image-11.jpg" alt="" /></a>
+              <div class="desc">
+                Сруб дома №20
+                  <br>
+                  <span>от 359 945 руб</span>
+              </div>
+              <div class="images">
+                <a href="/img2014/projects/image-3.jpg" rel="small-images[1]"><img src="/img2014/projects/image-3.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-4.jpg" rel="small-images[1]"><img src="/img2014/projects/image-4.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-5.jpg" rel="small-images[1]"><img src="/img2014/projects/image-5.jpg" width="80" height="57" alt="" /></a>
+                <a href="#" class="more">Подробно</a>
+              </div>
+            </li>
+            <li>
+              <a class="main-img" href="/img2014/projects/image-1.jpg" rel="big-images"><img src="/img2014/projects/image-11.jpg"  alt="" /></a>
+              <div class="desc">
+                Сруб дома №20
+                  <br>
+                  <span>от 359 945 руб</span>
+              </div>
+              <div class="images">
+                <a href="/img2014/projects/image-3.jpg" rel="small-images[2]"><img src="/img2014/projects/image-3.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-4.jpg" rel="small-images[2]"><img src="/img2014/projects/image-4.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-5.jpg" rel="small-images[2]"><img src="/img2014/projects/image-5.jpg" width="80" height="57" alt="" /></a>
+                <a href="#" class="more">Подробно</a>
+              </div>
+            </li>
+            <li>
+              <a class="main-img" href="/img2014/projects/image-1.jpg" rel="big-images"><img src="/img2014/projects/image-11.jpg"  alt="" /></a>
+              <div class="desc">
+                Сруб дома №20
+                  <br>
+                  <span>от 359 945 руб</span>
+              </div>
+              <div class="images">
+                <a href="/img2014/projects/image-3.jpg" rel="small-images[3]"><img src="/img2014/projects/image-3.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-4.jpg" rel="small-images[3]"><img src="/img2014/projects/image-4.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-5.jpg" rel="small-images[3]"><img src="/img2014/projects/image-5.jpg" width="80" height="57" alt="" /></a>
+                <a href="#" class="more">Подробно</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <p class="text-center"><a class="red" href="">Перейти в галерею типовых проектов</a></p>
+      </div>
+    </div> 
+    <br>
+    <div class="container-fluid project-podbor">
+      <a href="{site_url}#indexForm">Подобрать проект?</a>
+    </div>
+    {embed="embed/.footer"}
+            <!-- Modal Order -->
+            <div class="modal fade" id="modalOrderCompany" tabindex="-1" role="dialog" aria-labelledby="modalOrderCompany" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Rating -->
+            <div class="modal fade" id="modalRating" tabindex="-1" role="dialog" aria-labelledby="modalRating" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  
+                </div>
+              </div>
+            </div>
+  </body>
+</html>
+{/exp:channel:entries}

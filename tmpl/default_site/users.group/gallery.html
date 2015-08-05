@@ -1,0 +1,100 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Мои фотогалереи"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Мои фотогалереи</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Мои фотогалереи</h1>
+
+          <a class="btn btn-danger btn-default" href="/users/add_gallery/"> <i class="fa fa-plus"></i> Добавить фотогалерею</a>
+          {exp:channel:entries channel="gallery" author_id="CURRENT_USER" limit="10"}
+          {if no_results}
+          <br><br><div class="alert alert-warning">У вас пока нет фотогалерей. </div>   
+          {/if}
+            <div class="row firm-row">
+                  {gallery_photos_grid limit="1"}
+              <div class="col-xs-3 text-center">
+                  <a class="main-img" href="{title_permalink='gallery'}" >
+                      {exp:ce_img:pair src='{gallery_photos_grid:gallery_photos_url}' width="120" height="90" allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{title}">
+                      {/exp:ce_img:pair}
+                  </a>
+              </div>
+              <div class="col-xs-4">
+                <span class="titlefirm">{title}</span><br>
+                Фотографий: {gallery_photos_grid:field_total_rows}
+
+              </div>
+                  {/gallery_photos_grid}
+              <div class="col-xs-5">
+                <div class="btn-group btn-group-sm pull-right">
+                  <a type="button" href="/users/edit_gallery/{entry_id}/" class="btn btn-primary btn-default"><i class="fa fa-pencil"></i> редактировать</a>
+                  <a type="button" href="{title_permalink='gallery'}" class="btn btn-primary btn-default"><i class="fa fa-share"></i> просмотреть</a>
+                </div>
+              </div>
+            </div>
+            {!--if count == total_results}
+            <a class="btn btn-danger btn-default pull-right" href="/users/add_gallery/"> <i class="fa fa-plus"></i> Добавить еще фотогалерею</a>
+            {/if--}
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+          {/exp:channel:entries}
+          
+            
+          
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="users/signin"}
+{/if}

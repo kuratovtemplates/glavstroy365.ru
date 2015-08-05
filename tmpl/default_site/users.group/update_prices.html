@@ -1,0 +1,45 @@
+{if logged_in}
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                             
+    {embed="embed/.meta" title="Личный кабинет"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Пользователи</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+        {if group_id == '1'}
+          <h1>Обновление цен на проекты</h1>
+         
+
+          <p>Обновлено {exp:averageprice updateAll='true'} проектов</p>            
+        {/if}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+    <br>
+    <div class="container-fluid project-podbor">
+      <a href="{site_url}#indexForm">Подобрать проект?</a>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

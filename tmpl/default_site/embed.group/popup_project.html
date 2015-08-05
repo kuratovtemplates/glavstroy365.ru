@@ -1,0 +1,107 @@
+    {exp:channel:entries channel="projects" limit="1" require_entry="yes"}
+    <div class="popup">
+		<div id="pop-close" data-dismiss="modal" aria-label="Close"></div>
+		<h1 class="text-center">Проект {title}</h1>
+		<div class="pop-img">
+			{projects_photos limit="1"}
+      {exp:ce_img:pair src='{url}' {wm_pic} height='407' width='407' allow_scale_larger="yes" crop='yes'}
+      <img src="{made}" width="407" height="407" >
+      {/exp:ce_img:pair}
+			{/projects_photos}
+			{projects_planing limit="1"}
+      {exp:ce_img:pair src='{url}' {wm_pic_small} max-width='407' height='190' allow_scale_larger="no" crop='no'}
+      <img src="{made}"   >
+      {/exp:ce_img:pair}
+      {/projects_planing}
+		</div>
+		<h5>средняя цена:</h5>
+		<div class="pop-but">{projects_avgprice} руб.</div>
+		<h5>от {projects_minprice} руб.</h5>
+		<h5>основные характеристики</h5>
+		<table>
+			<tr>
+				<td class="pop-f">Этажность:</td>
+				<td class="pop-s">{projects_floors}</td>
+			</tr>
+			{if projects_extra_balkon == "Есть"}
+			<tr>
+				<td class="pop-f">Балкон:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_lestnica == "Есть"}
+			<tr>
+				<td class="pop-f">Лестница:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_2light == "Есть"}
+			<tr>
+				<td class="pop-f">Второй свет:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_sanuzel == "Есть"}
+			<tr>
+				<td class="pop-f">Санузел:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_otlivy == "Есть"}
+			<tr>
+				<td class="pop-f">Отливы:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_bania == "Есть"}
+			<tr>
+				<td class="pop-f">Баня:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_garazh == "Есть"}
+			<tr>
+				<td class="pop-f">Гараж:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_krylco == "Есть"}
+			<tr>
+				<td class="pop-f">Крыльцо:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_terassa == "Есть"}
+			<tr>
+				<td class="pop-f">Терраса:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			{if projects_extra_veranda == "Есть"}
+			<tr>
+				<td class="pop-f">Веранда:</td>
+				<td class="pop-s">Есть</td>
+			</tr>
+			{/if}
+			<tr>
+				<td class="pop-f">Размеры:</td>
+				<td class="pop-s">{projects_size} м</td>
+			</tr>
+			<tr>
+				<td class="pop-f">Жилая площадь:</td>
+				<td class="pop-s">{projects_area}м<sup>2</sup></td>
+			</tr>
+		{!--
+			<tr>
+				<td class="pop-f">Средний срок исполнения:</td>
+				<td class="pop-s" ><span id="averageTime">0</span> дней</td>
+			</tr>
+		--}
+		</table>
+		<a href="/projects/{url_title}" class="pop-but2">показать предложения</a>
+		{!--
+		<a href="#" class="pop-ves">Добавить к сравнению (2)</a>
+		<a href="#" class="pop-izbr pop-ves">Добавить в избранное</a>
+		--}
+	</div>
+	{/exp:channel:entries}

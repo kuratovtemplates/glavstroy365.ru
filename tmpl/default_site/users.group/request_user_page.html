@@ -1,0 +1,142 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                
+    {embed="embed/.meta" title="Заявки на строительство"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li><a href="/users/request_users">Заявки на строительство</a></li>
+          <li class="active">Заявка</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          
+          {exp:channel:entries channel="request_users" limit="1"}
+          {if no_results}
+              <div class="alert alert-warning">Заявка недоступна</div>
+          {/if}
+          <h1>Заявка ID: {entry_id}</h1>
+
+          <table>
+            <col width="33%" valign="top">
+            <col width="57%" valign="top">
+            <tbody>
+              <tr>
+                <td>Тип строения</td>
+                <td>{requset_users_typebuilding} </td>
+              </tr>
+              <tr>
+                <td>Бюджет до</td>
+                <td>{requset_users_price} руб.</td>
+              </tr>
+              <tr>
+                <td>Материал исполнения</td>
+                <td>{requset_users_material}</td>
+              </tr>
+
+              {if requset_users_length != "" OR requset_users_width != ""}
+              <tr>
+                <td>Длина</td>
+                <td>{requset_users_length} м</td>
+              </tr>
+              <tr>
+                <td>Ширина</td>
+                <td>{requset_users_width} м</td>
+              </tr>
+              {/if}
+              {if requset_users_square !=""}
+              <tr>
+                <td>Площадь</td>
+                <td>{requset_users_square} м<sup>2</sup></td>
+              </tr>
+             {/if}
+              {if requset_users_walls !=""}
+              <tr>
+                <td>
+                  Толщина стен:
+                </td>
+                <td>
+                  {requset_users_walls}мм
+                </td>
+              </tr>
+              {/if}
+              {if requset_users_tolshuteplenija !=""}
+              <tr>
+                <td>
+                  Толщина утепления:
+                </td>
+                <td>
+                  {requset_users_tolshuteplenija}мм
+                </td>
+              </tr>
+              {/if}
+              {if requset_users_floors !=""}
+              <tr>
+                <td>
+                  Этажность
+                </td>
+                <td>
+                  {requset_users_floors}
+                </td>
+              </tr>
+              {/if}
+              {if requset_users_terrace !="" OR requset_users_garage !="" OR requset_users_secondlight !="" OR requset_users_wc !="" OR requset_users_lean !="" OR requset_users_balcony !=""}
+              <tr>
+                <td>
+                  Дополнительные параметры
+                </td>
+                <td>
+                  {if requset_users_terrace !=""}{requset_users_terrace}, {/if}
+                  {if requset_users_garage !=""}{requset_users_garage}, {/if}
+                  {if requset_users_secondlight !=""}{requset_users_secondlight}, {/if}
+                  {if requset_users_wc !=""}{requset_users_wc}, {/if}
+                  {if requset_users_lean !=""}{requset_users_lean}, {/if}
+                  {if requset_users_balcony !=""}{requset_users_balcony} {/if}
+                </td>
+              </tr>
+              {/if}
+            </tbody>
+          </table>
+
+          <br>
+          {if member_group == "1" OR member_group == "6"}
+          <div class="well request-contact">
+            {if requset_users_fio !=""}<i class="fa fa-user"></i> <b>{requset_users_fio}</b> {if requset_users_region!=''}({requset_users_region}){/if} <br>{/if}
+            {if requset_users_phone !=""}<i class="fa fa-phone"></i>  <b>{requset_users_phone}</b> <br> {/if}
+            {if requset_users_mail !=""}<i class="fa fa-envelope-o"></i>  <b>{requset_users_mail}</b> {/if}
+          </div>
+          {if:else}
+          <div class="alert alert-danger">
+            Для отображения контактных данных заказчиков необходимо оформить подписку на заявки, <a href="/podpiska">ознакомиться с условиями подписки</a>
+          </div>
+          {/if}
+          
+
+          Дата заявки: {entry_date format="%d.%m.%Y - %G:%i"}
+          {/exp:channel:entries}
+          
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

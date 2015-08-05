@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Расчет расстояния"}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+<script src="/js2014/googlemaps-api2.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li class="active">Расчет расстояния</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-12">
+          <h1>Расчет расстояния и стоимости доставки</h1>
+
+            <div class="col-xs-12">
+                    <p>У всех компаний, присутствующих на сайте БЕСПЛАТНАЯ доставка в радиусе 500км от г. Пестово.</p>
+                <div class="misc_item delivery">
+                          <form id="formDelivery" class="form-registration">
+                           <div class="row">
+                              <div class="col-xs-4">
+                              <label for="">Откуда</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                    A <i class="fa fa-map-marker"></i>
+                                    </div>
+                                    <input id="searchTextField_from" size="35" type="text" class="form-control" value="Россия, Новгородская область, Пестово" data-deliveryprice="75" data-distancestart="500" /><br>
+                                  </div>
+                              </div>
+                              <div class="col-xs-4">
+                                <label for="">Куда</label>
+                                <div class="input-group">
+                                  <div class="input-group-addon">B <i class="fa fa-map-marker"></i></div>
+                                  <input id="searchTextField" size="35" type="text" class="form-control" value="" data-deliveryprice="75" data-distancestart="500" /><br>
+                                </div>
+                              </div>
+                              <div class="col-xs-2">
+                                <label for="">Цена 1 км &harr;</label>
+                                <div class="input-group">
+                                  <input id="deliveryprice" type="text" class="form-control" value="75" /><br>
+                                  <div class="input-group-addon">
+                                   <i class="fa fa-rub"></i>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-xs-2">
+                                <label for="">Бесплатно</label>
+                                <div class="input-group">
+                                  <input id="distancestart" type="text" class="form-control" value="500" /><br>
+                                  <div class="input-group-addon">
+                                   км
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </form>
+                  <div style="display: none;">
+                    <table id="grid_values">
+                      <tr>
+                        <td>г. Пестово, Новгородская область</td>
+                        <td>Начальный пункт</td>
+                      </tr>
+                    </table>
+                  </div>
+            	</div>
+            <div id="map_canvas" style="height:400px;width:880px; display:none;"></div>
+            <div id="messages"></div><div class="price_delivery" id="distance"></div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+    {embed="embed/.footer" show="no"}
+  </body>
+</html>

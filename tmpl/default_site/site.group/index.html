@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                          
+    {embed="embed/.meta" title="Теперь построить деревянный дом или баню стало проще! Из бруса, из бревна или каркасно-щитовые дома и бани " canonical_url="{site_url}"}
+  </head>
+  <body>
+  	{embed="embed/.top"}
+    <div class="container-fluid">
+		{embed="embed/.menu"}
+    </div>
+
+    <div class="container" id="inback">
+    <div class="row">
+      <h1 class="in">Подбор проекта дома или бани</h1>
+    </div>
+    <div class="row ind-cont">
+      <div class="ind-but active" id="cont1" >Проекты домов</div>
+      <div class="ind-but" id="cont2" >проекты бань</div>
+      <div class="ind-wrap">
+      <form class="in-f" method="post" action="{path='projects'}">
+       {exp:super_search:search}
+          <input id="imMain" name="category[]" value="1+19+18+17" type="hidden" />
+          <input type="hidden" name="orderby" value="projects_area+asc" /> 
+        
+        <div class="ind-menu1 visibl">
+          <input id="im1" type="checkbox" name="category[]" value="17" hidden />
+          <label for="im1"  data-toggle="tooltip" data-placement="top" title="Одноэтажные"></label>
+
+          <input id="im2" type="checkbox" name="category[]" value="18" hidden  />
+          <label for="im2" data-toggle="tooltip" data-placement="top" title="Дачные" ></label>
+          
+          <input id="im3" type="checkbox" name="category[]" value="19" hidden />
+          <label for="im3" data-toggle="tooltip" data-placement="top" title="Коттеджи"></label>
+          {!--
+          <input id="im4" type="checkbox" name="category[]" value="19" hidden />
+          <label for="im4" ></label>
+          --}
+        </div>
+        <div class="ind-menu2">
+          <input id="im6" type="checkbox" name="category[]" value="22" hidden />
+          <label for="im6" data-toggle="tooltip" data-placement="top" title="Дом-баня"></label>
+          <input id="im5" type="checkbox" name="category[]" value="21" hidden />
+          <label for="im5" data-toggle="tooltip" data-placement="top" title="Одноэтажные"></label>
+          <input id="im7" type="checkbox" name="category[]" value="20" hidden />
+          <label for="im7" data-toggle="tooltip" data-placement="top" title="Перевозные" ></label>
+          
+        </div>
+        
+          <div class="first-block">
+            <span>Площадь строения:</span> <input id="im9" name='projects_area-from'/> <span> - </span> <input id="im10" name='projects_area-to'/> <span> М<sup>2</sup></span>
+            <div id="im11" class="pips-range3"></div>
+
+            {!--
+            <div class="first-razm">
+              Размер дома
+              <div class="razm-spisok">
+              <div class="uls"> 
+                <ul>   
+                  {exp:query sql="SELECT DISTINCT 
+                            exp_channel_data.field_id_14 AS razmer_sql
+                          FROM exp_channel_data
+                            INNER JOIN exp_category_posts
+                              ON exp_channel_data.entry_id = exp_category_posts.entry_id
+                          WHERE exp_channel_data.channel_id = '2' ORDER BY exp_channel_data.field_id_14 ASC"} 
+                  <li>
+                      <input id="imz{count}" type="checkbox" name="projects_size[]" value="{razmer_sql}" hidden />
+                      <label for="imz{count}">{razmer_sql}</label>
+                  </li>           
+                  {/exp:query}
+                </ul>
+              </div>
+    
+            </div>
+            </div>
+            <div class="second-razm">
+              Срок строительства
+              <div class="srok">
+                <input type="text" id="srok"/> Дней
+              </div>
+            </div>
+            --}
+          </div>
+          
+          <div class="first-block">
+            <span>Стоимость проекта:</span> <input type="text" id="im12" name='projects_avgprice-from'/> <span>-</span> <input type="text" id="im13" name='projects_avgprice-to'/> <span>руб.</span>
+            <div id="im14" class="pips-range4"></div>
+            
+          </div>
+
+            <div class="third-block">
+            <div class="first-razm">
+              Этажность<br/>
+              <div class="r floors-check">
+
+              <ul>
+              {exp:query sql="SELECT DISTINCT
+                        exp_channel_data.field_id_16 AS etazh_sql
+                      FROM exp_channel_data
+                        INNER JOIN exp_category_posts
+                          ON exp_channel_data.entry_id = exp_category_posts.entry_id
+                        INNER JOIN exp_channel_titles
+                          ON exp_channel_data.entry_id = exp_channel_titles.entry_id
+                      WHERE exp_channel_titles.status = 'open' AND exp_channel_data.channel_id = '2' ORDER BY exp_channel_data.field_id_16 ASC"}
+                  <li>
+                      <input id="rezm{count}" type="checkbox" name="projects_floors[]" value="{etazh_sql}" hidden />
+                      <label for="rezm{count}">{etazh_sql}</label>
+                  </li>
+                  {/exp:query}
+                  </ul>
+              </div>
+            </div>
+            </div>
+
+          <input type="submit" value="подобрать проекты"/>
+           {/exp:super_search:search}
+      </form>
+        
+      </div>
+    </div>
+    </div> <!-- /container -->
+<script type="text/javascript">
+  $(document).ready(function() {
+
+{exp:query sql="SELECT  
+                        MIN(exp_channel_data.field_id_125) AS projects_avgprice_sql_min,
+                        MAX(exp_channel_data.field_id_125) AS projects_avgprice_sql_max,
+                        MIN(exp_channel_data.field_id_15) AS projects_area_sql_min,
+                        MAX(exp_channel_data.field_id_15) AS projects_area_sql_max
+                      FROM exp_channel_data
+                        INNER JOIN exp_category_posts
+                          ON exp_channel_data.entry_id = exp_category_posts.entry_id
+                      WHERE exp_channel_data.channel_id = '2'"}
+                      var projects_avgprice_sql_min = {projects_avgprice_sql_min},
+                          projects_avgprice_sql_max = {projects_avgprice_sql_max},
+                          projects_area_sql_min = {projects_area_sql_min},
+                          projects_area_sql_max = {projects_area_sql_max}
+
+
+{/exp:query}
+    $('[data-toggle="tooltip"]').tooltip();
+    //переключение табов
+    $('#cont1').addClass('active');
+    $('.ind-menu1').addClass('visibl');
+    $(function(){
+      
+        $("div[class^='ind-menu'] label").mouseup(function() {
+          var mainCat = 1;
+          $("div[id^='cont']").each(function(){
+            if ( $(this).hasClass('active') ) {
+
+              if($(this).attr('id') == 'cont1') {
+                mainCat = 1;
+              } else {
+                mainCat = 2;
+              }
+
+            }
+          });
+
+          if(!$(this).prev().prop('checked')) {
+            $('#imMain').val(mainCat);                
+            $(this).prev().siblings('input[id^="im"]').each(function(){
+                if ( !$(this).prop("checked") ) $('#imMain').val('');                                                 
+            });
+          } else {
+            $('#imMain').val('');
+            /*
+            $(this).prev().siblings('input[id^="im"]').each(function(){
+              if ( !$(this).prop("checked") ) $('#imMain').val('1');                                                 
+            });                            
+*/
+          }
+
+
+        });
+      
+
+      $('#cont1').click(function(){
+        $('#imMain').val('1+19+18+17');
+        $('#cont1').addClass('active');
+        $('#cont2').removeClass('active');
+        $('.ind-menu1').addClass('visibl');
+        $('.ind-menu2').removeClass('visibl');
+        $('#inback').css('backgroundImage', 'url(./img2014/back1.jpg?v1)');
+      });
+      $('#cont2').click(function(){
+        $('#imMain').val('2+22+21+20');
+        $('#cont2').addClass('active');
+        $('#cont1').removeClass('active');
+        $('.ind-menu2').addClass('visibl');
+        $('.ind-menu1').removeClass('visibl');
+        $('#inback').css('backgroundImage', 'url(./img2014/back2.jpg?v2)');
+      });
+      $('#material0').click(function(){
+        $('#materialm').toggleClass('visiblem');
+        $('#butzm').removeClass('visiblem');
+        $('#tolshm').removeClass('visiblem');
+        
+      });
+      $('#butz0').click(function(){
+        $('#butzm').toggleClass('visiblem');
+        $('#materialm').removeClass('visiblem');
+        $('#tolshm').removeClass('visiblem');
+      });
+      $('#tolsh0').click(function(){
+        $('#tolshm').toggleClass('visiblem');
+        $('#materialm').removeClass('visiblem');
+        $('#butzm').removeClass('visiblem');
+      });
+      $('#prikr').click(function(){
+        $('#prikr').toggleClass('visiblem');
+        $('#prikr2').toggleClass('visiblem');
+        
+      });
+      
+      
+    //слайдер 
+    var slider3 = $('#im11'),
+      input5 = $('#im9'),
+      input6 = $('#im10');
+    
+    slider3.noUiSlider({
+      start: [projects_area_sql_min, projects_area_sql_max],
+      step: 10,
+      connect: true,
+      range: {
+        'min': projects_area_sql_min,
+        'max': projects_area_sql_max
+      }
+    });
+    slider3.Link('upper').to(input6, null , wNumb({decimals: 0}));
+    slider3.Link('lower').to(input5, null , wNumb({decimals: 0}));
+    $(".pips-range3").noUiSlider_pips({
+      mode: 'range',
+      density: 30,
+    });
+    
+    var slider4 = $('#im14'),
+      input7 = $('#im12'),
+      input8 = $('#im13');
+    
+    slider4.noUiSlider({
+      start: [projects_avgprice_sql_min, projects_avgprice_sql_max],
+      step: 10,
+      connect: true,
+      range: {
+        'min': projects_avgprice_sql_min,
+        'max': projects_avgprice_sql_max
+      }
+    });
+    slider4.Link('upper').to(input8, null , wNumb({decimals: 0}));
+    slider4.Link('lower').to(input7, null , wNumb({decimals: 0}));
+    $(".pips-range4").noUiSlider_pips({
+      mode: 'range',
+      density: 30,
+    });
+    });
+  });
+</script>
+
+
+  <div class="container stf">
+    <h2>Строительные фирмы</h2>
+    <h5><i>Вновь присоединившиеся и проверенные временем <img src="/img2014/gerb.png">строительные компании</i></h5>
+    <div class="stf-wrap">
+    {exp:low_variables:pair  var="index_companies" limit="4" multiple="yes"} 
+     <div class="wrap-div{if company_vip =="true"} gerb{/if}">
+        {exp:ce_img:pair src="{company_logo}" width="182" }
+          <img src="{made}" alt=""  />
+        {/exp:ce_img:pair}
+        <br/>
+        <a href="{title_permalink='companies'}">{title}</a>
+        <a href="{title_permalink='companies'}" class="stf-but">проекты</a>
+      </div>
+     
+    {/exp:low_variables:pair} 
+    </div>
+    <a class="stf-more" href="/companies">показать больше строительных компаний</a>
+  </div>
+
+  <div class="container dub">
+    <div class="row">
+      <h2>В данный момент строится <span>{exp:query sql="SELECT COUNT(*) AS totalres FROM exp_channel_data INNER JOIN exp_channel_titles ON exp_channel_data.entry_id = exp_channel_titles.entry_id WHERE exp_channel_data.field_id_113 <> '' AND exp_channel_data.channel_id = 6 AND exp_channel_titles.status = 'open'"}{exp:rutools:plural variants="построен,построено,построено" num="{totalres}" use parse="inward" only_text="on"}: <a href="/gallery"> {exp:rutools:plural variants="объект,объекта,объектов" num="{totalres}" use parse="inward"}</a>{/exp:query}</span> объекта<br/>заказанных через <b>наш сайт {site_name}</b></h2>
+      <h6>(в Новгородской, Ярославской и Тверской областях)</h6>
+      <button type="button" class="btn btn-danger" data-toggle="collapse" href="#collapse-map" id="displaymap">Посмотреть объекты на карте</button>
+    </div>
+  </div>
+
+
+    <div class="container-fluid collapse googlemap" id="collapse-map">
+      
+      <div id="map_wrapper">
+    <div id="map_canvas" class="mapping"></div>
+</div>
+<script type="text/javascript">
+jQuery(function($) {
+    // Asynchronously Load the map API 
+    /*
+    var script = document.createElement('script');
+    script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
+    document.body.appendChild(script);
+    */
+});
+
+$('#displaymap').click(function(){
+   var script = document.createElement('script');
+    script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
+    document.body.appendChild(script);
+  
+});
+
+
+function initialize() {
+    var map;
+    var bounds = new google.maps.LatLngBounds();
+    var mapOptions = {
+        mapTypeId: 'roadmap',
+        scrollwheel: false,
+    };
+                    
+    // Display a map on the page
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    map.setTilt(45);
+        
+    // Multiple Markers
+    var markers = [
+    {exp:channel:entries channel="gallery" search:gallery_lat="not IS_EMPTY" dynamic="no" limit="300"  disable="categories|category_fields|member_data|pagination"}['{title}', {gallery_lat}, {gallery_lng}],{/exp:channel:entries}
+    ];
+
+    // Info Window Content
+    var infoWindowContent = [
+    {exp:channel:entries channel="gallery"  disable="categories|category_fields|member_data|pagination" search:gallery_lat="not IS_EMPTY" dynamic="no" limit="300"}['<div class="info_content">' +
+        '<h5>{title}</h5><a href="{title_permalink="gallery"}">Детальнее</a><br>' +
+        '{gallery_photos_grid limit="3"}{exp:ce_img:pair src="{gallery_photos_grid:gallery_photos_url}"" width="100" height="100" allow_scale_larger="yes" crop="yes"}<img src="{made}" alt="{title}">{/exp:ce_img:pair}{/gallery_photos_grid}'+
+        '</div>'],{/exp:channel:entries}
+    ];
+        
+    // Display multiple markers on a map
+    var infoWindow = new google.maps.InfoWindow(), marker, i;
+    
+    // Loop through our array of markers & place each one on the map  
+    for( i = 0; i < markers.length; i++ ) {
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i][0]
+        });
+        
+        // Allow each marker to have an info window    
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(infoWindowContent[i][0]);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+    /*
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(6);
+        google.maps.event.removeListener(boundsListener);
+    )};
+    */
+}
+
+
+</script>
+
+    </div>
+
+      <div class="container wy">
+    <div class="row">
+      <h2>Мы обеспечиваем <b>вам</b></h2>
+
+      <div class="wy-wrap">
+        <a href="#" class="wy-before"><</a>
+        <a href="#" class="wy-after">></a>
+        <div class="why-carousel">
+        <ul>
+        <li><a href="#" class="wy-el">
+          <div class="wy-img1"></div>
+          <h4><b>Бесплатная <br>доставка</b></h4>
+          <h6><i>У всех строителей по каждому проекту бесплатная доставка.</i></h6>
+        </a></li>
+        <li><a href="#" class="wy-el">
+          <div class="wy-img2"></div>
+          <h4><b>Обязательная<br>гарантия</b></h4>
+          <h6><i>Обязательная гарантия 1 год У ВСЕХ фирм на сайте {site_name} на построенный объект.</i></h6>
+        </a></li>
+        <li><a href="#" class="wy-el">
+          <div class="wy-img3"></div>
+          <h4><b>Проверенные<br>строители</b></h4>
+          <h6><i>Все строительные фирмы на сайте {site_name} имеют в штате непьющих русских строителей</i></h6>
+        </a></li>
+        <li><a href="#" class="wy-el">
+          <div class="wy-img4"></div>
+          <h4><b>Короткие сроки</b></h4>
+          <h6><i>Время от начала строительства объекта под ключ до сдачи - от 10 дней</i></h6>
+        </a></li>
+        <li><a href="#" class="wy-el">
+          <div class="wy-img5"></div>
+          <h4><b>Более 50 заказчиков</b></h4>
+          <h6><i>С помощью нашего сайта уже построилось более 50 заказчиков (по данным фирм-строителей)</i></h6>
+        </a></li>
+        <li><a href="#" class="wy-el">
+          <div class="wy-img6"></div>
+          <h4><b>Отсутствие предоплаты</b></h4>
+          <h6><i>Все подрядчики работают без предоплаты при заключении договора</i></h6>
+        </a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <div class="container-fluid otzyvy-container">
+      <hr class="shadow">
+      <div class="container">
+        <h2 class="text-center">Отзывы клиентов и строителей</h2>
+        <p class="text-center"><em>Мы не публикуем «самописных» отзывов, для нас важно, что бы Вы доверяли нам <br/>и нашему профессионализму</em></p>
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          {exp:low_variables:pair  var="comments_index_users" multiple="yes"}    
+          {if {row_count} =="1"}
+          <div class="carousel-inner">
+          {/if}
+            <div class="item {if {row_count} =='1'}active{/if}">
+              <div class="divimg">
+                {exp:ce_img:pair src='{cell_2}'  width='138' height='136' allow_scale_larger="yes" crop='yes' rounded_corners="all,50|tr,0|bl,0" save_type="png" }
+                  <img src="{made}" width="138" >
+                {/exp:ce_img:pair}
+              </div>
+              <p><em>{cell_3}</em></p>
+              <p><b>{cell_1}</b></p>
+            </div>
+          {if {row_count} == {total_rows} }
+          </div>
+          {/if}
+          {/exp:low_variables:pair}
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"></a>
+          <a class="right carousel-control" href="#carousel-example-generic" data-slide="next"></a>
+        </div>
+        <script type="text/javascript">
+        $(document).ready(function(){
+          $('.carousel').carousel();
+        });          
+          (function($) {
+          $(function() {
+          $('.why-carousel').jcarousel();
+          $('.wy-before')
+            .on('jcarouselcontrol:active', function() {
+                $(this).removeClass('inactive');
+            })
+            .on('jcarouselcontrol:inactive', function() {
+                $(this).addClass('inactive');
+            })
+            .jcarouselControl({
+                target: '-=1'
+            });
+
+        $('.wy-after')
+            .on('jcarouselcontrol:active', function() {
+                $(this).removeClass('inactive');
+            })
+            .on('jcarouselcontrol:inactive', function() {
+                $(this).addClass('inactive');
+            })
+            .jcarouselControl({
+                target: '+=1'
+            });
+             });
+        })(jQuery);
+
+
+
+        </script>
+      </div>
+    </div> <!-- /container -->
+
+    <div class="container news">
+      <h2>Новости</h2> 
+      {exp:channel:entries channel="news" limit="2" disable="categories|category_fields|member_data|pagination"}
+      <div class="news0">
+        {static_images limit="1"}
+          {exp:ce_img:pair src='{url}' height='139' width='182' allow_scale_larger="yes" crop='yes'}
+           <img src="{made}" width="182" height="139" alt="{title}" />
+          {/exp:ce_img:pair}
+       {/static_images}
+        <a  href="{title_permalink='news'}">{title}</a>
+        <p class="n-time icon-clock-1">{entry_date format="%d %M %Y"}</p>
+      </div>
+      {/exp:channel:entries}
+
+      <a class="arhiv" href="/news">Архив новостей</a>
+    </div>
+
+
+    <div class="container news">
+      <h2>Полезные материалы</h2> 
+      {exp:channel:entries channel="articles" limit="3" disable="categories|category_fields|member_data|pagination"}
+
+      <a class="news1" href="{title_permalink='articles'}" style="background-image: url(
+      {if static_mainimg !=""}
+              {static_mainimg}
+              {exp:ce_img:pair src="{url}" width="310" height="260" allow_scale_larger="yes" crop="yes"}
+              {made}
+              {/exp:ce_img:pair}
+              {/static_mainimg}
+              {if:else}
+              {exp:ce_img:pair src="img2014/nophotoart.jpg" width="310" height="260" allow_scale_larger="yes" crop="yes"}
+              {made}
+              {/exp:ce_img:pair}
+              {/if}
+              );">
+        <h4>{title}</h4>
+        <div class="bax">подробнее в статье</div>
+        <div class="sh"></div>
+      </a>
+
+      {/exp:channel:entries}
+      <a class="arhiv" href="{path='articles'}">Архив статей</a>
+  </div>
+
+    {embed="embed/.footer"}
+  </body>
+</html>

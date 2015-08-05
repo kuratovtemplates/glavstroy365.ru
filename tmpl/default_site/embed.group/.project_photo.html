@@ -1,0 +1,22 @@
+{exp:channel:entries channel="projects" limit="1" entry_id="{embed:projectid}" dynamic="no"}
+			<div class="col-xs-3 text-center">
+                  {projects_photos limit="1"}
+                  <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" class="fancybox-thumb" rel="fancybox-thumb-{entry_id}" >
+                      {exp:ce_img:pair src='{url}' height='90' width='120' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{caption}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  {/projects_photos}
+                  Основное фото
+              </div>
+              <div class="col-xs-3 text-center">
+                {projects_planing limit="1"}
+                <a  href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" class="fancybox-thumb" rel="fancybox-thumb-{entry_id}" >
+                  {exp:ce_img:pair src='{url}' height='90' width='120' allow_scale_larger="yes" crop='yes'}
+                  <img src="{made}"  />
+                  {/exp:ce_img:pair}
+                </a>
+                Планировка
+                {/projects_planing}
+              </div>
+{/exp:channel:entries}

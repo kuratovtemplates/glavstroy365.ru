@@ -1,0 +1,175 @@
+{if logged_in}
+{redirect="users"}
+{if:else}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                                              
+    {embed="embed/.meta" title="Регистрация" title_suffix="Строительные компании"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="{site_url}{segment_1}">Пользователи</a></li>
+          <li class="active">Регистрация</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+            {embed="embed/.reg_steps" gray="step_1"}
+          <h1>Регистрация</h1>
+          <div class="row">
+
+            {exp:user:register
+              return="users/add_company/first"
+              form:class="form-registration"
+              error_page="{segment_1}/error"
+              required="name_company|regions_company"
+              form:id="JoinForm"
+            }
+              {exp:snaptcha:field}     
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Ваш логин*: </label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="username" name="username" rel="tooltip" data-title="Введите Ваш логин (более 3 символов)">
+                  </div>
+                </div>
+              </div>              <div class="row">
+                <div class="col-xs-4">
+                  <label>Пароль*: </label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="password" class="form-control" id="password" name="password" rel="tooltip" data-title="Введите надежный пароль (более 5 символов)">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Ваш Email*: </label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="email" name="email"  rel="tooltip" data-title="Email для напоминания пароля">
+                  </div>
+                </div>
+              </div>
+              <div class="row signature">
+                <div class="col-xs-8 col-xs-offset-4">
+                    Для восстановления пароля
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Купон на скидку: </label>
+                </div>
+                <div class="col-xs-8">
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="member_coupon" name="member_coupon"  rel="tooltip" data-title="Введите номер купона на скидку">
+                  </div>
+                </div>
+              </div>
+              <div class="row signature">
+                <div class="col-xs-8 col-xs-offset-4">
+                    Введите купон на скидку, если конечно он у вас есть
+                </div>
+              </div>
+               <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Зарегистрировать меня</button>
+                </div>
+              </div>
+            {/exp:user:register}
+          <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#JoinForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    username: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Логин обязателен'
+                            },
+                            stringLength: {
+                                min: 4,
+                                message: 'Логин должен содержать больше 3 символов'
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: 'Пароль должен содержать больше 5 символов'
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Пароль обязателен'
+                            },
+                            emailAddress: {
+                                message: 'Не верный формат Email'
+                            }
+                        }
+                    }
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+          </div>
+          <div class="row">
+          {exp:jquery:script_tag}
+          <script type="text/javascript">
+          $(document).ready(function(){
+          $('.extlogin').click(function(){
+          $('#social_login_form2 input[name=provider]').val($(this).attr('rel'));
+          $('#social_login_form2').submit();
+          });
+          });
+          </script>
+          {exp:social_login_pro:form 
+            return="users/add_company/first"
+            form:class="form-registration"
+            id="social_login_form2"
+            name="social_login_form2"
+          }
+          <h4>Либо войдите с помощью социальных сетей:</h4>
+          <input type="hidden" name="provider" value="" />
+          {providers}
+          <a href="javascript:void(0)" class="extlogin" rel="{provider_name}" title="{provider_title}"><img src="{provider_icon}" alt="{provider_title}" /></a>
+          {/providers}
+          {/exp:social_login_pro:form}
+          </div>
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div>
+    </div>
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{/if}

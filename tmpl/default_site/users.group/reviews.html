@@ -1,0 +1,88 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                              
+    {embed="embed/.meta" title="Оценки"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Оценки</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Оценки</h1>
+          <br>
+           {exp:channel:entries channel="companies" author_id="CURRENT_USER"  dynamic="no" limit=1}
+
+          {exp:rating:entries 
+            entry_id="{entry_id}"
+            limit="20"
+            dynamic="off"
+            status="open|closed|moderate|Quarantined"
+            limit="50"
+            paginate="bottom"
+          }
+          {if no_results}
+              <div class="alert alert-warning">Нет доступых отзывов. </div>
+          {/if}
+            <div class="row firm-row {if rating_status=='moderate'}bg-warning{/if}{if rating_status=='closed'}text-muted{/if} ">
+              <div class="col-xs-8">
+                <span class="titlefirm">
+                   {name}, оценка: {rating} 
+                </span>
+                <br>
+                <i class="fa fa-calendar"></i> {rating_date format="%j %F %Y"}
+                <br>
+                <br>
+                <p>{review} 
+                </p>
+                <p class="text-muted">{if rating_status =='moderate'} <span class="text-danger"><i class="fa fa-exclamation-triangle"></i> требует модерации</span>{/if}{if rating_status =='open'}<i class='fa fa-unlock'></i> открыто{/if}{if rating_status =='closed'}<i class='fa fa-lock'></i>  закрыто{/if}</p>
+              </div>
+             <div class="col-xs-4 people-vote">
+                
+                <div class="rating-stars" id="rating_{rating_id}" ></div>
+                 
+
+                <script type="text/javascript">
+                    $('#rating_{rating_id}').raty({ 
+                      score: {rating},
+                      starType: 'i',
+                      readOnly: true,
+                      hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+                    });
+                </script>
+                
+
+              </div>
+            </div> 
+            {rating_paginate}
+           <p>Страница {current_page} (всего {total_pages} страниц) 
+            {pagination_links}</p>
+          {/rating_paginate}
+
+          {/exp:rating:entries} 
+         {/exp:channel:entries}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                          
+    {embed="embed/.meta" title="{site_name} - построить деревянный дом из бруса, выбрав из 16 строителей" canonical_url="{site_url}"}
+  </head>
+  <body>
+  	{embed="embed/.top"}
+    <div class="container-fluid">
+		{embed="embed/.menu"}
+    </div>
+ 
+    <div class="container-fluid bg-wood-white" id="indexForm">
+       <div class="container">
+        {if segment_1=='banya'}
+        <h1><span>Получи</span> цену на <span>баню из бруса</span><br> от 16 компаний одним запросом</h1>
+        {if:elseif segment_1=='brus'}
+        <h1><span>Получи</span> цену на <span>дом из бруса</span><br> от 16 компаний одним запросом</h1>
+        {if:elseif segment_1=='dachi'}
+        <h1><span>Получи</span> цену на <span>дачный дом</span><br> от 16 компаний одним запросом</h1>
+        {if:elseif segment_1=='sadovye'}
+        <h1><span>Получи</span> цену на <span>садовый домик</span><br> от 16 компаний одним запросом</h1>
+        {if:elseif segment_1=='podkluch'}
+        <h1><span>Получи</span> цену на <span>дом под ключ</span><br> от 16 компаний одним запросом</h1>
+        {if:elseif segment_1=='profbrus'}
+        <h1><span>Получи</span> цену на <span>дом из проф. бруса</span><br> от 16 компаний одним запросом</h1>
+        {if:else}
+        <h1>Получи <span>сегодня</span> предложения от 16 строителей <span>одним</span> запросом</h1>
+        {/if}
+        <p><span>Проверенные строительные компании с опытом работы от 3-х лет готовы выслать вам предложения в течении 5 часов</span></p>
+       </div>
+
+       <div class="container">
+
+        <div class="row">
+          <div class="col-xs-12 form-bg-wood">
+          	{exp:channel:form 
+            channel="request_users"
+            return="thanks/"
+            datepicker="no" 
+            include_jquery="no"
+            use_live_url="yes"  
+            class="form"
+            id="requestUserForm"
+          	}
+             <input type="hidden" name="title" id="title" value="Request from user {current_time format='%Y-%m-%d-%H-%i-%s'}"  >
+             <input type="hidden" name="requset_users_typebuilding" id="requset_users_typebuilding" value="Дом" >
+             <input type="hidden" name="requset_users_price" id="requset_users_price" value="300000" >
+             <input type="hidden" name="requset_users_material" id="requset_users_material" value="Профилированный брус" >
+             <input type="hidden" name="requset_users_walls" id="requset_users_walls" value="100" >
+             <input type="hidden" name="requset_users_tolshuteplenija" id="requset_users_tolshuteplenija" value="" >
+             <input type="hidden" name="requset_users_floors" id="requset_users_floors" value="1 этаж" >
+
+              <div class="row">
+                <div class="col-xs-5">
+                  <p><b>Тип строения</b></p>
+                  <ul id="ulradioButton" class="ulradioButton">
+                    <li class="radiobutton radio-house activeradio" data-value="Дом"></li>
+                    <li class="radiobutton radio-bania" data-value="Баня"></li>
+                  </ul>
+                  
+                </div>
+                <div class="col-xs-5 col-xs-offset-1">
+                  <p><b>Бюджет</b></p>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="biudjhetselect"> до 300 000 рублей</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULbiudjhetselect" role="menu">
+                      <li><a href="#" data-value="300000">до 300 000 рублей</a></li>
+                      <li><a href="#" data-value="500000">до 500 000 рублей</a></li>
+                      <li><a href="#" data-value="700000">до 700 000 рублей</a></li>
+                      <li><a href="#" data-value="1000000">до 1 000 000 рублей</a></li>
+                      <li><a href="#" data-value="1500000">до 1 500 000 рублей</a></li>
+                      <li><a href="#" data-value="2500000">до 2 500 000 рублей</a></li>
+                      <li><a href="#" data-value="5000000">до 5 000 000 рублей</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-5 material-col">
+                  <p><b>Материал исполнения</b></p>
+                  <div class="btn-group btn-block selectlistgroup"  style="margin-top: 5px;">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="materialselect"><img src="/img2014/brus1.png" alt="">Профилированный брус</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULmaterialselect" role="menu">
+                      <li><a href="#" data-value="Профилированный брус"><img src="/img2014/brus1.png" alt="">Профилированный брус</a></li>
+                      <li><a href="#" data-value="Клееный брус"><img src="/img2014/brus1.png" alt="">Клееный брус</a></li>
+                      <li><a href="#" data-value="Каркасный вариант"><img src="/img2014/karkas1.png" alt="">Каркасный вариант</a></li>
+                      <li><a href="#" data-value="Бревно"><img src="/img2014/brus1.png" alt="">Бревно</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-xs-offset-1">
+                  <p><label id="label-toggle-switch" class="label-toggle-switch label-dis">Габариты строения</label> <input type="checkbox" id="switch-change" name="my-checkbox"  data-on-color="default"  data-off-color="default" data-size="mini" checked> <label class="label-toggle-switch" id="label-toggle-switch">Площадь</label></p>
+                  <div class="gabarity">
+                    <div class="col-xs-6">
+                      <input type="text" id="inputLength" name="requset_users_length" class="form-control smallinput" placeholder="Длина"><label> м</label>
+                    </div>
+                    <div class="col-xs-6">
+                      <input type="text" id="inputWidth" name="requset_users_width" class="form-control smallinput" placeholder="Ширина"><label> м</label>
+                    </div>
+                  </div>
+                  <div class="area disabled">
+                    <input type="text" id="inputSquare" name="requset_users_square" class="form-control smallinput" placeholder="Площадь" disabled><label> м</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-2 {!--coltolsh--}">
+                  <div id="tolshsten">
+                  <p><b>Толщина стен</b></p>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="tolshinaselect"><img src="/img2014/brus1.png" alt="">100 мм</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULtolshinaselect" role="menu">
+                      <li><a href="#" data-value="140"><img src="/img2014/brus1.png" alt="">100 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/brus1.png" alt="">150 мм</a></li>
+                      <li><a href="#" data-value="160"><img src="/img2014/brus1.png" alt="">200 мм</a></li>
+                      <li><a href="#" data-value="170"><img src="/img2014/brus1.png" alt="">250 мм</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="tolshuteplenija">
+                  <p><b>Толщина утепл.</b></p>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="tolshinaUtselect"><img src="/img2014/karkas1.png" alt="">50 мм</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULtolshinaUtselect" role="menu">
+                      <li><a href="#" data-value="140"><img src="/img2014/karkas1.png" alt="">50 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">100 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">150 мм</a></li>
+                      <li><a href="#" data-value="160"><img src="/img2014/karkas1.png" alt="">200 мм</a></li>
+                      <li><a href="#" data-value="170"><img src="/img2014/karkas1.png" alt="">250 мм</a></li>
+                    </ul>
+                  </div>
+                </div>
+<!--                <div id="diametr">
+                  <p><b>Диаметр бревна.</b></p>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="diametrselect"><img src="/img2014/karkas1.png" alt="">50 мм</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULdiametrselect" role="menu">
+                      <li><a href="#" data-value="140"><img src="/img2014/karkas1.png" alt="">50 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">100 мм</a></li>
+                      <li><a href="#" data-value="150"><img src="/img2014/karkas1.png" alt="">150 мм</a></li>
+                      <li><a href="#" data-value="160"><img src="/img2014/karkas1.png" alt="">200 мм</a></li>
+                      <li><a href="#" data-value="170"><img src="/img2014/karkas1.png" alt="">250 мм</a></li>
+                    </ul>
+                  </div>
+                </div>-->
+                </div>
+                <div class="col-xs-3 {!--etazhn--}">
+                  <p><b>Этажность</b></p>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="etazhnostselect">1 этаж</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULetazhnostselect" role="menu">
+                      <li><a href="#" data-value="1 этаж">1 этаж</a></li>
+                      <li><a href="#" data-value="1 этаж + мансарда">1 этаж + мансарда</a></li>
+                      <li><a href="#" data-value="2 этажа">2 этажа</a></li>
+                      <li><a href="#" data-value="3 этажа">3 этажа</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-xs-offset-1">
+                  <p><b>Дополнительные пожелания</b></p>
+                    <ul class="checkboxgroup" id="predlozheniacheckbox">
+                      <li data-value="Терасса">
+                        Терраса
+                        <input type="hidden" name="requset_users_terrace" id="requset_users_terrace" value="" >
+                      </li>
+                      <li data-value="Гараж">
+                        Гараж
+                        <input type="hidden" name="requset_users_garage" id="requset_users_garage" value="" >
+                      </li>
+                      <li data-value="Второй свет">
+                        Второй свет
+                        <input type="hidden" name="requset_users_secondlight" id="requset_users_secondlight" value="" >
+                      </li>
+                      <li data-value="Санузел">
+                        Санузел
+                        <input type="hidden" name="requset_users_wc" id="requset_users_wc" value="" >
+                      </li>
+                      <li data-value="Навес">
+                        Навес
+                        <input type="hidden" name="requset_users_lean" id="requset_users_lean" value="" >
+                      </li>
+                      <li data-value="Балкон">
+                        Балкон
+                        <input type="hidden" name="requset_users_balcony" id="requset_users_balcony" value="" >
+                      </li>
+                    </ul>
+                </div>
+              </div>
+              <p class="text-center"><b>&nbsp;</b></p>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label>Ваше ФИО</label>
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="requset_users_fio" placeholder="Введите ваши ФИО">
+                  </div>
+                </div>
+                <div class="col-xs-4">
+                  <label>Телефон</label>
+                  <div class="form-group">
+                  <input type="text" class="form-control" name="requset_users_phone" placeholder="Ваш телефон">
+                </div>
+                </div>
+                <div class="col-xs-4">
+                  <label>Email</label>
+                  <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Ваш Email" name="requset_users_mail" >
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block">Получить цену от 16 компаний</button>
+                </div>
+              </div>
+              {exp:ee_geo:city}<input type="hidden" name="requset_users_region" id="requset_users_region" value="{if region_name!=''}{city}{/if}" >{/exp:ee_geo:city}
+
+           {/exp:channel:form}
+
+            <script type="text/javascript">
+          $(document).ready(function() {
+              //Validation
+               $('#requestUserForm').bootstrapValidator({
+                  message: 'Данные не верны',
+                   feedbackIcons: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                  fields: {
+                    requset_users_fio: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Обязательное поле'
+                            }
+                        }
+                    },
+                    requset_users_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Обязательное поле'
+                            }
+                        }
+                    },
+                    requset_users_mail: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email обязателен'
+                            },
+                            emailAddress: {
+                                message: 'Не верный формат Email'
+                            }
+                        }
+                    },                   
+                  }
+              });
+              //End Validation
+          });
+
+          </script>
+
+          </div>
+          {!--
+          <div class="col-xs-12 banners" style="margin-top: 15px;">
+            <p>{exp:low_variables:pair  var="banner_240_265" limit="4" multiple="yes"}
+              <a href="{cell_3}" target="_blank">
+              {exp:ce_img:pair src='{cell_2}'  width='240' height='265' allow_scale_larger="yes" crop='yes' }
+              <img src="{made}" alt="">
+              {/exp:ce_img:pair}
+              </a>
+            {/exp:low_variables:pair}</p>
+          </div>
+          --}
+        </div>
+       </div>
+    </div>
+
+--}
+    <div class="container progressmap">Уже {exp:query sql="SELECT COUNT(*) AS totalres FROM exp_channel_data INNER JOIN exp_channel_titles ON exp_channel_data.entry_id = exp_channel_titles.entry_id WHERE exp_channel_data.field_id_113 <> '' AND exp_channel_data.channel_id = 6 AND exp_channel_titles.status = 'open'"}{exp:rutools:plural variants="построен,построено,построено" num="{totalres}" use parse="inward" only_text="on"}: <b><a href="/gallery"> {exp:rutools:plural variants="объект,объекта,объектов" num="{totalres}" use parse="inward"}</a></b>{/exp:query}, <br>заказанных через <b>сайт {site_name}</b>
+
+   <span>&nbsp;</span>
+      <button type="button" class="btn btn-danger" data-toggle="collapse" href="#collapse-map" id="displaymap">Посмотреть объекты на карте</button>
+    </div>
+    <div class="container-fluid collapse googlemap" id="collapse-map">
+      
+      <div id="map_wrapper">
+    <div id="map_canvas" class="mapping"></div>
+</div>
+<script type="text/javascript">
+jQuery(function($) {
+    // Asynchronously Load the map API 
+    /*
+    var script = document.createElement('script');
+    script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
+    document.body.appendChild(script);
+    */
+});
+
+$('#displaymap').click(function(){
+   var script = document.createElement('script');
+    script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
+    document.body.appendChild(script);
+  
+});
+
+
+function initialize() {
+    var map;
+    var bounds = new google.maps.LatLngBounds();
+    var mapOptions = {
+        mapTypeId: 'roadmap',
+        scrollwheel: false,
+    };
+                    
+    // Display a map on the page
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    map.setTilt(45);
+        
+    // Multiple Markers
+    var markers = [
+    {exp:channel:entries channel="gallery" search:gallery_lat="not IS_EMPTY" dynamic="no" limit="300"  disable="categories|category_fields|member_data|pagination"}['{title}', {gallery_lat}, {gallery_lng}],{/exp:channel:entries}
+    ];
+
+    // Info Window Content
+    var infoWindowContent = [
+    {exp:channel:entries channel="gallery"  disable="categories|category_fields|member_data|pagination" search:gallery_lat="not IS_EMPTY" dynamic="no" limit="300"}['<div class="info_content">' +
+        '<h5>{title}</h5><a href="{title_permalink="gallery"}">Детальнее</a><br>' +
+        '{gallery_photos_grid limit="3"}{exp:ce_img:pair src="{gallery_photos_grid:gallery_photos_url}"" width="100" height="100" allow_scale_larger="yes" crop="yes"}<img src="{made}" alt="{title}">{/exp:ce_img:pair}{/gallery_photos_grid}'+
+        '</div>'],{/exp:channel:entries}
+    ];
+        
+    // Display multiple markers on a map
+    var infoWindow = new google.maps.InfoWindow(), marker, i;
+    
+    // Loop through our array of markers & place each one on the map  
+    for( i = 0; i < markers.length; i++ ) {
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i][0]
+        });
+        
+        // Allow each marker to have an info window    
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(infoWindowContent[i][0]);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+    /*
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(6);
+        google.maps.event.removeListener(boundsListener);
+    )};
+    */
+}
+
+
+</script>
+
+    </div>
+
+    <div class="container">
+      <h2 class="text-center">Почему выгодно <br>заказывать через <b>нас</b>?</h2>
+     <p class="text-center"><em>Потому что мы обеспечиваем для вас выполнение следующих условий:</em></p>
+<br>
+     <div class="row">
+        <div class="col-xs-4 eggs">
+            <a class="eggs-icon icon1" href="javascript:void(0)"></a>
+            <div class="caption">
+              <h3>Бесплатная <br>доставка</h3>
+               <p><em>У всех строителей по каждому проекту бесплатная доставка.</em></p>
+            </div>
+        </div>
+        <div class="col-xs-4 eggs">
+          <a class="eggs-icon icon2" href="javascript:void(0)"></a>
+            <div class="caption">
+              <h3>Обязательная<br>гарантия</h3>
+               <p><em>Обязательная гарантия 1 год У ВСЕХ фирм на сайте {site_name} на построенный объект.</em></p>
+            </div>
+        </div>
+        <div class="col-xs-4 eggs">
+          <a class="eggs-icon icon3" href="javascript:void(0)"></a>
+            <div class="caption">
+              <h3>Проверенные<br>строители</h3>
+               <p><em>Все строительные фирмы на сайте {site_name} имеют в штате непьющих русских строителей</em></p>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 eggs">
+            <a class="eggs-icon icon4" href="javascript:void(0)"></a>
+            <div class="caption">
+              <h3>Короткие сроки</h3>
+               <p><em>Время от начала строительства объекта под ключ до сдачи - от 10 дней</em></p>
+            </div>
+        </div>
+        <div class="col-xs-4 eggs">
+          <a class="eggs-icon icon5" href="javascript:void(0)"></a>
+            <div class="caption">
+              <h3>Более 50 заказчиков</h3>
+               <p><em>С помощью нашего сайта уже построилось более 50 заказчиков (по данным фирм-строителей)</em></p>
+            </div>
+        </div>
+        <div class="col-xs-4 eggs">
+          <a class="eggs-icon icon6" href="javascript:void(0)"></a>
+            <div class="caption">
+              <h3>Отсутствие предоплаты</h3>
+               <p><em>Все подрядчики работают без предоплаты при заключении договора</em></p>
+            </div>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+    {ostavit}
+    <div class="container-fluid projects-container">
+      <hr class="shadow">
+      <div class="container">
+        <h2 class="text-center">Выберите проект<br> из имеющихся на сайте</h2>
+        <p class="text-center"><em>Наша база проектов постоянно пополняется, подрядчики дают свои оценки и указывают комплектацию!</em></p>
+        <div class="row">
+          <ul id="projects-main-gallery" class="clr text-center">
+            {exp:channel:entries channel="projects" limit="6" dynamic="no" disable="category_fields|member_data|pagination"}
+            <li>
+              {projects_photos limit="1"}
+              <a class="main-img" href="{title_permalink='projects'}" rel="big-images" >
+                {exp:ce_img:pair src='{url}' {wm_pic_small} height='195' width='263' allow_scale_larger="yes" crop='yes'}
+                <img src="{made}" alt="{title}"  />
+                {/exp:ce_img:pair}
+              </a>
+              {/projects_photos}
+                  <div class="desc">
+                    {exp:low_replace find="Дома|Бани" replace="Дом|Баня" multiple="yes"}{categories}{category_name}{/categories}{/exp:low_replace} {title} ({projects_size} м.)
+                    <br>
+                    <span>{embed='embed/.project-prices' projectid='{entry_id}'}</span>
+                  </div>
+              <div class="images">
+                {projects_photos limit="2" offset="1"}
+                <a href="{title_permalink='projects'}">
+                  {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                  <img src="{made}" width="80" height="59" alt="{title}" />
+                  {/exp:ce_img:pair}
+                </a>
+                {/projects_photos}
+                {projects_planing limit="1"}
+                <a href="{title_permalink='projects'}">
+                  {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                  <img src="{made}" width="80" height="59" alt="{title}" />
+                  {/exp:ce_img:pair}
+                </a>
+                {/projects_planing}
+                <a href="{title_permalink='projects'}" class="more">Подробно</a>
+              </div>
+            </li>
+            {/exp:channel:entries}
+        </ul>
+        </div>
+        <p class="text-center"><a class="red" href="{path='projects/'}">Перейти в каталог типовых проектов</a></p>
+
+      </div>
+    </div> <!-- /container -->
+    <div class="container possibilities-container">
+    {exp:channel:entries channel="static" limit="1" entry_id="172" disable="categories|category_fields|member_data|pagination"}
+      <h2 class="text-center">{title} {edit_link}</h2>
+      {static_text}
+      <br>
+      <div class="row gallery">
+      {static_images}
+        <div class="col-xs-3">
+          <a href="{url}" class="thumbnail fancybox-thumb" rel="fancybox-thumb">
+            {exp:ce_img:pair src='{url}' height='238' width='238' allow_scale_larger="yes" crop='yes'}
+            <img src="{made}" width="238" height="238" alt="{title}" />
+            {/exp:ce_img:pair}
+          </a>
+        </div>
+      {/static_images}
+      </div>
+    {/exp:channel:entries}
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $(".fancybox-thumb").fancybox({
+            prevEffect  : 'none',
+            nextEffect  : 'none',
+            helpers : {
+              title : {
+                type: 'outside'
+              },
+              thumbs  : {
+                width : 50,
+                height  : 50
+              }
+            }
+          });
+        });
+      </script>
+    </div> <!-- /container -->
+    <div class="container-fluid otzyvy-container">
+      <hr class="shadow">
+      <div class="container">
+        <h2 class="text-center">Отзывы клиентов и строителей</h2>
+        <p class="text-center"><em>Мы не публикуем «самописных» отзывов, для нас важно, что бы Вы доверяли нам <br/>и нашему профессионализму</em></p>
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          {exp:low_variables:pair  var="comments_index_users" multiple="yes"}    
+          {if {row_count} =="1"}
+          <div class="carousel-inner">
+          {/if}
+            <div class="item {if {row_count} =='1'}active{/if}">
+              <div class="divimg">
+                {exp:ce_img:pair src='{cell_2}'  width='138' height='136' allow_scale_larger="yes" crop='yes' rounded_corners="all,50|tr,0|bl,0" save_type="png" }
+                  <img src="{made}" width="138" >
+                {/exp:ce_img:pair}
+              </div>
+              <p><em>{cell_3}</em></p>
+              <p><b>{cell_1}</b></p>
+            </div>
+          {if {row_count} == {total_rows} }
+          </div>
+          {/if}
+          {/exp:low_variables:pair}
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"></a>
+          <a class="right carousel-control" href="#carousel-example-generic" data-slide="next"></a>
+        </div>
+        <script type="text/javascript">
+        $(document).ready(function(){
+          $('.carousel').carousel();
+        });          
+        </script>
+      </div>
+    </div> <!-- /container -->
+
+    <div class="container">
+      <h2 class="text-center">Полезные материалы</h2>
+      <div class="row">
+      {exp:channel:entries channel="articles" limit="3" disable="categories|category_fields|member_data|pagination"}
+        <div class="col-xs-4">
+          <a href="{title_permalink='articles'}">
+              {if static_mainimg !=""}
+              {static_mainimg}
+              {exp:ce_img:pair src="{url}" width="290" height="155" crop="yes"}
+                    <img src="{made}" alt="">
+                  {/exp:ce_img:pair}
+              {/static_mainimg}
+              {if:else}
+              {exp:ce_img:pair src="img2014/nophotoart.jpg" width="260" height="180" crop="yes"}
+                    <img src="{made}" alt="">
+              {/exp:ce_img:pair}
+              {/if}
+              </a>
+              <h4><a href="{title_permalink='articles'}">{title}</a></h4>
+             {!-- <small>{entry_date format="%d.%m.%Y"}</small>   --}
+        </div>
+      {/exp:channel:entries}
+       <p class="text-center"><a class="red" href="{path='articles'}">Все статьи</a></p>
+      </div>
+    </div>
+    <div class="container">
+      <h2 class="text-center">Новости</h2>
+      <div class="row">
+      {exp:channel:entries channel="news" limit="3" disable="categories|category_fields|member_data|pagination"}
+        <div class="col-xs-4">
+              <h4><a href="{title_permalink='news'}">{title}</a></h4>
+                <small>{entry_date format="%d.%m.%Y"}</small>
+        </div>
+      {/exp:channel:entries}
+       <p class="text-center"><a class="red" href="{path='news'}">Все новости</a></p>
+      </div>
+    </div>
+
+    {embed="embed/.footer"}
+  </body>
+</html>

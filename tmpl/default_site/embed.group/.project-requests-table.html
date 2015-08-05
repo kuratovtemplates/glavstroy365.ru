@@ -1,0 +1,140 @@
+      <div class="row table-row">
+        <div class="col-xs-12">
+          {exp:channel:entries channel="request" search:request_project="={embed:idproject}" orderby="request_price" sort="asc" author_id="{embed:iduser}" limit="7" dynamic="no"}
+           {if no_results}
+              <div class="alert alert-warning">Пока нет предложений по строительству данного проекта. </div><br>
+          {/if}
+          {if count == '1'}
+          <form action="">
+          <table id="tableRequests" class="table_center sorttable">
+            <thead>
+              <tr>
+              {if embed:mode!="company"}
+                <th>Компания</th>
+              {/if}
+                <th width="37%">Материал и комплектация</th>
+                <th>Срок исполнения</th>
+                <th>Экстра</th>
+                <th width="25%">Стоимость</th>
+                <th>Сравнить</th>
+              </tr>
+            </thead>
+            <tbody>
+            {/if}
+              <tr data-price="{request_price}" data-time="{request_time}" >
+              {if embed:mode!= "company"}
+                <td>
+                  
+                  {exp:query sql="SELECT
+  exp_channel_titles.title AS company_title,
+  exp_channel_titles.url_title AS company_url_title,
+  exp_channel_data.field_id_9 AS company_regions
+FROM exp_channel_titles
+  INNER JOIN exp_channel_data
+    ON exp_channel_titles.entry_id = exp_channel_data.entry_id
+WHERE exp_channel_titles.channel_id = 1
+AND exp_channel_titles.author_id = '{author_id}' LIMIT 0,1"}
+                  {if no_results}
+                  Нет в базе компании <br>
+                  {/if}
+
+                  <h4><a href="{path='companies/'}/{company_url_title}">{company_title}</a> </h4>
+                  {!--<span class="company_regions">{company_regions}</span><br>--}
+                  {/exp:query}
+                  
+                  {!--<a class="projectlink" href="">49 проектов</a>--}
+                </td>
+                {/if}
+                <td>
+                {exp:query sql="
+                  SELECT
+                    exp_categories.cat_name AS catname
+                  FROM exp_category_posts
+                    INNER JOIN exp_categories
+                      ON exp_category_posts.cat_id = exp_categories.cat_id
+                  WHERE exp_category_posts.entry_id = '{request_grade}'
+                "}
+                  <p class="material_name"><b>{catname}</b></p>
+                {/exp:query}
+
+                  {exp:query sql="SELECT `title` as grade1_title, `url_title` as grade1_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_grade}' AND channel_id = '3'"}
+                  <a class="btn_dot" data-toggle="modal" href="{path='projects/grademodal'}/{request_grade}" data-target="#modal">Смотреть комплектацию</a>
+                  {/exp:query}
+
+
+                </td>
+                <td>
+                  <p>{exp:rutools:plural variants="день,дня,дней" num="{request_time}"} </p>
+
+                </td>
+                <td>{if request_credit =="y"} <i class='fa fa-pie-chart' title="Строим в кредит"></i> {/if} {if request_insurance =="y"}<i class="fa fa-shield" title="Страховка от пожара"></i>{/if}
+                </td>
+                <td>
+                  <h4><b>{request_price} руб.</b>  {if logged_in_member_id == author_id}<a type="button" href="/users/edit_request/{entry_id}/" class=""><img alt="Редактировать цену" src="/img2014/edit.gif" border="0"></a>{/if}  </h4>
+                  <a class="btn btn-danger btn-block" data-toggle="modal" href="{path='embed/order-form'}/{entry_id}/" data-target="#modalOrder">Заказать</a>
+
+                </td>
+                <td>
+                  <span class="simplecheckbox text-center" data-requestid="{entry_id}" ></span>
+
+                </td>
+              </tr>
+          {if count == total_results}
+            </tbody>
+          </table>
+          </form>
+          {/if}
+          {/exp:channel:entries}
+        </div>
+      </div> 
+      <script type="text/javascript">
+        $(document).ready(function(){
+          $("#Select-region_list").change(function() {
+            var region_val = $("#Select-region_list").val();
+              
+            $(".company_regions").each(function(){
+              if(region_val == "Все регионы"){
+                $(this).parent().parent().show();
+              }else{
+                $(this).parent().parent().hide();
+                if($(this).html().indexOf(region_val) > -1){
+                  $(this).parent().parent().show();
+                }
+              }
+            });
+          });
+
+          $("#grade_material").change(function() {
+            var material_val = $("#grade_material").val();
+              
+            $(".material_name").each(function(){
+              if(material_val == "Любой"){
+                $(this).parent().parent().show();
+              }else{
+                $(this).parent().parent().hide();
+                if($(this).html().indexOf(material_val) > -1){
+                  $(this).parent().parent().show();
+                }
+              }
+            });
+          });
+        });
+      </script>
+  <!-- Modal Order -->
+<div class="modal fade" id="modalOrder" tabindex="-1" role="dialog" aria-labelledby="modalOrder" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
+
+
+      <!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>

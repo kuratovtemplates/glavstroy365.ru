@@ -1,0 +1,105 @@
+{if logged_in}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" title="Компания"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          <li><a href="/users/">Личный кабинет</a></li>
+          <li class="active">Компания</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>Компания</h1>
+          <br>
+          {exp:channel:entries channel="companies" author_id="CURRENT_USER"  dynamic="no" limit=100}
+          {if no_results}
+              <div class="alert alert-warning">У вас пока нет компании. </div>
+              <a class="btn btn-danger btn-default" href="/users/add_company/"> <i class="fa fa-plus"></i> Добавить компанию</a>
+          {/if}
+            <div class="row firm-row">
+              <div class="col-xs-3 text-center">
+                {if company_logo != ""} 
+                    <a href="{title_permalink='companies'}">
+                    {exp:ce_img:pair src="{company_logo}" width="120" height="90"}
+                      <img src="{made}" alt=""  />
+                    {/exp:ce_img:pair}
+                    </a>
+                 {if:else}
+                 {exp:ce_img:pair src="/img2014/nologo.jpg" width="120" height="90"}
+                    <img src="{made}" alt="">
+                  {/exp:ce_img:pair}
+                  {/if}
+              </div> 
+              <div class="col-xs-5">
+                <span class="titlefirm"><a href="{title_permalink='companies'}">{title}</a></span><br>
+                <div class="btn-group btn-group-sm">
+                  <a type="button" href="/users/edit_company/{entry_id}/" class="btn btn-primary btn-default"><i class="fa fa-pencil"></i></a>
+                  <a type="button" href="{title_permalink='companies'}" class="btn btn-primary btn-default"><i class="fa fa-share"></i> страница компании </a>
+                </div>
+               
+              </div>
+              <div class="col-xs-4 people-vote">
+                <span class="">Народный рейтинг</span><br><br>
+                {exp:rating:stats
+                  entry_id="{entry_id}"
+                  precision="1"
+                }
+                <div class="rating-stars" id="rating_{entry_id}" ></div>
+                 {if rating_no_results}
+                 <div class="rating-stars" id="rating_{entry_id}"></div>
+                  <script type="text/javascript">
+                    $('#rating_{entry_id}').raty({ 
+                      score: 0,
+                      starType: 'i',
+                      readOnly: true,
+                      hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+                    });
+                  </script>
+                 {/if}
+
+                <script type="text/javascript">
+                    $('#rating_{entry_id}').raty({ 
+                      score: {overall_avg},
+                      starType: 'i',
+                      readOnly: true,
+                      hints: ['плохо', 'не очень', 'нормально', 'хорошо', 'отлично'],
+                    });
+                </script>
+                {/exp:rating:stats}
+
+              </div>
+            </div> 
+            {if count == total_results}
+            {if {exp:number_member_entries:count status="open" member_id={member_id} channels="companies"} < {limit_companies}}
+            <a class="btn btn-danger btn-default pull-right" href="/users/add_company/"> <i class="fa fa-plus"></i> Добавить еще компанию</a>
+            {/if}
+            {/if}
+          {/exp:channel:entries}
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div> 
+    </div> 
+    <br>
+    <div class="container-fluid project-podbor">
+      <a href="{site_url}#indexForm">Подобрать проект?</a>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>
+{if:else}
+{redirect="{segment_1}/signin"}
+{/if}

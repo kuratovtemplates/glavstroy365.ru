@@ -1,0 +1,55 @@
+{exp:channel:entries channel="static|news|articles" limit="1" require_entry="yes" disable="categories|category_fields|member_data|pagination"}
+{if no_results}{redirect="404"}{/if}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {embed="embed/.meta" entry_id="{entry_id}"}
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная</a></li>
+          {if channel_name=="news"}<li><a href="/news">Новости</a></li> {if:elseif channel_name=="articles"}<li><a href="/articles">Полезные материалы</a></li>{if:else}{/if}
+          <li class="active">{title}</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <div class="col-xs-9 center-col">
+          <h1>{title} {edit_link}</h1>
+          <div class="row project-row">
+            <div class="col-xs-12">
+              <p>{static_text}</p>
+                  {static_images}
+                    {if count % 4 == 1}<div class="row gallery">{/if}
+                      <div class="col-xs-3">
+                        <a href="{url}" class="thumbnail fancybox-thumb" rel="fancybox-thumb">
+                          {exp:ce_img:pair src='{url}' width="170" height="170" allow_scale_larger="yes" crop='yes'}
+                          <img src="{made}" alt="{title}">
+                          {/exp:ce_img:pair}
+                        </a>
+                      </div>
+                   {if count % 4 == 0 OR count == total_files}</div>{/if}
+                  {/static_images}
+
+                  {uptolike}
+
+{embed="embed/.related_entries" entry_id="{entry_id}"}
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3 left-col">
+          {embed="embed/.right"}
+        </div>
+      </div>
+    </div>
+    {embed="embed/.footer" show="{show}"}
+  </body>
+</html>
+{/exp:channel:entries}

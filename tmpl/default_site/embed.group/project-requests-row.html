@@ -1,0 +1,66 @@
+          {exp:channel:entries channel="request" search:request_project="={segment_3}" orderby="request_price"  sort="asc" limit="100"  offset="{segment_4}" dynamic="no"}
+           {if no_results}{/if}
+              <tr data-price="{request_price}" data-time="{request_time}" >
+
+                <td>
+                  
+                  {exp:query sql="SELECT
+  exp_channel_titles.title AS company_title,
+  exp_channel_titles.url_title AS company_url_title,
+  exp_channel_data.field_id_9 AS company_regions
+FROM exp_channel_titles
+  INNER JOIN exp_channel_data
+    ON exp_channel_titles.entry_id = exp_channel_data.entry_id
+WHERE exp_channel_titles.channel_id = 1
+AND exp_channel_titles.author_id = '{author_id}' LIMIT 0,1"}
+                  {if no_results}
+                  Нет в базе компании <br>
+                  {/if}
+
+                  <h4><a href="{path='companies/'}/{company_url_title}">{company_title}</a> </h4>
+                  {!--<span class="company_regions">{company_regions}</span><br>--}
+                  {/exp:query}
+                  
+                  {!--<a class="projectlink" href="">49 проектов</a>--}
+                </td>
+                
+                <td>
+                {exp:query sql="
+                  SELECT
+                    exp_categories.cat_name AS catname
+                  FROM exp_category_posts
+                    INNER JOIN exp_categories
+                      ON exp_category_posts.cat_id = exp_categories.cat_id
+                  WHERE exp_category_posts.entry_id = '{request_grade}'
+                "}
+                  <h5 class="material_name"><b>{catname}</b></h5>
+                {/exp:query}
+
+                  {exp:query sql="SELECT `title` as grade1_title, `url_title` as grade1_url_title FROM `exp_channel_titles` WHERE entry_id = '{request_grade}' AND channel_id = '3'"}
+                  <a class="btn_dot" data-toggle="modal" href="{path='projects/grademodal'}/{request_grade}" data-target="#modal">Смотреть комплектацию</a>
+                  {/exp:query}
+
+
+                </td>
+                <td>
+                  <h5>{exp:rutools:plural variants="день,дня,дней" num="{request_time}"} </h5>
+
+                </td>
+                <td>
+                  {if request_credit =="y"} <i class='fa fa-pie-chart' title="Строим в кредит"></i>{/if}
+                  {if request_insurance =="y"}<i class="fa fa-shield" title="Страховка от пожара"></i>{/if}
+                </td>
+                <td>
+                  <h4><b>{request_price} руб.</b> {if logged_in_member_id == author_id}<a type="button" href="/users/edit_request/{entry_id}/" class=""><img alt="Редактировать цену" src="/img2014/edit.gif" border="0"></a>{/if}  </h4>
+                  <a class="btn btn-danger btn-block" data-toggle="modal" href="{path='embed/order-form'}/{entry_id}/" data-target="#modalOrder">Заказать</a>
+
+                </td>
+                <td>
+                  <span class="simplecheckbox text-center" data-requestid="{entry_id}" ></span>
+
+                </td>
+              </tr>
+         
+          {/exp:channel:entries}
+
+      
