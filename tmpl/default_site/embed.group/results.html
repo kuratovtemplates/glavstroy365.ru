@@ -1,0 +1,71 @@
+{exp:super_search:results channel="projects" limit="999" sort="asc" orderby="date"}
+            {if count== "1"}
+            <div class="row">
+              <ul id="projects-main-gallery" class="clr text-center">
+            {/if}
+                <li>
+                  {projects_photos limit="1"}
+                  <a class="main-img" href="{title_permalink='projects'}" > 
+                      {exp:ce_img:pair src='{url}'  height='166' width='222' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" alt="{caption}">
+                      {/exp:ce_img:pair}
+                  </a>
+                  {/projects_photos}
+                  <div class="desc">
+                  <button href="/embed/popup_project/{url_title}" rel="nofollow" data-toggle="modal" data-target="#projectPopup" class="btn btn-danger">Быстрый просмотр</button>
+                    {!--exp:low_replace find="Дома|Бани|Коттеджи|Дачные|Одноэтажные|Дом-баня|Одноэтажные|Перевозные" replace="||Коттедж|Дачный дом|Одноэтажный дом|Дом-баня|Одноэтажная баня|Перевозная баня" multiple="yes"}{categories}{category_name}{/categories}{/exp:low_replace--} {title} ({projects_size} м., {projects_area} м<sup>2</sup>)
+                    <br>
+                    <span class="project-catalog-price">от {projects_minprice} руб.</span> {edit_link}  
+                  </div>
+                  <div class="images">
+                    {projects_photos limit="2" offset="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_photos}
+                    {projects_planing limit="1"}
+                    <a href="{exp:ce_img:pair src='{url}' {wm_pic_big} width="1000" allow_scale_larger="yes" crop='yes'}{made}{/exp:ce_img:pair}" rel="small-images[{entry_id}]">
+                      {exp:ce_img:pair src='{url}' height='59' width='80' allow_scale_larger="yes" crop='yes'}
+                      <img src="{made}" width="80" height="59" alt="" />
+                      {/exp:ce_img:pair}
+                    </a>
+                    {/projects_planing}
+                    <a href="{title_permalink='projects'}" class="more">Подробно</a>
+                  </div>
+                </li>
+            {if count== total_results}
+              </ul>
+            </div>
+            {/if}
+
+            {paginate}
+              <div class="clearfix"></div>
+              <div class="row text-center">
+                {pagination_links}
+                  <ul class="pagination">
+                    {first_page}
+                      <li><a href="{pagination_url}">Первая</a></li>
+                    {/first_page}
+              
+                    {previous_page}
+                      <li><a href="{pagination_url}">&laquo;</a></li>
+                    {/previous_page}
+              
+                    {page}
+                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
+                    {/page}
+              
+                    {next_page}
+                      <li><a href="{pagination_url}">&raquo;</a></li>
+                    {/next_page}
+              
+                    {last_page}
+                      <li><a href="{pagination_url}">Последняя</a></li>
+                    {/last_page}
+                  </ul>
+                {/pagination_links}
+              </div>
+              {/paginate}
+           {/exp:super_search:results}

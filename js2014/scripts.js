@@ -142,12 +142,19 @@ $(document).ready(function() {
 	    $("#etazhnostselect").val($(this).text());
 	  });
 	});                
-
+/*
   $("#projects-main-gallery > li").mouseenter(function() {
     $(this).addClass("hovered");
   }).mouseleave(function() {
     $(this).removeClass("hovered");
   });
+*/
+  $("#results").on( "mouseenter", "li", function() {
+  	$(this).addClass("hovered");
+  }).on("mouseleave", "li", function() {
+	$(this).removeClass("hovered");
+  });
+
   
   if ($("#projects-main-gallery").length > 0) {
     $("#projects-main-gallery > li > a.main-img").fancybox();

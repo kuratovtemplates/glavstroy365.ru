@@ -1937,3 +1937,17 @@ ul.right-projects {
 .project-row ul#projects-main-gallery li .desc span.project-catalog-price:after {
   content: "";
 }
+
+div.white-cover {
+    background: rgba(255,255,255,.7);
+    border: none;
+    color: #000;
+    font-size: 36px;
+    height: 100%;
+    margin-left: -15px;
+    padding-top: 20px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 9000;
+}
