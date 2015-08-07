@@ -1,0 +1,233 @@
+{exp:channel:entries channel="projects" limit="1"}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>                                        
+    {embed="embed/.meta" entry_id="{entry_id}" title_suffix="Проекты"}
+    <script type="text/javascript" src="/js2014/request_user.js"></script>
+  </head>
+  <body>
+    {embed="embed/.top"}
+    <div class="container-fluid">
+      {embed="embed/.menu"}
+      <div class="container">
+        <ol class="breadcrumb top-breadcrumb">
+          <li><img src="/img2014/bcrumb.png" alt=""> <a href="{site_url}">Главная страница</a></li>
+          <li> <a href="{path='projects'}">Проекты</a></li>
+          <li class="active">{title}</li>
+        </ol>
+      </div>
+      <hr class="shadow">
+    </div>
+    
+    <div class="container">
+      <div class="row project-row">
+        <h1 class="text-center">{projects_bigtitle}</h1>
+        <p class="text-center"><i class="fa fa-rub"></i> <a href="#prices">Цены</a> 
+          {exp:query sql="SELECT COUNT(exp_channel_data.entry_id) AS expr1 FROM exp_channel_data WHERE exp_channel_data.field_id_47 = {entry_id} GROUP BY exp_channel_data.field_id_47"}
+          ({expr1})
+          {/exp:query}
+          
+          
+          | <i class="fa fa-comments-o"></i> <a href="">Отзывы</a> (25)</p>
+      </div>
+      <div class="row project-item-row">
+        <div class="col-xs-7">
+          <div class="bigphoto-project" id="bigmama">
+             {projects_photos limit="1"}
+             <a href="{url}" class="fancybox-thumb" rel="fancybox-thumb">
+             {exp:ce_img:pair src='{url}' height='330' width='430' allow_scale_larger="yes" crop='yes'}
+              <img src="{made}" width="430" height="330" >
+              {/exp:ce_img:pair}
+            </a>
+            {/projects_photos}
+          </div>
+          <div id="thumbs" class="thumbs-content">
+            {projects_photos limit="6"}
+            <span class="thumbnail {if count == 1}active{/if}" data-urlfull="{url}" data-url="{exp:ce_img:pair src='{url}' height='330' width='430' allow_scale_larger='yes' crop='yes'}{made}{/exp:ce_img:pair}">
+              {exp:ce_img:pair src='{url}' height='104' width='86' allow_scale_larger="yes" crop='yes'}
+              <img src="{made}" width="104" height="86" >
+              {/exp:ce_img:pair}
+            </span>
+            {/projects_photos}
+          </div>
+        </div>
+        <div class="col-xs-5">
+          <span class="underline">Средняя цена:</span>
+          <h1><span class="label label-danger">290 400 руб.</span></h1>
+          <h4><b>от 289 990 ... 359 945 руб.</b></h4>
+          <p><b>Средний срок исполнения:</b> 13 дней</p>
+
+          {if projects_floors !=""}<p><b>Этажность:</b> {projects_floors}</p>{/if}
+          {if projects_size !=""}<p><b>Размеры:</b> {projects_size} м</p>{/if}
+          {if projects_area !=""}<p><b>Жилая площадь:</b> {projects_area} м2</p>{/if}
+          {if projects_extra !=""}<p><b>Дополнительные параметры:</b> {projects_extra}</p>{/if}
+        </div>
+      </div>
+      <div class="row project-row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <h2 id="prices">Предложения компаний</h2>
+          <p class="text-center"><em>Во время подписания договора вы вносите свои правки и пожелания, вносите предоплату Подписания договора вы вносите свои правки и пожелания</em></p>
+        </div>
+      </div>
+      <div class="row project-row">
+        <div class="col-xs-12">
+          <div class="row">
+            <form action="">
+              <div class="row">
+                <div class="col-xs-6">
+                  <p><b>Регион строительства</b></p>
+                  <div class="btn-group btn-block selectlistgroup">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block selectlist" data-toggle="dropdown">
+                     <span class="bigtext" id="biudjhetselect">Новгородская область1</span> <span class="bigcaret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="ULbiudjhetselect" role="menu">
+                      <li><a href="#">Новгородская область1</a></li>
+                      <li><a href="#">Новгородская область2</a></li>
+                      <li><a href="#">Новгородская область3</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> 
+      {embed="embed/.project-requests-table" idproject="{entry_id}"}
+      <div class="row table-row">
+        <div class="col-xs-4 col-xs-offset-4">    
+          <div class="sravnit"><h5><a id="compareLink" href="{path='projects/compare-request-page'}/">Сравнить <span>0</span> предложения</a></h5></div>
+        </div> 
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="compare-modal" tabindex="-1" role="dialog" aria-labelledby="compare-modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            
+          </div>
+        </div>
+      </div>
+
+      {if logged_in}
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">    
+          <a type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Добавить предложение</a>
+        </div> 
+      </div> 
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Предложение для проекта</h4>
+            </div>
+              {exp:channel:form 
+                channel="request" 
+                datepicker="no" 
+                return="projects/project/{segment_3}" 
+                include_jquery="no"  
+                class="form-registration"
+              }
+            <div class="modal-body">
+              <h5>Проект: {title}</h5>
+              <input name="request_project" type="hidden" id="request_project" value="{entry_id}" >
+              {embed="embed/.grade-select" selectedgrade=""}
+              <div class="row">
+                <div class="col-xs-6">
+                  <input type="hidden" class="form-control" name="title" id="title" value="Предложение для проекта {title}"  onload="liveUrlTitle();" >
+                  <input name="url_title" type="hidden" id="url_title" value="request_idproject_{entry_id}_user_{member_id}" >
+                  <label for="request_price">Цена</label>
+                  <input type="text" class="form-control" name="request_price" id="request_price"   >
+                </div>
+                <div class="col-xs-6">
+                  <label for="request_time">Время исполнения в днях</label>
+                  <input type="text" class="form-control" name="request_time" id="request_time"   >
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-success">Добавить предложение</button>
+            </div>
+              {/exp:channel:form}
+          </div>
+        </div>
+      </div>
+
+      {/if}
+      <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 text-center">    
+          <h3><a class="red" href="">Показать еще 10 предложений</a></h3>
+          <em>Отображаются только предложения актуальные для выбранного вами региона</em>
+        </div> 
+      </div> 
+    </div> 
+    <br>
+    <div class="container-fluid project-podbor">
+      <a href="">Подобрать проект?</a>
+    </div>
+    <div class="container-fluid projects-container">
+      <hr class="shadow">
+      <div class="container">
+        <h2>Аналогичные проекты</h2>
+        <p class="text-center"><em>Во время подписания договора вы вносите свои правки и пожелания, вносите предоплату <br>
+        Подписания договора вы вносите свои правки и пожелания</em></p>
+        <div class="row">
+          <ul id="projects-main-gallery" class="clr text-center">
+            <li>
+              <a class="main-img" href="/img2014/projects/image-1.jpg" rel="big-images"><img src="/img2014/projects/image-11.jpg" alt="" /></a>
+              <div class="desc">
+                Сруб дома №20
+                  <br>
+                  <span>от 359 945 руб</span>
+              </div>
+              <div class="images">
+                <a href="/img2014/projects/image-3.jpg" rel="small-images[1]"><img src="/img2014/projects/image-3.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-4.jpg" rel="small-images[1]"><img src="/img2014/projects/image-4.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-5.jpg" rel="small-images[1]"><img src="/img2014/projects/image-5.jpg" width="80" height="57" alt="" /></a>
+                <a href="#" class="more">Подробно</a>
+              </div>
+            </li>
+            <li>
+              <a class="main-img" href="/img2014/projects/image-1.jpg" rel="big-images"><img src="/img2014/projects/image-11.jpg"  alt="" /></a>
+              <div class="desc">
+                Сруб дома №20
+                  <br>
+                  <span>от 359 945 руб</span>
+              </div>
+              <div class="images">
+                <a href="/img2014/projects/image-3.jpg" rel="small-images[2]"><img src="/img2014/projects/image-3.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-4.jpg" rel="small-images[2]"><img src="/img2014/projects/image-4.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-5.jpg" rel="small-images[2]"><img src="/img2014/projects/image-5.jpg" width="80" height="57" alt="" /></a>
+                <a href="#" class="more">Подробно</a>
+              </div>
+            </li>
+            <li>
+              <a class="main-img" href="/img2014/projects/image-1.jpg" rel="big-images"><img src="/img2014/projects/image-11.jpg"  alt="" /></a>
+              <div class="desc">
+                Сруб дома №20
+                  <br>
+                  <span>от 359 945 руб</span>
+              </div>
+              <div class="images">
+                <a href="/img2014/projects/image-3.jpg" rel="small-images[3]"><img src="/img2014/projects/image-3.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-4.jpg" rel="small-images[3]"><img src="/img2014/projects/image-4.jpg" width="80" height="59" alt="" /></a>
+                <a href="/img2014/projects/image-5.jpg" rel="small-images[3]"><img src="/img2014/projects/image-5.jpg" width="80" height="57" alt="" /></a>
+                <a href="#" class="more">Подробно</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <p class="text-center"><a class="red" href="">Перейти в галерею типовых проектов</a></p>
+      </div>
+    </div> 
+    <br>
+    <div class="container-fluid project-podbor">
+      <a href="">Подобрать проект?</a>
+    </div>
+    {embed="embed/.footer"}
+  </body>
+</html>
+{/exp:channel:entries}

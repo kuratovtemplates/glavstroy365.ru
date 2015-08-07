@@ -26,12 +26,10 @@
       <div class="container">
         <div class="row project-row">
           <div class="col-xs-3 left-col form-col">
-            <form method="post" action="{path='embed/results'}"  id="search-form">  
-
-                    
-                   
+            <form method="post" action="{path='embed/results'}"  id="search-form">                   
             {exp:super_search:search}
             <input type="hidden" name="orderby" value="{super_search_orderby}">
+            <input type="hidden" name="offset" value="0">
               <div class="vid">
                 <a href="#" id="resetvid"><span>сбросить</span></a>
                 <h3>Вид постройки</h3>
@@ -272,13 +270,58 @@
               <div class="subm">
                 <button type="submit" id="subm1">подобрать проекты</button>
               </div>
+              
               {/exp:super_search:search}
             </form>
              <script type="text/javascript">
               $(document).ready(function() { 
+
+              /*AJAX SEARCH*/
+              $(document).ready(function() {
+                var options = {
+                  //target: '#results',
+                  beforeSubmit:  showRequest,
+                  success: function(response) { 
+                    $('#results').append(response);
+                    $('#results').fadeIn('slow'); 
+                    $('#searchBg').fadeOut('slow'); 
+                  } 
+                };
+                $('#search-form').ajaxForm(options);
+                
+                $("input[name^='category'], input[name^='projects_size'], input[name^='projects_floors'], #ulExtra input").click(function() {
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
+                  $('#search-form').submit();   
+                  $('html, body').animate({
+                    scrollTop: $("#results").offset().top - 200
+                  }, 1000);                      
+                });
+              }); 
+              // Show loading message and submit form
+              function showRequest(formData, jqForm, options) {
+                var heightRes = ($("#results").height() > 600 ) ? $("#results").height():600;
+                $('#results').prepend(' <div id="searchBg" class="white-cover"><i  class="fa fa-spinner fa-pulse"></i> идет поиск...</div>');
+                //$('#results').prepend(' <div class="white-cover"><i class="fa fa-spinner fa-pulse"></i> идет поиск...</div>');
+                $(".white-cover").height( heightRes -20 );
+                /*$(".white-cover").css( "padding-top", $(document).scrollTop()-200 );*/
+                return true;
+              }
+              /*AJAX SEARCH*/
+
+              $('#addrows_button').on('click', function(e) {
+                var count_proj = $('#projects-main-gallery > li').length;
+                if( count_proj > 0){
+                  $('#search-form input[name="offset"]').val(count_proj);
+                  $('#search-form').submit();
+                }
+              });
+
               $("#resetvid,#resetraz,#resetet,#resetdop").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#results').html("");
+                $('#search-form input[name="offset"]').val(0);
                 $('#search-form').submit();
                 $('html, body').animate({
                     scrollTop: $("#results").offset().top - 200
@@ -288,6 +331,8 @@
               $("#resetst").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#results').html("");
+                $('#search-form input[name="offset"]').val(0);
                 $('#search-form').submit();
                 $('html, body').animate({
                     scrollTop: $("#results").offset().top - 200
@@ -407,6 +452,8 @@
                 });
 
                 slider1.on('change', function(){
+                    $('#results').html("");
+                    $('#search-form input[name="offset"]').val(0);
                     $('#search-form').submit();
                     $('html, body').animate({
                       scrollTop: $("#results").offset().top - 200
@@ -414,6 +461,8 @@
                 });
 
                 slider2.on('change', function(){
+                    $('#results').html("");
+                    $('#search-form input[name="offset"]').val(0);
                     $('#search-form').submit();
                     $('html, body').animate({
                       scrollTop: $("#results").offset().top - 200
@@ -425,6 +474,8 @@
                 $("#resetpl").click(function(event) {
                   event.preventDefault();
                   slider2.val([area_from,area_to]);
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
                   $('#search-form').submit();
                   $('html, body').animate({
                     scrollTop: $("#results").offset().top - 200
@@ -466,6 +517,8 @@
                         event.preventDefault();
                         var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
                         $("#search-form").find("input[name='orderby']").val("projects_minprice+"+sortOrderLocal);
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
@@ -473,6 +526,8 @@
                         event.preventDefault();
                         var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
                         $("#search-form").find("input[name='orderby']").val("projects_area+"+sortOrderLocal);
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
@@ -480,6 +535,8 @@
                         event.preventDefault();
                         var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
                         $("#search-form").find("input[name='orderby']").val("projects_size+"+sortOrderLocal);
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
@@ -492,30 +549,7 @@
                       $("#sortPanel").find('#'+sortProp[0]+'Id').addClass('sort-active '+sortOder);
                     });
 
-                  /*AJAX SEARCH*/
-                  $(document).ready(function() {
-                    var options = {
-                      target: '#results',
-                      beforeSubmit:  showRequest
-                    };
-                    $('#search-form').ajaxForm(options);
-                    
-                    $("input[name^='category'], input[name^='projects_size'], input[name^='projects_floors'], #ulExtra input").click(function() {
-                      $('#search-form').submit();   
-                      $('html, body').animate({
-                        scrollTop: $("#results").offset().top - 200
-                      }, 1000);                      
-                    });
-                  }); 
-                  // Show loading message and submit form
-                  function showRequest(formData, jqForm, options) {
-                    var heightRes = $("#results").height();
-                    $('#results').prepend(' <div class="white-cover"><i class="fa fa-spinner fa-pulse"></i> идет поиск...</div>');
-                    $(".white-cover").height( heightRes );
-                    /*$(".white-cover").css( "padding-top", $(document).scrollTop()-200 );*/
-                    return true;
-                  }
-                  /*AJAX SEARCH*/
+                 
                 </script>
 
         </div>
@@ -540,7 +574,7 @@
           </div>
           <div id="results">           
           
-           {exp:super_search:results channel="projects" limit="999" sort="asc" orderby="date"}
+           {exp:super_search:results channel="projects" limit="21" sort="asc" orderby="date" disable="pagination"}
             {if count== "1"}
             <div class="row">
               <ul id="projects-main-gallery" class="clr text-center">
@@ -582,36 +616,14 @@
             </div>
             {/if}
 
-            {paginate}
-              <div class="clearfix"></div>
-              <div class="row text-center">
-                {pagination_links}
-                  <ul class="pagination">
-                    {first_page}
-                      <li><a href="{pagination_url}">Первая</a></li>
-                    {/first_page}
-              
-                    {previous_page}
-                      <li><a href="{pagination_url}">&laquo;</a></li>
-                    {/previous_page}
-              
-                    {page}
-                      <li {if current_page}class="active"{/if}><a href="{pagination_url}" >{pagination_page_number}</a></li>
-                    {/page}
-              
-                    {next_page}
-                      <li><a href="{pagination_url}">&raquo;</a></li>
-                    {/next_page}
-              
-                    {last_page}
-                      <li><a href="{pagination_url}">Последняя</a></li>
-                    {/last_page}
-                  </ul>
-                {/pagination_links}
-              </div>
-              {/paginate}
            {/exp:super_search:results}
            </div>
+           <br>
+           <a class="btn btn-block btn-success addrow" id="addrows_button" type="button">
+                <i class="fa fa-align-left"></i>
+                Еще проекты
+              </a>
+              <br>
         </div>
       </div>
     </div>

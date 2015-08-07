@@ -1,10 +1,9 @@
-{exp:super_search:results channel="projects" limit="999" sort="asc" orderby="date"}
+{exp:super_search:results channel="projects" limit="21" offset="{segment_4}" sort="asc" orderby="date" }
 {if no_results}
-По данным критериям не найдено проектов
 {/if}
             {if count== "1"}
-            <div class="row">
-              <ul id="projects-main-gallery" class="clr text-center">
+            <div class="row" data-absolutres="{absolute_results}">
+              <ul id="projects-main-gallery" class="clr text-center" >
             {/if}
                 <li>
                   {projects_photos limit="1"}
@@ -45,7 +44,7 @@
             </div>
             {/if}
 
-            {paginate}
+            {!--paginate}
               <div class="clearfix"></div>
               <div class="row text-center">
                 {pagination_links}
@@ -72,9 +71,11 @@
                   </ul>
                 {/pagination_links}
               </div>
-              {/paginate}
+              {/paginate--}
            {/exp:super_search:results}
            <script>
+
+
            $("#projects-main-gallery button[data-target='#projectPopup']").each(function(){
             
             var prev = $(this).parents().eq(1).prev().find("button[data-target='#projectPopup']").attr("href");
