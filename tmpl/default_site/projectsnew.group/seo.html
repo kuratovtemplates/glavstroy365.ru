@@ -41,7 +41,7 @@
                 }
 
 
-                        <input id="category_{category_url_title}" type="checkbox" name="category[]" value="{category_id}" hidden  
+                        <input  id="category_{category_url_title}" type="checkbox" name="category[]" value="{category_id}" hidden  
                         {if segment_2=='{category_url_title}'}
                         checked="checked"
                         {/if} 
@@ -50,7 +50,8 @@
                         {if:else} 
                         {/if--} 
                         />
-                        <label for="category_{category_url_title}">{category_name}</label>
+                        <label title="Найдено"  for="category_{category_url_title}">{category_name}</label>
+                        <br>
 
                 {/exp:channel:categories}
                  <script type="text/javascript">
@@ -294,6 +295,11 @@
              <script type="text/javascript">
               $(document).ready(function() { 
 
+              
+               
+              
+
+
               /*AJAX SEARCH*/
               $(document).ready(function() {
                 var options = {
@@ -311,14 +317,18 @@
                   } 
                 };
                 $('#search-form').ajaxForm(options);
+
+                
                 
                 $("input[name^='category'], input[name^='projects_size'], input[name^='projects_floors'], #ulExtra input").click(function() {
                   $('#results').html("");
                   $('#search-form input[name="offset"]').val(0);
-                  $('#search-form').submit();   
+                  $('#search-form').submit();
+
                   $('html, body').animate({
-                    scrollTop: $("#results").offset().top - 200
-                  }, 1000);                      
+                    //scrollTop: $("#results").offset().top - 200
+                  }, 1000); 
+                 
                 });
               }); 
               // Show loading message and submit form
@@ -349,7 +359,7 @@
                 $('#search-form input[name="offset"]').val(0);
                 $('#search-form').submit();
                 $('html, body').animate({
-                    scrollTop: $("#results").offset().top - 200
+                    //scrollTop: $("#results").offset().top - 200
                 }, 1000); 
               });
 
@@ -360,7 +370,7 @@
                 $('#search-form input[name="offset"]').val(0);
                 $('#search-form').submit();
                 $('html, body').animate({
-                    scrollTop: $("#results").offset().top - 200
+                    //scrollTop: $("#results").offset().top - 200
                 }, 1000); 
               });
 
@@ -483,7 +493,7 @@
                     $('#search-form input[name="offset"]').val(0);
                     $('#search-form').submit();
                     $('html, body').animate({
-                      scrollTop: $("#results").offset().top - 200
+                      //scrollTop: $("#results").offset().top - 200
                     }, 1000); 
                 });
 
@@ -492,7 +502,7 @@
                     $('#search-form input[name="offset"]').val(0);
                     $('#search-form').submit();
                     $('html, body').animate({
-                      scrollTop: $("#results").offset().top - 200
+                      //scrollTop: $("#results").offset().top - 200
                     }, 1000); 
                 });
                 
@@ -505,7 +515,7 @@
                   $('#search-form input[name="offset"]').val(0);
                   $('#search-form').submit();
                   $('html, body').animate({
-                    scrollTop: $("#results").offset().top - 200
+                    //scrollTop: $("#results").offset().top - 200
                   }, 1000);    
                 });
 

@@ -1,7 +1,11 @@
   <!DOCTYPE html>
   <html lang="ru">
     <head>
-      {embed="embed/.meta" title="{segment_2_category_name}"}
+     {embed="embed/.meta" title="{exp:channel:categories
+                style="linear"
+                category_group="1"
+                parent_only="no"
+                }{if super_search_category_{category_id}}{category_name} {/if}{/exp:channel:categories}"}
     </head>
     <body>
       {embed="embed/.top"}
@@ -14,7 +18,6 @@
             {if segment_2=='doma'|| segment_2=='bani'}
             <li class="active">{segment_2_category_name}</li>
             {/if}
-
           </ol>
         </div>
         <hr class="shadow">
@@ -23,10 +26,10 @@
       <div class="container">
         <div class="row project-row">
           <div class="col-xs-3 left-col form-col">
-            <form method="post" action="{path='projects'}"  id="search-form">  
+            <form method="post" action="{path='embed/results'}"  id="search-form">                   
             {exp:super_search:search}
             <input type="hidden" name="orderby" value="{super_search_orderby}">
-            
+            <input type="hidden" name="offset" value="0">
               <div class="vid">
                 <a href="#" id="resetvid"><span>сбросить</span></a>
                 <h3>Вид постройки</h3>
@@ -36,9 +39,9 @@
                 category_group="1"
                 parent_only="no"
                 }
-                    
-                
-                        <input id="category_{category_url_title}" type="checkbox" name="category[]" value="{category_id}" hidden  
+
+
+                        <input  id="category_{category_url_title}" type="checkbox" name="category[]" value="{category_id}" hidden  
                         {if segment_2=='{category_url_title}'}
                         checked="checked"
                         {/if} 
@@ -47,10 +50,11 @@
                         {if:else} 
                         {/if--} 
                         />
-                        <label for="category_{category_url_title}">{category_name}</label>
-                
-                {/exp:channel:categories}                 
-                <script type="text/javascript">
+                        <label title="Найдено"  for="category_{category_url_title}">{category_name}</label>
+                        <br>
+
+                {/exp:channel:categories}
+                 <script type="text/javascript">
                   $(document).ready(function() {
                     $(".vid > ul > li > input[id^='category_']").each(function(){
                       
@@ -61,7 +65,7 @@
                       //$(this).parent().children('input[type="checkbox"]').prop("checked", true);
                     });
                   });
-                </script>
+                </script>                
               </div>
                   <?
                           //Get URL Query
@@ -250,7 +254,7 @@
               <div class="dop">
                 <a href="#" id="resetdop"><span>сбросить</span></a>
                   <h3>дополнительно</h3>
-                  <ul>       
+                  <ul id="ulExtra">       
                   <?
                           $arrExtra = array(
                             'projects_extra_balkon' => array(97, 'Балкон'),
@@ -285,18 +289,87 @@
               <div class="subm">
                 <button type="submit" id="subm1">подобрать проекты</button>
               </div>
+              
               {/exp:super_search:search}
             </form>
              <script type="text/javascript">
               $(document).ready(function() { 
+
+              
+               
+              
+
+
+                var options = {
+                  //target: '#results',
+                  beforeSubmit:  showRequest,
+                  success: function(response) { 
+
+                    $('#results').append(response);
+                    $('#results').fadeIn('slow'); 
+                    $('#searchBg').fadeOut('slow'); 
+                    //Count elements
+                    var count_proj = $('#projects-main-gallery > li').length;
+                    //if number of elements divides to 21 show button
+                    if (count_proj%21 == 0) $("#addrows_button").show();
+                  } 
+                };
+                $('#search-form').ajaxForm(options);
+
+                
+                
+                $("input[name^='category'], input[name^='projects_size'], input[name^='projects_floors'], #ulExtra input").click(function() {
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
+                  $('#search-form').submit();
+
+                  $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                  }, 1000); 
+                 
+                });
+
+              // Show loading message and submit form
+              function showRequest(formData, jqForm, options) {
+                var heightRes = ($("#results").height() > 600 ) ? $("#results").height():600;
+                $("#addrows_button").hide();
+                $('#results').prepend(' <div id="searchBg" class="white-cover"><i  class="fa fa-spinner fa-pulse"></i> идет поиск...</div>');
+                //$('#results').prepend(' <div class="white-cover"><i class="fa fa-spinner fa-pulse"></i> идет поиск...</div>');
+                $(".white-cover").height( heightRes -20 );
+                /*$(".white-cover").css( "padding-top", $(document).scrollTop()-200 );*/
+                return true;
+              }
+              /*AJAX SEARCH*/
+
+              $('#addrows_button').on('click', function(e) {
+                var count_proj = $('#projects-main-gallery > li').length;
+                if( count_proj > 0){
+                  $('#search-form input[name="offset"]').val(count_proj);
+                  $('#search-form').submit();
+                }
+              });
+
+             
               $("#resetvid,#resetraz,#resetet,#resetdop").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#results').html("");
+                $('#search-form input[name="offset"]').val(0);
+                $('#search-form').submit();
+                $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                }, 1000); 
               });
 
               $("#resetst").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#results').html("");
+                $('#search-form input[name="offset"]').val(0);
+                $('#search-form').submit();
+                $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                }, 1000); 
               });
 
               $('#nav_categories > li > label').click(function() {   
@@ -378,6 +451,12 @@
                 $("#resetst").click(function(event) {
                   event.preventDefault();
                   slider1.val([price_from - price_from % 10000,price_to]);
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
+                  $('#search-form').submit();
+                  $('html, body').animate({
+                    scrollTop: $("#results").offset().top - 200
+                  }, 1000); 
                 });
 
                 var slider2 = $('#pl3'),
@@ -407,9 +486,35 @@
                   density: 30,
                 });
 
+                slider1.on('change', function(){
+                    $('#results').html("");
+                    $('#search-form input[name="offset"]').val(0);
+                    $('#search-form').submit();
+                    $('html, body').animate({
+                      //scrollTop: $("#results").offset().top - 200
+                    }, 1000); 
+                });
+
+                slider2.on('change', function(){
+                    $('#results').html("");
+                    $('#search-form input[name="offset"]').val(0);
+                    $('#search-form').submit();
+                    $('html, body').animate({
+                      //scrollTop: $("#results").offset().top - 200
+                    }, 1000); 
+                });
+                
+              
+
                 $("#resetpl").click(function(event) {
                   event.preventDefault();
                   slider2.val([area_from,area_to]);
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
+                  $('#search-form').submit();
+                  $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                  }, 1000);    
                 });
 
                       
@@ -445,19 +550,49 @@
 
                       $("#projects_minpriceId").click(function(event) {
                         event.preventDefault();
-                        $("#search-form").find("input[name='orderby']").val("projects_minprice+desc");
+                        $(this).siblings().removeClass('s-up').removeClass('s-down').removeClass('sort-active');
+                        $(this).addClass('sort-active');
+                        var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
+                        $("#search-form").find("input[name='orderby']").val("projects_minprice+"+sortOrderLocal);
+                        if ( $(this).hasClass('s-up') ) {
+                          $(this).removeClass('s-up').addClass('s-down');
+                        } else {
+                          $(this).removeClass('s-down').addClass('s-up');
+                        }
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
                       $("#projects_areaId").click(function(event) {
                         event.preventDefault();
-                        $("#search-form").find("input[name='orderby']").val("projects_area+desc");
+                        $(this).siblings().removeClass('s-up').removeClass('s-down').removeClass('sort-active');
+                        $(this).addClass('sort-active');
+                        var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
+                        $("#search-form").find("input[name='orderby']").val("projects_area+"+sortOrderLocal);
+                        if ( $(this).hasClass('s-up') ) {
+                          $(this).removeClass('s-up').addClass('s-down');
+                        } else {
+                          $(this).removeClass('s-down').addClass('s-up');
+                        }
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
                       $("#projects_sizeId").click(function(event) {
                         event.preventDefault();
-                        $("#search-form").find("input[name='orderby']").val("projects_size+desc");
+                        $(this).siblings().removeClass('s-up').removeClass('s-down').removeClass('sort-active');
+                        $(this).addClass('sort-active');
+                        var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
+                        $("#search-form").find("input[name='orderby']").val("projects_size+"+sortOrderLocal);
+                        if ( $(this).hasClass('s-up') ) {
+                          $(this).removeClass('s-up').addClass('s-down');
+                        } else {
+                          $(this).removeClass('s-down').addClass('s-up');
+                        }
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
@@ -471,11 +606,13 @@
                       $("#sortPanel").find('#'+sortProp[0]+'Id').addClass('sort-active '+sortOder);
                       */
                     });
+
+                 
                 </script>
 
         </div>
         <div class="col-xs-9 center-col">
-            {if '{segment_2_category_name}' != ''}
+           {if '{segment_2_category_name}' != ''}
             <h1>Проекты {segment_2_category_name}</h1>
             <p>{segment_2_category_description}</p>
             <div class="row">
@@ -529,7 +666,7 @@
             </div>
             {/if}
 
-            {paginate}
+            {!--paginate}
               <div class="clearfix"></div>
               <div class="row text-center">
                 {pagination_links}
@@ -556,23 +693,66 @@
                   </ul>
                 {/pagination_links}
               </div>
-              {/paginate}
+              {/paginate--}
            {/exp:channel:entries}
            </div>
            {/if}
+           <br>
+           <a class="btn btn-block btn-success addrow" id="addrows_button" type="button">
+                <i class="fa fa-align-left"></i>
+                Еще проекты
+              </a>
+              <br>
         </div>
       </div>
     </div>
     
  
     {embed="embed/.footer" isitpropage="yes"}
-<!-- Modal -->
-<div class="modal fade" id="projectPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg modal-lg-project" role="document">
-    <div class="modal-content">
-    <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i> Загрузка данных ...</h3>
+  <!-- Modal -->
+    <div class="modal fade" id="projectPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg modal-lg-project text-center" role="document">
+        <div class="modal-content">
+        <h3 class="text-center"><i class="fa fa-refresh fa-spin"></i> Загрузка данных ...</h3>
+        </div>
+        <div class="clearfix"></div>
+        <a id="prevBut" href="#"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-left"></i></a>
+        <a id="nextBut" href="#"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-right"></i></a>  
+      </div>
     </div>
-  </div>
-</div>
+    <script>
+      $('body').on('click', 'button[data-target="#projectPopup"]', function(evt){
+        evt.preventDefault();
+        var next = $(this).parents().eq(1).next().find("button[data-target='#projectPopup']").attr("href");
+        next = (typeof next !="undefined") ? next : "none";
+        var prev = $(this).parents().eq(1).prev().find("button[data-target='#projectPopup']").attr("href");
+        prev = (typeof prev !="undefined") ? prev : "none";
+        
+          
+          $(".modal-content").parent().find('#prevBut').remove();   
+          $(".modal-content").parent().find('#nextBut').remove();   
+          if ( prev != "none") $(".modal-content").parent().append('<a id="prevBut" href="'+prev+'"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-left"></i></a>');
+          if ( next != "none") $(".modal-content").parent().append('<a id="nextBut" href="'+next+'"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-right"></i></a>');
+      });
+
+      $('body').on('click', '#projectPopup a.btn', function(evt){
+        //prevent the browser from navigating to the url for the 'a'
+        evt.preventDefault();
+
+        $(this).parent().find('.modal-content').load($(this).attr('href'), function(e){
+          var next = $("#results").find("button[href='"+$(this).find(".popup").data("urltitle")+"']").parents().eq(1).next().find("button[data-target='#projectPopup']").attr("href");
+          var prev = $("#results").find("button[href='"+$(this).find(".popup").data("urltitle")+"']").parents().eq(1).prev().find("button[data-target='#projectPopup']").attr("href");
+          next = (typeof next !="undefined") ? next : "none";
+          prev = (typeof prev !="undefined") ? prev : "none";
+
+          $(".modal-content").parent().find('#prevBut').remove();   
+          $(".modal-content").parent().find('#nextBut').remove();   
+
+          if ( prev != "none") $(".modal-content").parent().append('<a id="prevBut" href="'+prev+'"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-left"></i></a>');
+          if ( next != "none") $(".modal-content").parent().append('<a id="nextBut" href="'+next+'"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-right"></i></a>');
+        });
+      });
+  
+    </script>
   </body>
 </html>

@@ -26,7 +26,7 @@
       <div class="container">
         <div class="row project-row">
           <div class="col-xs-3 left-col form-col">
-            <form method="post" action="{path='projects'}"  id="search-form">  
+            <form method="post" action="{path='embed/results'}"  id="search-form">  
 
                     
                    
@@ -237,7 +237,7 @@
               <div class="dop">
                 <a href="#" id="resetdop"><span>сбросить</span></a>
                   <h3>дополнительно</h3>
-                  <ul>       
+                  <ul id="ulExtra">       
                   <?
                           $arrExtra = array(
                             'projects_extra_balkon' => array(97, 'Балкон'),
@@ -272,18 +272,87 @@
               <div class="subm">
                 <button type="submit" id="subm1">подобрать проекты</button>
               </div>
+
               {/exp:super_search:search}
             </form>
              <script type="text/javascript">
               $(document).ready(function() { 
+
+
+              
+
+
+                var options = {
+                  //target: '#results',
+                  beforeSubmit:  showRequest,
+                  success: function(response) { 
+
+                    $('#results').append(response);
+                    $('#results').fadeIn('slow'); 
+                    $('#searchBg').fadeOut('slow'); 
+                    //Count elements
+                    var count_proj = $('#projects-main-gallery > li').length;
+                    //if number of elements divides to 21 show button
+                    if (count_proj%21 == 0) $("#addrows_button").show();
+                  } 
+                };
+                $('#search-form').ajaxForm(options);
+
+                
+                
+                $("input[name^='category'], input[name^='projects_size'], input[name^='projects_floors'], #ulExtra input").click(function() {
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
+                  $('#search-form').submit();
+
+                  $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                  }, 1000); 
+                 
+                });
+
+              // Show loading message and submit form
+              function showRequest(formData, jqForm, options) {
+                var heightRes = ($("#results").height() > 600 ) ? $("#results").height():600;
+                $("#addrows_button").hide();
+                $('#results').prepend(' <div id="searchBg" class="white-cover"><i  class="fa fa-spinner fa-pulse"></i> идет поиск...</div>');
+                //$('#results').prepend(' <div class="white-cover"><i class="fa fa-spinner fa-pulse"></i> идет поиск...</div>');
+                $(".white-cover").height( heightRes -20 );
+                /*$(".white-cover").css( "padding-top", $(document).scrollTop()-200 );*/
+                return true;
+              }
+              /*AJAX SEARCH*/
+
+              $('#addrows_button').on('click', function(e) {
+                var count_proj = $('#projects-main-gallery > li').length;
+                if( count_proj > 0){
+                  $('#search-form input[name="offset"]').val(count_proj);
+                  $('#search-form').submit();
+                }
+              });
+
+
+
               $("#resetvid,#resetraz,#resetet,#resetdop").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#results').html("");
+                $('#search-form input[name="offset"]').val(0);
+                $('#search-form').submit();
+                $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                }, 1000); 
               });
 
               $("#resetst").click(function(event) {
                 event.preventDefault();
                 $(this).parent().find('input[type="checkbox"]').prop("checked", false);
+                $('#results').html("");
+                $('#search-form input[name="offset"]').val(0);
+                $('#search-form').submit();
+                $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                }, 1000); 
               });
 
               $('#nav_categories > li > label').click(function() {   
@@ -365,6 +434,12 @@
                 $("#resetst").click(function(event) {
                   event.preventDefault();
                   slider1.val([price_from - price_from % 10000,price_to]);
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
+                  $('#search-form').submit();
+                  $('html, body').animate({
+                    scrollTop: $("#results").offset().top - 200
+                  }, 1000); 
                 });
 
                 var slider2 = $('#pl3'),
@@ -394,9 +469,35 @@
                   density: 30,
                 });
 
+                slider1.on('change', function(){
+                    $('#results').html("");
+                    $('#search-form input[name="offset"]').val(0);
+                    $('#search-form').submit();
+                    $('html, body').animate({
+                      //scrollTop: $("#results").offset().top - 200
+                    }, 1000); 
+                });
+
+                slider2.on('change', function(){
+                    $('#results').html("");
+                    $('#search-form input[name="offset"]').val(0);
+                    $('#search-form').submit();
+                    $('html, body').animate({
+                      //scrollTop: $("#results").offset().top - 200
+                    }, 1000); 
+                });
+                
+              
+
                 $("#resetpl").click(function(event) {
                   event.preventDefault();
                   slider2.val([area_from,area_to]);
+                  $('#results').html("");
+                  $('#search-form input[name="offset"]').val(0);
+                  $('#search-form').submit();
+                  $('html, body').animate({
+                    //scrollTop: $("#results").offset().top - 200
+                  }, 1000);    
                 });
 
                       
@@ -430,24 +531,51 @@
                         }
                       }
 
-                      $("#projects_minpriceId").click(function(event) {
+                     $("#projects_minpriceId").click(function(event) {
                         event.preventDefault();
+                        $(this).siblings().removeClass('s-up').removeClass('s-down').removeClass('sort-active');
+                        $(this).addClass('sort-active');
                         var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
                         $("#search-form").find("input[name='orderby']").val("projects_minprice+"+sortOrderLocal);
+                        if ( $(this).hasClass('s-up') ) {
+                          $(this).removeClass('s-up').addClass('s-down');
+                        } else {
+                          $(this).removeClass('s-down').addClass('s-up');
+                        }
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
                       $("#projects_areaId").click(function(event) {
                         event.preventDefault();
+                        $(this).siblings().removeClass('s-up').removeClass('s-down').removeClass('sort-active');
+                        $(this).addClass('sort-active');
                         var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
                         $("#search-form").find("input[name='orderby']").val("projects_area+"+sortOrderLocal);
+                        if ( $(this).hasClass('s-up') ) {
+                          $(this).removeClass('s-up').addClass('s-down');
+                        } else {
+                          $(this).removeClass('s-down').addClass('s-up');
+                        }
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
                       $("#projects_sizeId").click(function(event) {
                         event.preventDefault();
+                        $(this).siblings().removeClass('s-up').removeClass('s-down').removeClass('sort-active');
+                        $(this).addClass('sort-active');
                         var sortOrderLocal = ( $(this).hasClass('s-up') ) ? "desc" : "asc";
                         $("#search-form").find("input[name='orderby']").val("projects_size+"+sortOrderLocal);
+                        if ( $(this).hasClass('s-up') ) {
+                          $(this).removeClass('s-up').addClass('s-down');
+                        } else {
+                          $(this).removeClass('s-down').addClass('s-up');
+                        }
+                        $('#results').html("");
+                        $('#search-form input[name="offset"]').val(0);
                         $("#search-form").submit();
                       });
 
@@ -481,8 +609,7 @@
               <a href="#" id="projects_sizeId">размеру</a>
             </form>
           </div>
-          <div id="results">    1       
-          
+          <div id="results">           
            {exp:super_search:results channel="projects" limit="21" sort="asc" orderby="date"}
             {if count== "1"}
             <div class="row">
@@ -525,7 +652,7 @@
             </div>
             {/if}
 
-            {paginate}
+            {!--paginate}
               <div class="clearfix"></div>
               <div class="row text-center">
                 {pagination_links}
@@ -552,16 +679,22 @@
                   </ul>
                 {/pagination_links}
               </div>
-              {/paginate}
+              {/paginate--}
            {/exp:super_search:results}
            </div>
+           <br>
+           <a class="btn btn-block btn-success addrow" id="addrows_button" type="button">
+                <i class="fa fa-align-left"></i>
+                Еще проекты
+              </a>
+              <br>
         </div>
       </div>
     </div>
     
  
     {embed="embed/.footer" isitpropage="yes"}
-    <!-- Modal -->
+   <!-- Modal -->
     <div class="modal fade" id="projectPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog modal-lg modal-lg-project" role="document">
         <div class="modal-content">
@@ -569,5 +702,18 @@
         </div>
       </div>
     </div>
+    <script>
+      $('body').on('click', '.modal-content button', function(evt){
+        //prevent the browser from navigating to the url for the 'a'
+        evt.preventDefault();
+        var href = $(this).attr("href");
+        var loadUrlTitle = (typeof href !="undefined") ?  href.substr(href.lastIndexOf('/') + 1) : "none" ;
+        var loadButton = $("#projects-main-gallery button[href*='"+loadUrlTitle+"']");
+        console.log(loadButton.attr("href"));
+        //find the parent that is the "modal-body" of this link
+        //load the href html into that parent.
+        $(this).parent('.modal-content').load($(this).attr('href'));
+      });
+    </script>
   </body>
 </html>

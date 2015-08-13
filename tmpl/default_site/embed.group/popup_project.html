@@ -1,5 +1,5 @@
     {exp:channel:entries channel="projects" limit="1" require_entry="yes"}
-    <div class="popup">
+    <div class="popup" data-urltitle="/embed/popup_project/{url_title}">
 		<div id="pop-close" data-dismiss="modal" aria-label="Close"></div>
 		<h1 class="text-center">Проект {title}</h1>
 		
@@ -106,13 +106,18 @@
 		<a href="#" class="pop-izbr pop-ves">Добавить в избранное</a>
 		--}
 	</div>
-
-		{if segment_4 !="none"}
-		<button href="/embed/popup_project/{segment_4}" rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-left"></i></button>
-		{/if}
-		{if segment_5 !="none"}
-		<button href="/embed/popup_project/{segment_5}" rel="nofollow" class="btn btn-danger"><i class="fa fa-angle-right"></i></button>
-		{/if}
-
+	
 		
 	{/exp:channel:entries}
+
+<script type="text/javascript">
+/*
+		var next = $("#results").find("button[href='/embed/popup_project/{segment_3}']").parents().eq(1).next().find("button[data-target='#projectPopup']").attr("href");
+		next = (typeof next !="undefined") ? next : "none";
+		alert(next);
+		var prev = $("#results").find("button[href='/embed/popup_project/{segment_3}']").parents().eq(1).prev().find("button[data-target='#projectPopup']").attr("href");
+		prev = (typeof prev !="undefined") ? prev : "none";
+		if ( prev != "none") $(".modal-content").append('<button href="'+prev+'"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-left"></i></button>');
+		if ( next != "none") $(".modal-content").append('<button href="'+next+'"  rel="nofollow"  class="btn btn-danger"><i class="fa fa-angle-right"></i></button>');
+*/
+</script>

@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
 
-
+	
 	/*Clear cache modal window*/
 	$('body').on('hidden.bs.modal', '.modal', function () {
 	    $(this).removeData('bs.modal');
